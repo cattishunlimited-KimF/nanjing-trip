@@ -560,6 +560,17 @@ const LS = 'nanjing2025_jbin';
 
 function jbinCfgLoad(){
   try {
+    // 優先從網址參數讀取（品郡點連結自動帶入）
+    const params = new URLSearchParams(window.location.search);
+    const urlKey = params.get('key');
+    const urlBin = params.get('bin');
+    if(urlKey && urlBin){
+      JBIN_KEY = urlKey; JBIN_BIN = urlBin;
+      // 自動存到 localStorage，之後不需要再帶參數
+      try { localStorage.setItem(LS+'_cfg', JSON.stringify({key:JBIN_KEY,bin:JBIN_BIN,clientId:GS_CLIENT_ID})); } catch(e){}
+      return;
+    }
+    // 沒有網址參數，從 localStorage 讀
     const c = JSON.parse(localStorage.getItem(LS+'_cfg')||'{}');
     JBIN_KEY = c.key||''; JBIN_BIN = c.bin||''; GS_CLIENT_ID = c.clientId||'';
   } catch(e){}
