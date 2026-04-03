@@ -566,6 +566,7 @@ function jbinCfgLoad(){
     const urlBin = params.get('bin');
     if(urlKey && urlBin){
       JBIN_KEY = urlKey; JBIN_BIN = urlBin;
+      if(params.get('client')) GS_CLIENT_ID = params.get('client');
       // 自動存到 localStorage，之後不需要再帶參數
       try { localStorage.setItem(LS+'_cfg', JSON.stringify({key:JBIN_KEY,bin:JBIN_BIN,clientId:GS_CLIENT_ID})); } catch(e){}
       return;
