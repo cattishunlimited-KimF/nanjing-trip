@@ -663,7 +663,7 @@ async function sv(){
 // ---- Load ----
 async function ld(){
   jbinCfgLoad();
-  // Always load local first for instant render
+  // 先讀本機讓畫面快速出現
   try {
     const loc = localStorage.getItem(LS);
     if(loc) applyState(JSON.parse(loc));
@@ -675,14 +675,10 @@ async function ld(){
   }
   setSyncDot('syncing');
   try {
+    // JSONBin 永遠是唯一真相來源，直接套用
     const remote = await jbinRead();
-    const loc = localStorage.getItem(LS);
-    const local = loc ? JSON.parse(loc) : null;
-    // Use whichever is newer
-    if(!local || !local.updatedAt || (remote.updatedAt && remote.updatedAt >= local.updatedAt)){
-      applyState(remote);
-      try { localStorage.setItem(LS, JSON.stringify(remote)); } catch(e){}
-    }
+    applyState(remote);
+    try { localStorage.setItem(LS, JSON.stringify(remote)); } catch(e){}
     setSyncDot('ok');
   } catch(e){
     setSyncDot('offline');
@@ -698,7 +694,8 @@ setInterval(async ()=>{
     const remote = await jbinRead();
     const loc = localStorage.getItem(LS);
     const local = loc ? JSON.parse(loc) : null;
-    if(!local||!local.updatedAt||(remote.updatedAt&&remote.updatedAt>local.updatedAt)){
+    // 只要 remote 比本機新就套用
+    if(!local || !local.updatedAt || !remote.updatedAt || remote.updatedAt > local.updatedAt){
       applyState(remote);
       try { localStorage.setItem(LS, JSON.stringify(remote)); } catch(e){}
       refreshCurrentPage();
