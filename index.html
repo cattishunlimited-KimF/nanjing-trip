@@ -20,9 +20,10 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .nav h1 span{color:#e8c97a;}
 .nav-sub{font-size:11px;color:#b0a898;margin-top:2px;}
 .add-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;white-space:nowrap;font-family:'Noto Sans TC',sans-serif;}
-.page-tabs{display:flex;overflow-x:auto;scrollbar-width:none;}
+.page-tabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid rgba(255,255,255,.08);}
+.page-tabs:last-of-type{border-bottom:none;}
 .page-tabs::-webkit-scrollbar{display:none;}
-.ptab{background:none;color:#9a8e82;border:none;border-bottom:3px solid transparent;padding:8px 12px;font-size:12px;cursor:pointer;white-space:nowrap;font-family:'Noto Sans TC',sans-serif;transition:all .2s;}
+.ptab{background:none;color:#9a8e82;border:none;border-bottom:3px solid transparent;padding:8px 0;font-size:12px;cursor:pointer;white-space:nowrap;font-family:'Noto Sans TC',sans-serif;transition:all .2s;flex:1;text-align:center;}
 .ptab.active{color:#fff;border-bottom-color:var(--accent);}
 
 .main{padding:14px 14px 80px;max-width:700px;margin:0 auto;}
@@ -248,9 +249,11 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
   <div class="page-tabs">
     <button class="ptab active" onclick="switchPage('itinerary',this)">🗓 行程</button>
     <button class="ptab" onclick="switchPage('checklist',this)">✅ 行前準備</button>
+    <button class="ptab" onclick="switchPage('ledger',this)">📋 預估旅費</button>
+  </div>
+  <div class="page-tabs">
     <button class="ptab" onclick="switchPage('disney',this)">🎠 迪士尼</button>
     <button class="ptab" onclick="switchPage('food',this)">🦆 南京必吃</button>
-    <button class="ptab" onclick="switchPage('ledger',this)">📋 費用明細</button>
     <button class="ptab" onclick="switchPage('pay',this)">💰 分帳</button>
   </div>
 </div>
@@ -379,26 +382,25 @@ const TM={sight:{l:'景點',c:'tag-sight',i:'🏛'},food:{l:'餐廳',c:'tag-food
 
 let trips=[
   {id:1,day:0,type:'transit',name:'✈️ MU5006 桃園T2 → 上海浦東T1',address:'桃園國際機場第2航廈',phone:'',mapKey:'桃園國際機場第二航廈',note:'🕕 18:50 起飛 → 20:40 抵達浦東T1｜空客333寬體｜含茶點｜有Wi-Fi',cost:0},
-  {id:2,day:0,type:'food',name:'🎂 海底撈火鍋（華夏東路生日主題店）',address:'上海市浦東新區華夏東路',phone:'',mapKey:'海底捞火锅华夏东路生日主题店上海',note:'抵達後晚餐！生日主題店，可提前告知店員需要生日驚喜服務',cost:200},
   {id:17,day:0,type:'transit',name:'🚗 浦東機場 → 漢庭酒店 機場接送',address:'上海浦東國際機場T1',phone:'',mapKey:'上海浦东国际机场T1',note:'⚠️ 已預訂機場接送！抵達T1後依約定方式找司機接車，確認接送聯絡方式與車牌',cost:150},
-  {id:3,day:0,type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',mapKey:'汉庭酒店上海川沙新源路步行街店',note:'4/16–4/17兩晚｜近迪士尼，步行街旁',cost:280},
+  {id:3,day:0,type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',mapKey:'汉庭酒店上海川沙新源路步行街店',note:'4/16–4/18 兩晚｜近迪士尼，步行街旁｜4/18 一早高鐵去南京',cost:280},
 
   {id:4,day:1,type:'sight',name:'🎠 上海迪士尼樂園',address:'上海市浦東新區川沙新鎮黃趙路310號',phone:'400-180-0000',mapKey:'上海迪士尼乐园',note:'全天遊玩！詳細必玩清單請看「迪士尼」頁。建議開園前到場，熱門項目先衝',cost:719},
   {id:5,day:1,type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',mapKey:'汉庭酒店上海川沙新源路步行街店',note:'連住第二晚，明天4/18一早高鐵去南京',cost:0},
 
   {id:6,day:2,type:'transit',name:'🚄 上海虹橋 → 南京南（高鐵）',address:'上海虹橋火車站',phone:'',mapKey:'上海虹桥火车站',note:'⚠️ 一大早出發！虹橋→南京南約1.5小時，建議7–8點班次，記得提前訂票！',cost:150},
-  {id:7,day:2,type:'hotel',name:'🔵 備選一：一潮飯店（江浦龍華路地鐵站店）',address:'南京市浦口區江浦街道文德東路37號',phone:'',mapKey:'一潮酒店南京江浦龙华路地铁站店',note:'入住12:00後｜退房14:00前｜地鐵站旁｜24H櫃台｜免費停車',cost:320},
-  {id:8,day:2,type:'hotel',name:'🔵 備選二：漢庭優佳（江浦研創園店）',address:'南京市浦口區圓勝路2號江浦街道濱江馨園3-1-114',phone:'',mapKey:'汉庭优佳酒店南京江浦研创园店',note:'入住14:00後｜退房12:00前｜24H櫃台｜免費停車｜Wi-Fi',cost:280},
+  {id:7,day:2,type:'hotel',name:'美城飯店（夫子廟水平方店）',address:'南京市秦淮區',phone:'',mapKey:'美城酒店南京夫子庙水平方店',note:'4/18–4/20 兩晚｜高級雙床房｜夫子廟商圈，步行可達秦淮河',cost:350},
   {id:18,day:2,type:'sight',name:'📍 前往應援（4/18 時間地點待定）',address:'',phone:'',mapKey:'南京青奥体育公园体育馆',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0},
   {id:9,day:2,type:'sight',name:'🎤 劉宇寧演唱會 Day 1',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',mapKey:'南京青奥体育公园体育馆',note:'🕖 19:00 開演｜提前到場取票入座',cost:1280},
 
+  {id:20,day:3,type:'food',name:'🍲 海底撈火鍋（南京凱瑟琳廣場店）',address:'南京市建鄴區',phone:'',mapKey:'海底捞火锅南京凯瑟琳广场店',note:'4/19 晚餐！凱瑟琳廣場店，可提前預訂座位',cost:200},
   {id:10,day:3,type:'sight',name:'南京博物院（上午）',address:'南京市玄武區中山東路321號',phone:'025-84807923',mapKey:'南京博物院',note:'免費，需提前網路預約，館藏豐富留半天',cost:0},
   {id:19,day:3,type:'sight',name:'📍 前往應援（4/19 時間地點待定）',address:'',phone:'',mapKey:'南京青奥体育公园体育馆',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0},
   {id:11,day:3,type:'sight',name:'🎤 劉宇寧演唱會 Day 2',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',mapKey:'南京青奥体育公园体育馆',note:'🕖 19:00 開演｜票價：內場1580 / 看台1280·980·680·480',cost:1280},
 
   {id:12,day:4,type:'sight',name:'夫子廟秦淮河（上午逛逛）',address:'南京市秦淮區貢院街1號',phone:'025-52209788',mapKey:'夫子廟景區',note:'退房前逛逛，吃鴨血粉絲湯，買手信伴手禮',cost:80},
   {id:13,day:4,type:'transit',name:'🚄 南京南 → 上海虹橋（高鐵）',address:'南京南站',phone:'',mapKey:'南京南站',note:'下午搭車回上海，車程約1.5小時，提前購票',cost:150},
-  {id:14,day:4,type:'hotel',name:'🏨 上海虹橋附近住宿（待定）',address:'上海市閔行區/長寧區 虹橋附近',phone:'',mapKey:'上海虹桥附近酒店',note:'⚠️ 待確認！隔天08:15起飛，強烈建議選虹橋機場步行15分內的飯店',cost:300},
+  {id:14,day:4,type:'hotel',name:'上海福樂精選飯店（虹橋機場淞虹路地鐵站店）',address:'上海市閔行區淞虹路',phone:'',mapKey:'上海福乐精选酒店虹桥机场淞虹路地铁站店',note:'4/20–4/21 一晚｜精選標準間｜淞虹路地鐵站旁，虹橋機場 T1 近',cost:300},
 
   {id:15,day:5,type:'transit',name:'⏰ 早起！前往上海虹橋機場T1',address:'上海虹橋國際機場T1',phone:'',mapKey:'上海虹桥国际机场T1',note:'🕕 建議 06:00 前到機場｜08:15 起飛，確認飯店→機場交通方式',cost:0},
   {id:16,day:5,type:'transit',name:'✈️ FM851 上海虹橋 → 台北松山',address:'上海虹橋國際機場T1',phone:'',mapKey:'上海虹桥国际机场T1',note:'🕗 08:15 起飛 → 10:15 抵達松山｜波音738(窄)｜含早餐｜上海航空承運',cost:0},
@@ -416,11 +418,11 @@ function fmtCost(cny){ return cny>0 ? `¥${cny} <span style="font-size:10px;colo
 // ===== MEALS DATA =====
 // meals[day] = {b:'早餐內容',l:'午餐內容',d:'晚餐內容'}
 let meals = {
-  0:{d:'海底撈火鍋 🎂'},
-  1:{b:'酒店早餐或便利商店',l:'迪士尼園內（11前或14後）',d:'迪士尼園內或步行街'},
-  2:{b:'便利商店 / 虹橋站',l:'南京到站後附近覓食',d:'演唱會前 or 後隨興'},
-  3:{b:'酒店附近早餐',l:'鴨血粉絲湯 or 夫子廟小吃',d:'演唱會前 or 後隨興'},
-  4:{b:'酒店早餐',l:'夫子廟秦淮小吃',d:'上海虹橋附近'},
+  0:{d:'海底撈火鍋 🎂',dc:0},
+  1:{b:'酒店早餐或便利商店',bc:0,l:'迪士尼園內（11前或14後）',lc:0,d:'迪士尼園內或步行街',dc:0},
+  2:{b:'便利商店 / 虹橋站',bc:0,l:'南京到站後附近覓食',lc:0,d:'演唱會前 or 後隨興',dc:0},
+  3:{b:'酒店附近早餐',bc:0,l:'鴨血粉絲湯 or 夫子廟小吃',lc:0,d:'演唱會前 or 後隨興',dc:0},
+  4:{b:'酒店早餐',bc:0,l:'夫子廟秦淮小吃',lc:0,d:'上海虹橋附近',dc:0},
   5:{},
 };
 
@@ -430,7 +432,7 @@ const CL=[
   {id:'c2',cat:'🚨 出發前最重要',t:'購買中國上網方案（境外SIM卡 或 Wi-Fi分享機）',urg:true,sub:'⚠️ 中國無法用Google/LINE/IG，需VPN或境外SIM'},
   {id:'c3',cat:'🚨 出發前最重要',t:'訂4/18 上海虹橋→南京南 高鐵票',urg:true,sub:'建議7–8點班次，用12306 App訂'},
   {id:'c4',cat:'🚨 出發前最重要',t:'訂4/20 南京南→上海虹橋 高鐵票',urg:true,sub:''},
-  {id:'c5',cat:'🚨 出發前最重要',t:'確認並訂4/20 上海虹橋附近住宿',urg:true,sub:'建議選虹橋機場步行15分內，隔天08:15起飛'},
+  {id:'c5',cat:'🚨 出發前最重要',t:'✅ 4/20 上海虹橋住宿已確認（福樂精選飯店）',urg:false,sub:'淞虹路地鐵站旁，虹橋機場T1步行可達'},
   {id:'c6',cat:'🚨 出發前最重要',t:'安裝「12306」App 並完成實名認證',urg:true,sub:'中國高鐵訂票必備'},
 
   {id:'c7',cat:'📱 App 安裝',t:'微信（WeChat）— 開通錢包功能',urg:false,sub:''},
@@ -980,7 +982,7 @@ function buildTimeline(dayIdx){
   const nodes=its.map((x,i)=>({type:'trip',order:orderMap[i]||13+i,data:x}));
   (DAY_MEALS[dayIdx]||[]).forEach(k=>{
     const def=MEAL_DEF[k];
-    nodes.push({type:'meal',order:def.order,slot:def.slot,icon:def.icon,label:def.label,val:m[k]||''});
+    nodes.push({type:'meal',order:def.order,slot:def.slot,icon:def.icon,label:def.label,val:m[k]||'',cost:m[k+'c']||0});
   });
   nodes.sort((a,b)=>a.order-b.order);
   return nodes;
@@ -988,13 +990,15 @@ function buildTimeline(dayIdx){
 
 function renderIt(){
   document.getElementById('dayTabs').innerHTML=DAYS.map((d,i)=>{
-    const dayCost=trips.filter(x=>x.day===i).reduce((s,x)=>s+(x.cost||0),0);
+    const dayCost=trips.filter(x=>x.day===i).reduce((s,x)=>s+(x.cost||0),0)
+      +['b','l','d'].reduce((s,k)=>s+((meals[i]&&meals[i][k+'c'])||0),0);
     return`<button class="dtab${i===curDay?' active':''}" onclick="sd(${i})">${d.l}<br><span style="font-size:9px;opacity:.7">${d.s}</span>${dayCost>0?`<br><span style="font-size:9px;color:${i===curDay?'rgba(255,255,255,.8)':'var(--accent)'}">¥${dayCost}</span>`:''}
     </button>`;
   }).join('');
   document.getElementById('dayContent').innerHTML=DAYS.map((d,i)=>{
     const its=trips.filter(x=>x.day===i);
-    const dayCost=its.reduce((s,x)=>s+(x.cost||0),0);
+    const mealCost=['b','l','d'].reduce((s,k)=>s+((meals[i]&&meals[i][k+'c'])||0),0);
+    const dayCost=its.reduce((s,x)=>s+(x.cost||0),0)+mealCost;
     const nodes=buildTimeline(i);
     const tlHtml=nodes.map(n=>n.type==='meal'?mealNodeH(i,n):tripNodeH(n.data)).join('');
     return`<div class="day-section${i===curDay?' active':''}" id="ds${i}">
@@ -1007,22 +1011,32 @@ function renderIt(){
 
 function mealNodeH(dayIdx,n){
   const filled=n.val.trim();
-  const preview=filled||'點擊填入…';
+  const cost=n.cost||0;
+  const preview=(filled||(cost>0?'¥'+cost:''))||'點擊填入…';
+  const costPreview=cost>0?` · ¥${cost}`:'';
   return`<div class="tl-item">
     <div class="tl-dot meal"></div>
     <div class="tl-meal" id="meal-${dayIdx}-${n.slot}">
       <div class="tl-meal-hd" onclick="toggleMeal(${dayIdx},'${n.slot}',this.parentElement)">
         <span class="tl-meal-icon">${n.icon}</span>
         <span class="tl-meal-label">${n.label}</span>
-        <span class="tl-meal-preview">${preview}</span>
+        <span class="tl-meal-preview">${eh(filled)||'點擊填入…'}<span style="color:var(--accent);font-size:10px">${costPreview}</span></span>
         <span class="tl-meal-chevron">▼</span>
       </div>
       <div class="tl-meal-body">
         <div class="meal-input-row">
           <span class="meal-icon-lbl">${n.icon}</span>
-          <input class="meal-input" placeholder="填入${n.label}..." value="${n.val}"
+          <input class="meal-input" placeholder="填入${n.label}..." value="${eh(n.val)}"
             oninput="saveMeal(${dayIdx},'${n.slot}',this.value)"
             onclick="event.stopPropagation()">
+        </div>
+        <div class="meal-input-row">
+          <span class="meal-icon-lbl">💰</span>
+          <input class="meal-input cost-input" type="number" min="0" placeholder="費用 ¥（選填）" value="${cost||''}"
+            oninput="saveMealCost(${dayIdx},'${n.slot}',this.value)"
+            onclick="event.stopPropagation()" style="max-width:120px">
+          <span style="font-size:11px;color:var(--muted)">/ 人</span>
+          ${cost>0?`<span style="font-size:10px;color:var(--accent2)">≈ NT$${twd(cost)}</span>`:''}
         </div>
       </div>
     </div>
@@ -1074,13 +1088,20 @@ function tripNodeH(x){
 }
 
 function saveMeal(day,slot,val){
-  if(!meals[day]) meals[day]={b:'',l:'',d:''};
+  if(!meals[day]) meals[day]={};
   meals[day][slot]=val;
-  const node=document.getElementById(`meal-${day}-${slot}`);
-  if(node){
-    const preview=node.querySelector('.tl-meal-preview');
-    if(preview) preview.textContent=val.trim()||'點擊填入…';
-  }
+  sv();
+}
+
+function saveMealCost(day,slot,val){
+  if(!meals[day]) meals[day]={};
+  const costKey=slot+'c';
+  meals[day][costKey]=parseFloat(val)||0;
+  // update day cost bar
+  const dayCost=trips.filter(x=>x.day===day).reduce((s,x)=>s+(x.cost||0),0)
+    +['b','l','d'].reduce((s,k)=>s+((meals[day]&&meals[day][k+'c'])||0),0);
+  const bar=document.querySelector(`#ds${day} .day-cost-bar`);
+  if(bar) bar.querySelector('strong').innerHTML=`¥${dayCost} <span class="day-cost-twd">≈ NT$${twd(dayCost)}</span>`;
   sv();
 }
 
@@ -1263,7 +1284,7 @@ function renderScanForm(){
         <button class="rm-img" onclick="clearScanImg()" title="重新上傳">×</button>
       </div>
       <div class="ai-result-box">
-        <div class="ar-title">🤖 AI 辨識結果 — 請確認後記帳</div>
+        <div class="ar-title">📸 截圖已載入 — 請填寫後記帳</div>
         <div class="ar-row"><span class="ar-label">商家名稱</span><span class="ar-val">${eh(aiParsed.name||'—')}</span></div>
         <div class="ar-row"><span class="ar-label">金額</span><span class="ar-val" style="color:var(--accent);font-size:15px">¥${aiParsed.amt||'—'}</span></div>
         <div class="ar-row"><span class="ar-label">付款方式</span><span class="ar-val">${aiParsed.methodLabel||'—'}</span></div>
@@ -1274,15 +1295,7 @@ function renderScanForm(){
       <div style="font-size:11px;color:var(--muted);margin-bottom:4px">如有誤差可在下方修改：</div>
       ${renderManualForm(aiParsed)}`;
   }
-  if(uploadedImgB64 && !aiParsed){
-    // Scanning state
-    return `
-      <div class="upload-preview">
-        <img src="data:${uploadedImgType};base64,${uploadedImgB64}" alt="截圖預覽">
-        <button class="rm-img" onclick="clearScanImg()">×</button>
-      </div>
-      <div class="scanning-ani">⏳ AI 辨識中，請稍候…</div>`;
-  }
+  // (scanning state removed - show form directly)
   // Upload zone
   return `
     <div class="upload-zone" id="uploadZone" onclick="document.getElementById('imgInput').click()">
@@ -1309,64 +1322,19 @@ function bindUploadZone(){
 function handleImgFile(file){
   if(!file.type.startsWith('image/')){ showScanError('請上傳圖片檔案'); return; }
   const reader = new FileReader();
-  reader.onload = async e => {
-    const b64full = e.target.result; // data:image/png;base64,xxx
+  reader.onload = e => {
+    const b64full = e.target.result;
     const [meta, data] = b64full.split(',');
     uploadedImgB64 = data;
     uploadedImgType = file.type;
-    aiParsed = null;
-    renderPayForm(); // show scanning state
-    await scanWithAI();
+    // 直接設一個空的 aiParsed 讓畫面進入確認模式（旅途中手動填較可靠）
+    aiParsed = {name:'', amt:'', method:'wechat', methodLabel:'微信', payer:'', note:''};
+    renderPayForm();
   };
   reader.readAsDataURL(file);
 }
 
-async function scanWithAI(){
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 500,
-        system: `你是一個付款截圖辨識助手。請從微信或支付寶的付款截圖中，提取交易資訊並以 JSON 格式回傳。
-只回傳 JSON，不要其他文字。格式：
-{
-  "name": "商家或項目名稱（如：海底撈、滴滴打車）",
-  "amt": 數字（人民幣金額，不含¥符號）,
-  "method": "wechat" 或 "alipay" 或 "card" 或 "cash",
-  "methodLabel": "微信" 或 "支付寶" 或 "信用卡" 或 "人民幣",
-  "payer": "若佩" 或 "品郡" 或 ""（無法判斷則空字串）,
-  "time": "交易時間（如：04/18 14:32，若有的話）",
-  "note": "其他備註（如：訂單號後四碼，可空字串）"
-}
-若截圖非付款截圖，回傳 {"error":"非付款截圖"}`,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: uploadedImgType, data: uploadedImgB64 } },
-            { type: 'text', text: '請辨識這張付款截圖的交易資訊。' }
-          ]
-        }]
-      })
-    });
-    const json = await resp.json();
-    const raw = json.content?.find(b=>b.type==='text')?.text || '';
-    const clean = raw.replace(/```json|```/g,'').trim();
-    const parsed = JSON.parse(clean);
-    if(parsed.error){ showScanError('⚠️ ' + parsed.error + '，請手動輸入或換張截圖'); uploadedImgB64=null; uploadedImgType=null; renderPayForm(); return; }
-    aiParsed = parsed;
-    // auto-set splitMode based on payer if detectable
-    if(parsed.method) {
-      // method already set in parsed
-    }
-    renderPayForm();
-  } catch(err){
-    showScanError('辨識失敗，請重試或改用手動輸入');
-    uploadedImgB64=null; uploadedImgType=null;
-    renderPayForm();
-  }
-}
+function scanWithAI(){ /* removed - direct form instead */ }
 
 function showScanError(msg){
   const el = document.getElementById('scanError');
