@@ -41,7 +41,7 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .rate-bar{display:flex;align-items:center;gap:6px;background:var(--hs);border-radius:7px;padding:5px 10px;margin-bottom:11px;font-size:11px;color:var(--ht);}
 .rate-input{border:1px solid #b0c8e8;border-radius:5px;padding:2px 6px;font-size:11px;width:52px;font-family:'Noto Sans TC',sans-serif;background:#fff;color:var(--ink);outline:none;text-align:center;}
 .cost-twd{font-size:10px;color:var(--accent2);margin-left:3px;white-space:nowrap;}
-.meals-block{display:none;} /* replaced by timeline */
+.meals-block{display:none;}
 .cards{display:flex;flex-direction:column;gap:10px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;box-shadow:0 2px 7px var(--shadow);}
 .card-header{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px;}
@@ -50,6 +50,8 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .cost-input{border:1px solid var(--border);border-radius:6px;padding:3px 7px;font-size:12px;width:80px;font-family:'Noto Sans TC',sans-serif;background:var(--paper);color:var(--ink);outline:none;}
 .cost-input:focus{border-color:var(--accent);}
 .cost-unit{font-size:11px;color:var(--muted);}
+.curr-toggle{background:none;border:1px solid var(--border);border-radius:5px;padding:3px 5px;font-size:11px;cursor:pointer;color:var(--accent3);transition:all 0.15s;}
+.curr-toggle:hover{background:var(--warm);}
 .type-tag{font-size:11px;font-weight:500;border-radius:5px;padding:2px 7px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
 .tag-sight{background:var(--ts);color:var(--tt);}.tag-food{background:var(--fs);color:var(--ft);}
 .tag-hotel{background:var(--hs);color:var(--ht);}.tag-transit{background:var(--rs);color:var(--rt);}
@@ -75,7 +77,6 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .tl-dot.hotel{background:var(--ht);}
 .tl-dot.transit{background:var(--rt);}
 .tl-dot.meal{background:#e8a020;}
-/* meal accordion */
 .tl-meal{background:var(--warm);border:1px solid var(--border);border-radius:10px;padding:9px 11px;transition:border-color .15s;}
 .tl-meal.expanded{border-color:#e8a020;}
 .tl-meal-hd{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;}
@@ -91,7 +92,6 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .meal-icon-lbl{font-size:14px;flex-shrink:0;width:20px;text-align:center;}
 .meal-input{flex:1;border:1px solid var(--border);border-radius:6px;padding:5px 9px;font-size:12px;font-family:'Noto Sans TC',sans-serif;color:var(--ink);outline:none;background:var(--card);}
 .meal-input:focus{border-color:#e8a020;}
-/* trip card inside timeline */
 .tl-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 12px;box-shadow:0 1px 5px var(--shadow);}
 
 /* CHECKLIST */
@@ -123,7 +123,7 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .pay-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
 .pay-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center;}
 .pc-name{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700;margin-bottom:4px;}
-.pc-amt{font-size:24px;font-weight:700;color:var(--accent);font-family:'Noto Serif TC',serif;}
+.pc-amt{font-size:20px;font-weight:700;color:var(--accent);font-family:'Noto Serif TC',serif;}
 .pc-sub{font-size:11px;color:var(--muted);margin-top:2px;}
 .pay-bal{background:var(--warm);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center;margin-bottom:13px;font-size:13px;color:var(--ink);}
 .pay-bal strong{color:var(--accent);font-size:15px;}
@@ -150,29 +150,27 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .pr-amt{font-size:15px;font-weight:700;color:var(--accent);font-family:'Noto Serif TC',serif;white-space:nowrap;}
 .pr-del{background:none;border:none;color:#ccc;cursor:pointer;font-size:16px;padding:2px;}
 .pr-del:hover{color:#c0392b;}
+.pr-edit{background:none;border:none;color:#aaa;cursor:pointer;font-size:14px;padding:2px;margin-right:2px;}
+.pr-edit:hover{color:var(--accent);}
 
-/* IMAGE UPLOAD */
-.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:10px;background:var(--warm);}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:#fff3ea;}
-.upload-zone input{display:none;}
-.uz-icon{font-size:28px;margin-bottom:6px;}
-.uz-text{font-size:12px;color:var(--muted);}
-.uz-sub{font-size:11px;color:#bbb;margin-top:3px;}
-.upload-preview{position:relative;margin-bottom:10px;}
-.upload-preview img{width:100%;max-height:200px;object-fit:contain;border-radius:8px;border:1px solid var(--border);}
-.rm-img{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.5);color:#fff;border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
-.ai-scan-btn{width:100%;background:var(--accent3);color:#fff;border:none;border-radius:9px;padding:9px;font-size:13px;font-family:'Noto Serif TC',serif;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px;}
-.ai-scan-btn:disabled{opacity:.5;cursor:not-allowed;}
-.ai-result-box{background:#eef4ff;border:1px solid #bed0f7;border-radius:10px;padding:11px;margin-bottom:10px;font-size:12px;}
-.ar-title{font-size:11px;color:var(--accent3);font-weight:600;margin-bottom:7px;}
-.ar-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
-.ar-label{color:var(--muted);}
-.ar-val{font-weight:600;color:var(--ink);}
-.tab-switch{display:flex;margin-bottom:12px;border:1px solid var(--border);border-radius:9px;overflow:hidden;}
-.tab-switch button{flex:1;background:none;border:none;padding:8px;font-size:12px;cursor:pointer;font-family:'Noto Sans TC',sans-serif;color:var(--muted);transition:all .2s;}
-.tab-switch button.active{background:var(--accent);color:#fff;}
-.scanning-ani{text-align:center;padding:14px;color:var(--accent3);font-size:12px;}
-.scan-error{background:#fff0f0;border:1px solid #f5b8b8;border-radius:8px;padding:9px 11px;font-size:12px;color:#c0392b;margin-bottom:8px;}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,18,8,.55);z-index:200;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--paper);border-radius:18px 18px 0 0;width:100%;max-width:700px;padding:20px 16px 28px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0;}to{transform:none;opacity:1;}}
+.modal h2{font-family:'Noto Serif TC',serif;font-size:16px;margin-bottom:14px;color:var(--accent);}
+.fg{margin-bottom:11px;}
+.fg label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;}
+.fg input,.fg select,.fg textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13px;font-family:'Noto Sans TC',sans-serif;background:var(--card);color:var(--ink);outline:none;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);}
+.fg textarea{resize:vertical;min-height:52px;}
+.modal-btns{display:flex;gap:8px;margin-top:14px;}
+.btn-save{flex:1;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px;font-size:14px;font-family:'Noto Serif TC',serif;cursor:pointer;}
+.btn-cancel{flex:0 0 auto;background:var(--warm);color:var(--muted);border:1px solid var(--border);border-radius:9px;padding:10px 16px;font-size:13px;cursor:pointer;}
+.btn-del{flex:0 0 auto;background:none;color:#c0392b;border:1px solid #e8b4ae;border-radius:9px;padding:10px 13px;font-size:13px;cursor:pointer;}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:8px 18px;border-radius:20px;font-size:13px;z-index:999;transition:transform .3s;pointer-events:none;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
 
 .btn-pick-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2px;}
 .bp{border:1px solid var(--border);border-radius:8px;padding:7px 11px;font-size:12px;background:var(--paper);cursor:pointer;font-family:'Noto Sans TC',sans-serif;color:var(--muted);transition:all .15s;white-space:nowrap;}
@@ -197,43 +195,6 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .lr-twd{font-size:10px;color:var(--accent2);display:block;text-align:right;}
 .lr-src-trip{border-left:3px solid var(--tt);}
 .lr-src-pay{border-left:3px solid var(--ft);}
-.sync-modal{background:var(--paper);border-radius:18px 18px 0 0;width:100%;max-width:700px;padding:22px 18px 32px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;}
-.sm-title{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;color:var(--accent3);margin-bottom:4px;}
-.sm-sub{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6;}
-.sm-step{background:var(--warm);border-radius:10px;padding:11px 13px;margin-bottom:10px;font-size:12px;line-height:1.7;border-left:3px solid var(--accent3);}
-.sm-step b{color:var(--accent3);}
-.sm-step a{color:var(--accent3);}
-.sm-label{font-size:11px;color:var(--muted);margin-bottom:4px;margin-top:10px;}
-.sm-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font-size:13px;font-family:'Noto Sans TC',sans-serif;background:var(--card);color:var(--ink);outline:none;}
-.sm-input:focus{border-color:var(--accent3);}
-.sm-create{width:100%;background:var(--accent3);color:#fff;border:none;border-radius:9px;padding:9px;font-size:13px;font-family:'Noto Serif TC',serif;cursor:pointer;margin-top:8px;}
-.sm-divider{text-align:center;font-size:11px;color:var(--muted);margin:10px 0;position:relative;}
-.sm-divider::before{content:'';position:absolute;top:50%;left:0;right:0;border-top:1px solid var(--border);}
-.sm-divider span{background:var(--paper);padding:0 8px;position:relative;}
-.sm-btns{display:flex;gap:8px;margin-top:14px;}
-.sm-save{flex:1;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px;font-size:14px;font-family:'Noto Serif TC',serif;cursor:pointer;}
-.sm-save:disabled{opacity:.4;cursor:not-allowed;}
-.sm-cancel{background:var(--warm);color:var(--muted);border:1px solid var(--border);border-radius:9px;padding:10px 16px;font-size:13px;cursor:pointer;}
-.bin-hint{font-size:11px;color:var(--accent2);margin-top:5px;}
-
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,18,8,.55);z-index:200;align-items:flex-end;justify-content:center;}
-.modal-overlay.open{display:flex;}
-.modal{background:var(--paper);border-radius:18px 18px 0 0;width:100%;max-width:700px;padding:20px 16px 28px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;}
-@keyframes slideUp{from{transform:translateY(60px);opacity:0;}to{transform:none;opacity:1;}}
-.modal h2{font-family:'Noto Serif TC',serif;font-size:16px;margin-bottom:14px;color:var(--accent);}
-.fg{margin-bottom:11px;}
-.fg label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;}
-.fg input,.fg select,.fg textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:13px;font-family:'Noto Sans TC',sans-serif;background:var(--card);color:var(--ink);outline:none;}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent);}
-.fg textarea{resize:vertical;min-height:52px;}
-.modal-btns{display:flex;gap:8px;margin-top:14px;}
-.btn-save{flex:1;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px;font-size:14px;font-family:'Noto Serif TC',serif;cursor:pointer;}
-.btn-cancel{flex:0 0 auto;background:var(--warm);color:var(--muted);border:1px solid var(--border);border-radius:9px;padding:10px 16px;font-size:13px;cursor:pointer;}
-.btn-del{flex:0 0 auto;background:none;color:#c0392b;border:1px solid #e8b4ae;border-radius:9px;padding:10px 13px;font-size:13px;cursor:pointer;}
-
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--ink);color:#fff;padding:8px 18px;border-radius:20px;font-size:13px;z-index:999;transition:transform .3s;pointer-events:none;white-space:nowrap;}
-.toast.show{transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -248,25 +209,18 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
   </div>
   <div class="page-tabs">
     <button class="ptab active" onclick="switchPage('itinerary',this)">🗓 行程</button>
-    <button class="ptab" onclick="switchPage('checklist',this)">✅ 行前準備</button>
-    <button class="ptab" onclick="switchPage('ledger',this)">📋 預估旅費</button>
-  </div>
-  <div class="page-tabs">
     <button class="ptab" onclick="switchPage('disney',this)">🎠 迪士尼</button>
     <button class="ptab" onclick="switchPage('food',this)">🦆 南京必吃</button>
+  </div>
+  <div class="page-tabs">
+    <button class="ptab" onclick="switchPage('ledger',this)">📋 預估旅費</button>
     <button class="ptab" onclick="switchPage('pay',this)">💰 分帳</button>
+    <button class="ptab" onclick="switchPage('calc',this)">🧮 分攤計算</button>
   </div>
 </div>
 
 <div class="main">
   <div class="page-section active" id="page-itinerary">
-    <div class="rate-bar">
-      <span>💱 匯率</span>
-      <span>¥1 =</span>
-      <input class="rate-input" id="rateInput" type="number" step="0.1" min="1" value="4.5" oninput="onRateChange(this.value)">
-      <span>NT$</span>
-      <span style="margin-left:auto;opacity:.7">費用同步顯示台幣換算</span>
-    </div>
     <div class="day-tabs" id="dayTabs"></div>
     <div id="dayContent"></div>
   </div>
@@ -279,12 +233,78 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
     <div class="sec-note">🦆 南京美食打卡！點擊記錄已吃過的。</div>
     <div id="foodContent"></div>
   </div>
-  <div class="page-section" id="page-pay"><div id="payContent"></div></div>
-  <div class="page-section" id="page-ledger">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <div style="font-size:12px;color:var(--muted)" id="gsStatus">⚪ 未設定 Sheet</div>
-      <button onclick="syncToSheet('all')" style="background:var(--accent2);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px">📤 同步到 Google Sheet</button>
+  <div class="page-section" id="page-pay">
+    <div id="paySummary"></div>
+    <div class="pay-form" style="margin-bottom: 12px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <label style="font-size:13px;font-weight:600;color:var(--accent3);">💱 全局記帳匯率 (雙向同步)</label>
+          <a href="https://rate.bot.com.tw/xrt?Lang=zh-TW" target="_blank" style="font-size:11px;color:var(--accent2);text-decoration:none;display:flex;align-items:center;gap:3px;">
+              <span>🔍</span>查詢最新匯率
+          </a>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">此匯率將同步計算「行程」與「預估旅費」的台幣總額。</div>
+      <div style="display:flex; align-items:center; gap:8px;">
+          <div style="display:flex; align-items:center; gap:4px; flex:1;">
+              <span style="font-size:12px;color:var(--muted);white-space:nowrap;">¥ 1 = NT$</span>
+              <input class="pi" type="number" step="0.1" id="globalRateRmb" value="4.5" style="font-size:14px;padding:6px;text-align:center;" oninput="syncGlobalRate('rmb')">
+          </div>
+          <div style="display:flex; align-items:center; gap:4px; flex:1;">
+              <span style="font-size:12px;color:var(--muted);white-space:nowrap;">NT$ 1 = ¥</span>
+              <input class="pi" type="number" step="0.001" id="globalRateTwd" value="0.222" style="font-size:14px;padding:6px;text-align:center;" oninput="syncGlobalRate('twd')">
+          </div>
+      </div>
     </div>
+    <div id="payBottom"></div>
+  </div>
+  <div class="page-section" id="page-calc">
+    <div class="pay-form">
+      <div class="pf-title">🧮 分攤計算機</div>
+      <div class="pf-row">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2px;">
+            <label style="font-size:11px;color:var(--muted)">選擇幣值 &amp; 總金額</label>
+            <div class="btn-pick-row" style="margin-bottom:0;">
+              <button class="bp bpa" id="btnCurrRmb" style="padding:4px 8px;" onclick="setCalcCurr('rmb')">人民幣 ¥</button>
+              <button class="bp" id="btnCurrTwd" style="padding:4px 8px;" onclick="setCalcCurr('twd')">台幣 NT$</button>
+            </div>
+        </div>
+        <input class="pi" type="number" id="calcTotal" placeholder="例如: 350" oninput="runCalc()" style="font-size:16px;">
+      </div>
+      <div class="pf-row" style="margin-top:10px;">
+        <label style="font-size:11px;color:var(--muted)">總共分攤人數？(可設為1用於純換算)</label>
+        <div style="display:flex;align-items:center;gap:10px;">
+            <button class="icon-btn" onclick="adjPpl(-1)" style="width:36px;height:36px;font-size:18px;">-</button>
+            <input class="pi" type="number" id="calcPpl" value="1" min="1" style="text-align:center;width:70px;font-size:16px;" oninput="runCalc()">
+            <button class="icon-btn" onclick="adjPpl(1)" style="width:36px;height:36px;font-size:18px;">+</button>
+        </div>
+      </div>
+      <div class="pf-row" style="margin-top:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <label style="font-size:11px;color:var(--muted)">獨立計算匯率 (雙向同步)</label>
+            <a href="https://rate.bot.com.tw/xrt?Lang=zh-TW" target="_blank" style="font-size:11px;color:var(--accent2);text-decoration:none;display:flex;align-items:center;gap:3px;">
+                <span>🔍</span>查詢最新匯率
+            </a>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:12px;color:var(--muted);width:65px;">¥ 1 = NT$</span>
+            <input class="pi" type="number" step="0.1" id="calcRateRmb" value="4.5" style="font-size:14px;flex:1;" oninput="syncRate('rmb')">
+        </div>
+        <div style="display:flex; align-items:center; gap:6px; margin-top:5px;">
+            <span style="font-size:12px;color:var(--muted);width:65px;">NT$ 1 = ¥</span>
+            <input class="pi" type="number" step="0.001" id="calcRateTwd" value="0.222" style="font-size:14px;flex:1;" oninput="syncRate('twd')">
+        </div>
+      </div>
+      <div class="pay-bal" style="margin-top:18px;text-align:center;">
+          平均每人應付<br>
+          <strong style="font-size:28px;color:var(--accent)" id="calcResult">¥ 0</strong>
+          <div style="font-size:13px;color:var(--muted);margin-top:5px;" id="calcResultTwd">≈ NT$ 0</div>
+      </div>
+      <div style="margin-top:15px;display:flex;gap:8px;">
+          <button class="pay-btn" style="flex:1;font-size:13px;" onclick="quickAddCalc(2)">將兩人份轉入分帳</button>
+          <button class="btn-cancel" style="flex:1;font-size:13px;padding:10px 5px;" onclick="quickAddCalc(1)">僅轉一人份</button>
+      </div>
+    </div>
+  </div>
+  <div class="page-section" id="page-ledger">
     <div id="ledgerContent"></div>
   </div>
 </div>
@@ -314,56 +334,21 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
     <div class="fg"><label>地址</label><input id="fAddr" type="text"></div>
     <div class="fg"><label>電話</label><input id="fPhone" type="tel"></div>
     <div class="fg"><label>高德搜尋關鍵字（留空用名稱）</label><input id="fMap" type="text"></div>
-    <div class="fg"><label>預估費用（¥ 人民幣 / 人）</label><input id="fCost" type="number" min="0" placeholder="0"></div>
+    <div class="fg">
+        <label>預估費用（/ 人）</label>
+        <div style="display:flex;gap:5px;">
+            <select id="fCurr" style="width:105px;border:1px solid var(--border);border-radius:8px;padding:8px;font-size:13px;background:var(--card);color:var(--ink);outline:none;">
+                <option value="rmb">人民幣 ¥</option>
+                <option value="twd">台幣 NT$</option>
+            </select>
+            <input id="fCost" type="number" min="0" placeholder="0" style="flex:1;">
+        </div>
+    </div>
     <div class="fg"><label>備註</label><textarea id="fNote"></textarea></div>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">取消</button>
       <button class="btn-del" id="delBtn" style="display:none" onclick="deleteItem()">刪除</button>
       <button class="btn-save" onclick="saveItem()">儲存</button>
-    </div>
-  </div>
-</div>
-
-<!-- SYNC SETUP MODAL -->
-<div class="modal-overlay" id="syncModal">
-  <div class="sync-modal">
-    <div class="sm-title">⚙️ 設定雙人即時共編</div>
-    <div class="sm-sub">使用免費的 JSONBin.io 雲端資料庫，兩人開同一個 HTML 就能即時同步打勾與分帳。</div>
-
-    <div class="sm-step">
-      <b>步驟一</b>：前往 <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> 免費註冊<br>
-      <b>步驟二</b>：登入後點右上角帳號 → <b>API Keys</b> → 複製 <b>Secret Key</b>（$2a$10$ 開頭）<br>
-      <b>步驟三</b>：貼到下方，點「建立共享資料庫」<br>
-      <b>步驟四</b>：把這個 HTML 檔傳給品郡，她填入同樣的 Key + Bin ID 就完成！
-    </div>
-
-    <div class="sm-label">JSONBin Secret Key（$2a$10$... 開頭）</div>
-    <input class="sm-input" id="smKey" type="password" placeholder="貼上你的 Secret Key" oninput="updateSetupUI()">
-
-    <button class="sm-create" id="smCreateBtn" style="display:none" onclick="smCreate()">✨ 建立新的共享資料庫</button>
-
-    <div id="smBinArea">
-      <div class="sm-label" style="margin-top:12px">Bin ID（已有的話填入，兩人要一樣）</div>
-      <input class="sm-input" id="smBin" placeholder="例：6849f3e..." oninput="updateSetupUI()">
-      <div class="bin-hint" id="smBinHint"></div>
-    </div>
-
-    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
-      <div class="sm-title" style="font-size:13px;margin-bottom:4px">📊 Google Sheet 同步（選填）</div>
-      <div class="sm-sub" style="margin-bottom:8px">把行程費用、分帳記錄自動同步到 Google Sheet，方便後續分析。</div>
-      <div class="sm-step" style="margin-bottom:10px">
-        <b>步驟一</b>：建立 Google Sheet，進入「擴充功能」→「Apps Script」<br>
-        <b>步驟二</b>：貼上提供的 <b>nanjing-sheet-script.gs</b> 程式碼<br>
-        <b>步驟三</b>：部署→新增部署→網路應用程式→存取權選「所有人」<br>
-        <b>步驟四</b>：複製部署 URL 貼到下方
-      </div>
-      <div class="sm-label">Google OAuth Client ID（格式：xxxxx.apps.googleusercontent.com）</div>
-      <input class="sm-input" id="smGsUrl" placeholder="xxxxx.apps.googleusercontent.com" oninput="updateSetupUI()">
-      <div style="font-size:11px;color:var(--accent2);margin-top:5px" id="gsStatus">⚪ 未設定 Sheet</div>
-    </div>
-    <div class="sm-btns">
-      <button class="sm-cancel" onclick="closeSyncSetup()">取消</button>
-      <button class="sm-save" id="smSaveBtn" onclick="smSave()" disabled>✅ 連線並同步</button>
     </div>
   </div>
 </div>
@@ -381,42 +366,63 @@ const DAYS=[
 const TM={sight:{l:'景點',c:'tag-sight',i:'🏛'},food:{l:'餐廳',c:'tag-food',i:'🍜'},hotel:{l:'住宿',c:'tag-hotel',i:'🏨'},transit:{l:'交通',c:'tag-transit',i:'🚄'}};
 
 let trips=[
-  {id:1,day:0,type:'transit',name:'✈️ MU5006 桃園T2 → 上海浦東T1',address:'桃園國際機場第2航廈',phone:'',mapKey:'桃園國際機場第二航廈',note:'🕕 18:50 起飛 → 20:40 抵達浦東T1｜空客333寬體｜含茶點｜有Wi-Fi',cost:0},
-  {id:17,day:0,type:'transit',name:'🚗 浦東機場 → 漢庭酒店 機場接送',address:'上海浦東國際機場T1',phone:'',mapKey:'上海浦东国际机场T1',note:'⚠️ 已預訂機場接送！抵達T1後依約定方式找司機接車，確認接送聯絡方式與車牌',cost:150},
-  {id:3,day:0,type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',mapKey:'汉庭酒店上海川沙新源路步行街店',note:'4/16–4/18 兩晚｜近迪士尼，步行街旁｜4/18 一早高鐵去南京',cost:280},
+  {id:1,day:0,type:'transit',name:'✈️ [18:50 - 20:40] MU5006 桃園T2 → 上海浦東T1',address:'桃園國際機場第2航廈',phone:'',mapKey:'桃園國際機場第二航廈',note:'空客333寬體｜含茶點｜有Wi-Fi',cost:0, curr:'rmb'},
+  {id:17,day:0,type:'transit',name:'🚗 浦東機場 → 漢庭酒店 機場接送',address:'上海浦東國際機場T1',phone:'',mapKey:'上海浦东国际机场T1',note:'⚠️ 已預訂機場接送！抵達T1後依約定方式找司機接車，確認接送聯絡方式與車牌',cost:150, curr:'rmb'},
+  {id:3,day:0,type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',mapKey:'汉庭酒店上海川沙新源路步行街店',note:'4/16–4/18 兩晚｜近迪士尼，步行街旁｜4/18 一早高鐵去南京',cost:280, curr:'rmb'},
 
-  {id:4,day:1,type:'sight',name:'🎠 上海迪士尼樂園',address:'上海市浦東新區川沙新鎮黃趙路310號',phone:'400-180-0000',mapKey:'上海迪士尼乐园',note:'全天遊玩！詳細必玩清單請看「迪士尼」頁。建議開園前到場，熱門項目先衝',cost:719},
-  {id:5,day:1,type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',mapKey:'汉庭酒店上海川沙新源路步行街店',note:'連住第二晚，明天4/18一早高鐵去南京',cost:0},
+  {id:4,day:1,type:'sight',name:'🎠 上海迪士尼樂園',address:'上海市浦東新區川沙新鎮黃趙路310號',phone:'400-180-0000',mapKey:'上海迪士尼乐园',note:'全天遊玩！詳細必玩清單請看「迪士尼」頁。建議開園前到場，熱門項目先衝',cost:719, curr:'rmb'},
+  {id:5,day:1,type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',mapKey:'汉庭酒店上海川沙新源路步行街店',note:'連住第二晚，明天4/18一早高鐵去南京',cost:0, curr:'rmb'},
 
-  {id:6,day:2,type:'transit',name:'🚄 上海虹橋 → 南京南（高鐵）',address:'上海虹橋火車站',phone:'',mapKey:'上海虹桥火车站',note:'⚠️ 一大早出發！虹橋→南京南約1.5小時，建議7–8點班次，記得提前訂票！',cost:150},
-  {id:7,day:2,type:'hotel',name:'美城飯店（夫子廟水平方店）',address:'南京市秦淮區',phone:'',mapKey:'美城酒店南京夫子庙水平方店',note:'4/18–4/20 兩晚｜高級雙床房｜夫子廟商圈，步行可達秦淮河',cost:350},
-  {id:18,day:2,type:'sight',name:'📍 前往應援（4/18 時間地點待定）',address:'',phone:'',mapKey:'南京青奥体育公园体育馆',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0},
-  {id:9,day:2,type:'sight',name:'🎤 劉宇寧演唱會 Day 1',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',mapKey:'南京青奥体育公园体育馆',note:'🕖 19:00 開演｜提前到場取票入座',cost:1280},
+  {id:6,day:2,type:'transit',name:'🚄 [10:00 - 10:59] G12 上海虹橋 → 南京南',address:'上海虹橋火車站',phone:'',mapKey:'上海虹桥火车站',note:'驗票閘門 1A1B｜二等座：第 05 車廂 15D(若佩)、15F(品郡)',cost:150, curr:'rmb'},
+  {id:7,day:2,type:'hotel',name:'美城飯店（夫子廟水平方店）',address:'南京市秦淮區',phone:'',mapKey:'美城酒店南京夫子庙水平方店',note:'4/18–4/20 兩晚｜高級雙床房｜夫子廟商圈，步行可達秦淮河',cost:350, curr:'rmb'},
+  {id:18,day:2,type:'sight',name:'📍 前往應援（4/18 時間地點待定）',address:'',phone:'',mapKey:'南京青奥体育公园体育馆',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0, curr:'rmb'},
+  {id:9,day:2,type:'sight',name:'🎤 劉宇寧演唱會 Day 1',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',mapKey:'南京青奥体育公园体育馆',note:'🕖 19:00 開演｜提前到場取票入座',cost:1280, curr:'rmb'},
 
-  {id:10,day:3,type:'sight',name:'南京博物院（上午）',address:'南京市玄武區中山東路321號',phone:'025-84807923',mapKey:'南京博物院',note:'免費，需提前網路預約，館藏豐富留半天',cost:0},
-  {id:19,day:3,type:'sight',name:'📍 前往應援（4/19 時間地點待定）',address:'',phone:'',mapKey:'南京青奥体育公园体育馆',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0},
-  {id:11,day:3,type:'sight',name:'🎤 劉宇寧演唱會 Day 2',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',mapKey:'南京青奥体育公园体育馆',note:'🕖 19:00 開演｜票價：內場1580 / 看台1280·980·680·480',cost:1280},
-  {id:20,day:3,type:'food',name:'🍲 海底撈火鍋（南京凱瑟琳廣場店）',address:'南京市建鄴區',phone:'',mapKey:'海底捞火锅南京凯瑟琳广场店',note:'演唱會後晚餐！可提前預訂座位',cost:200},
+  {id:10,day:3,type:'sight',name:'南京博物院（上午）',address:'南京市玄武區中山東路321號',phone:'025-84807923',mapKey:'南京博物院',note:'免費，需提前網路預約，館藏豐富留半天',cost:0, curr:'rmb'},
+  {id:19,day:3,type:'sight',name:'📍 前往應援（4/19 時間地點待定）',address:'',phone:'',mapKey:'南京青奥体育公园体育馆',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0, curr:'rmb'},
+  {id:11,day:3,type:'sight',name:'🎤 劉宇寧演唱會 Day 2',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',mapKey:'南京青奥体育公园体育馆',note:'🕖 19:00 開演｜票價：內場1580 / 看台1280·980·680·480',cost:1280, curr:'rmb'},
+  {id:20,day:3,type:'food',name:'🍲 海底撈火鍋（南京凱瑟琳廣場店）',address:'南京市建鄴區',phone:'',mapKey:'海底捞火锅南京凯瑟琳广场店',note:'演唱會後晚餐！可提前預訂座位',cost:200, curr:'rmb'},
 
-  {id:12,day:4,type:'sight',name:'夫子廟秦淮河（上午逛逛）',address:'南京市秦淮區貢院街1號',phone:'025-52209788',mapKey:'夫子廟景區',note:'退房前逛逛，吃鴨血粉絲湯，買手信伴手禮',cost:80},
-  {id:13,day:4,type:'transit',name:'🚄 南京南 → 上海虹橋（高鐵）',address:'南京南站',phone:'',mapKey:'南京南站',note:'下午搭車回上海，車程約1.5小時，提前購票',cost:150},
-  {id:14,day:4,type:'hotel',name:'上海福樂精選飯店（虹橋機場淞虹路地鐵站店）',address:'上海市閔行區淞虹路',phone:'',mapKey:'上海福乐精选酒店虹桥机场淞虹路地铁站店',note:'4/20–4/21 一晚｜精選標準間｜淞虹路地鐵站旁，虹橋機場 T1 近',cost:300},
+  {id:12,day:4,type:'sight',name:'夫子廟秦淮河（上午逛逛）',address:'南京市秦淮區貢院街1號',phone:'025-52209788',mapKey:'夫子庙景区',note:'退房前逛逛，吃鴨血粉絲湯，買手信伴手禮',cost:80, curr:'rmb'},
+  {id:13,day:4,type:'transit',name:'🚄 南京南 → 上海虹橋（高鐵）',address:'南京南站',phone:'',mapKey:'南京南站',note:'下午搭車回上海，車程約1.5小時，提前購票',cost:150, curr:'rmb'},
+  {id:14,day:4,type:'hotel',name:'上海福樂精選飯店（虹橋機場淞虹路地鐵站店）',address:'上海市閔行區淞虹路',phone:'',mapKey:'上海福乐精选酒店虹桥机场淞虹路地铁站店',note:'4/20–4/21 一晚｜精選標準間｜淞虹路地鐵站旁，虹橋機場 T1 近',cost:300, curr:'rmb'},
 
-  {id:15,day:5,type:'transit',name:'⏰ 早起！前往上海虹橋機場T1',address:'上海虹橋國際機場T1',phone:'',mapKey:'上海虹桥国际机场T1',note:'🕕 建議 06:00 前到機場｜08:15 起飛，確認飯店→機場交通方式',cost:0},
-  {id:16,day:5,type:'transit',name:'✈️ FM851 上海虹橋 → 台北松山',address:'上海虹橋國際機場T1',phone:'',mapKey:'上海虹桥国际机场T1',note:'🕗 08:15 起飛 → 10:15 抵達松山｜波音738(窄)｜含早餐｜上海航空承運',cost:0},
+  {id:15,day:5,type:'transit',name:'⏰ 早起！前往上海虹橋機場T1',address:'上海虹橋國際機場T1',phone:'',mapKey:'上海虹桥国际机场T1',note:'🕕 建議 06:00 前到機場｜08:15 起飛，確認飯店→機場交通方式',cost:0, curr:'rmb'},
+  {id:16,day:5,type:'transit',name:'✈️ [08:15 - 10:15] FM851 上海虹橋 → 台北松山',address:'上海虹橋國際機場T1',phone:'',mapKey:'上海虹桥国际机场T1',note:'波音738(窄)｜含早餐｜上海航空承運',cost:0, curr:'rmb'},
 ];
 let nid=30,curDay=0,editId=null;
-let cnyToTwd = 4.5; // 預設匯率，使用者可調整
+let cnyToTwd = 4.5; 
 
-function onRateChange(val){
-  const v = parseFloat(val);
-  if(v>0) { cnyToTwd=v; renderIt(); }
+function syncGlobalRate(src) {
+  const rmbEl = document.getElementById('globalRateRmb');
+  const twdEl = document.getElementById('globalRateTwd');
+  if (src === 'rmb') {
+      const val = parseFloat(rmbEl.value);
+      if (val > 0) {
+          twdEl.value = (1 / val).toFixed(3);
+          cnyToTwd = val;
+      }
+  } else {
+      const val = parseFloat(twdEl.value);
+      if (val > 0) {
+          rmbEl.value = (1 / val).toFixed(3);
+          cnyToTwd = 1 / val;
+      }
+  }
+  renderIt();
+  if (document.getElementById('page-ledger').classList.contains('active')) renderLedger();
+  if (document.getElementById('page-pay').classList.contains('active')) renderPay();
 }
+
 function twd(cny){ return Math.round(cny*cnyToTwd); }
-function fmtCost(cny){ return cny>0 ? `¥${cny} <span style="font-size:10px;color:var(--accent2)">≈ NT$${twd(cny)}</span>` : ''; }
+function ftm(ts){
+  if(!ts) return '';
+  const d = new Date(ts);
+  const p = v => String(v).padStart(2, '0');
+  return `${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+}
 
 // ===== MEALS DATA =====
-// meals[day] = {b:'早餐內容',l:'午餐內容',d:'晚餐內容'}
 let meals = {
   0:{d:'',dc:0},
   1:{b:'酒店早餐或便利商店',bc:0,l:'迪士尼園內（11前或14後）',lc:0,d:'迪士尼園內或步行街',dc:0},
@@ -434,7 +440,6 @@ const CL=[
   {id:'c4',cat:'🚨 出發前最重要',t:'訂4/20 南京南→上海虹橋 高鐵票',urg:true,sub:''},
   {id:'c5',cat:'🚨 出發前最重要',t:'✅ 4/20 上海虹橋住宿已確認（福樂精選飯店）',urg:false,sub:'淞虹路地鐵站旁，虹橋機場T1步行可達'},
   {id:'c6',cat:'🚨 出發前最重要',t:'安裝「12306」App 並完成實名認證',urg:true,sub:'中國高鐵訂票必備'},
-
   {id:'c7',cat:'📱 App 安裝',t:'微信（WeChat）— 開通錢包功能',urg:false,sub:''},
   {id:'c8',cat:'📱 App 安裝',t:'支付寶（Alipay）— 綁定外卡（Visa/Master）',urg:false,sub:'台灣信用卡可綁定，境外旅客開通'},
   {id:'c9',cat:'📱 App 安裝',t:'高德地圖 — 中國境內導航',urg:false,sub:'Google Maps在中國功能受限'},
@@ -525,105 +530,79 @@ let fdDone={};
 
 // ===== PAY =====
 let pays=[],pid=1,splitMode='half',payMethod='wechat',payPayer='';
-const PM={wechat:'微信',alipay:'支付寶',card:'信用卡',cash:'人民幣'};
+let payCurrency='rmb'; 
+let editingPayId=null;
+const PM={wechat:'微信',alipay:'支付寶',card:'信用卡',cash:'現金'};
 const PC={wechat:'pm-wechat',alipay:'pm-alipay',card:'pm-card',cash:'pm-cash'};
 const PI={wechat:'💚',alipay:'💙',card:'💳',cash:'💵'};
 
 function calcTotals(){
-  let r=0,p=0;
+  let rBearRmb=0, pBearRmb=0, rPaidRmb=0, pPaidRmb=0;
+  let rBearTwd=0, pBearTwd=0, rPaidTwd=0, pPaidTwd=0;
+
   pays.forEach(x=>{
-    if(x.split==='half'){r+=x.amt/2;p+=x.amt/2;}
-    else if(x.split==='ruopei'){r+=x.amt;}
-    else if(x.split==='pinjun'){p+=x.amt;}
-    else if(x.split==='ar'){r+=x.amt;} // all paid by ruopei, both owe
-    else if(x.split==='ap'){p+=x.amt;} // all paid by pinjun
-    else if(x.split==='cr'){r+=x.amt;} // custom ruopei only
-    else if(x.split==='cp'){p+=x.amt;}
-  });
-  return{r,p};
-}
+    let amt = x.amt;
+    let isTwd = (x.currency === 'twd');
+    
+    let rB=0, pB=0;
+    let rP=0, pP=0;
 
-// ===== JSONBIN SHARED STORAGE =====
-// JSONBin.io 免費方案：每個 bin 最多 10KB，足夠旅遊資料使用
-// 申請：https://jsonbin.io → 註冊 → 複製 API Key
+    if(x.payer === '各付各的') {
+        rB = amt; pB = amt;
+        rP = amt; pP = amt;
+    } else {
+        if(x.split==='half'){ rB=amt/2; pB=amt/2; }
+        else if(x.split==='ruopei'){ rB=amt; }
+        else if(x.split==='pinjun'){ pB=amt; }
+        else if(x.split==='ar'){ pB=amt; } 
+        else if(x.split==='ap'){ rB=amt; } 
+        else if(x.split==='cr'){ rB=amt; } 
+        else if(x.split==='cp'){ pB=amt; }
 
-let JBIN_KEY = '';   // JSONBin API Key（$2a$10$...）
-let JBIN_BIN = '';   // Bin ID（首次建立後自動儲存）
-// ===== GOOGLE SHEETS 直連設定 =====
-const SPREADSHEET_ID = '1vI0ev18GjbmlIdGUTCplgwhgK_6efQ_qN9eIcJdLrnY';
-const SHEETS_SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
-let gsAccessToken = '';
-let gsTokenExpiry = 0;
-let GS_CLIENT_ID = ''; // 填入 Google OAuth Client ID
-let isSyncing = false;
-let syncTimer = null;
-const LS = 'nanjing2025_jbin';
-
-function jbinCfgLoad(){
-  try {
-    // 優先從網址參數讀取（品郡點連結自動帶入）
-    const params = new URLSearchParams(window.location.search);
-    const urlKey = params.get('key');
-    const urlBin = params.get('bin');
-    if(urlKey && urlBin){
-      JBIN_KEY = urlKey; JBIN_BIN = urlBin;
-      if(params.get('client')) GS_CLIENT_ID = params.get('client');
-      // 自動存到 localStorage，之後不需要再帶參數
-      try { localStorage.setItem(LS+'_cfg', JSON.stringify({key:JBIN_KEY,bin:JBIN_BIN,clientId:GS_CLIENT_ID})); } catch(e){}
-      return;
+        if(x.payer === '若佩') { rP = amt; }
+        else if(x.payer === '品郡') { pP = amt; }
+        else if(x.split === 'ar') { rP = amt; } 
+        else if(x.split === 'ap') { pP = amt; }
     }
-    // 沒有網址參數，從 localStorage 讀
-    const c = JSON.parse(localStorage.getItem(LS+'_cfg')||'{}');
-    JBIN_KEY = c.key||''; JBIN_BIN = c.bin||''; GS_CLIENT_ID = c.clientId||'';
-  } catch(e){}
+
+    if(isTwd){
+        rBearTwd += rB; pBearTwd += pB; rPaidTwd += rP; pPaidTwd += pP;
+    } else {
+        rBearRmb += rB; pBearRmb += pB; rPaidRmb += rP; pPaidRmb += pP;
+    }
+  });
+
+  return { rBearRmb, pBearRmb, rPaidRmb, pPaidRmb, rBearTwd, pBearTwd, rPaidTwd, pPaidTwd };
 }
-function jbinCfgSave(){
-  try { localStorage.setItem(LS+'_cfg', JSON.stringify({key:JBIN_KEY,bin:JBIN_BIN,clientId:GS_CLIENT_ID})); } catch(e){}
+
+function customConfirm(msg, callback) {
+    if (window._isConfirming) return;
+    window._isConfirming = true;
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(26,18,8,0.55);z-index:9999;display:flex;align-items:center;justify-content:center;animation:slideUp .2s ease;';
+    const box = document.createElement('div');
+    box.style.cssText = 'background:var(--paper);padding:22px;border-radius:14px;text-align:center;max-width:300px;width:80%;box-shadow:0 4px 15px var(--shadow);';
+    box.innerHTML = `
+      <div style="margin-bottom:18px;font-size:15px;font-weight:600;color:var(--ink)">${msg}</div>
+      <div style="display:flex;gap:10px">
+          <button id="cc-cancel" style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-weight:600;cursor:pointer;">取消</button>
+          <button id="cc-ok" style="flex:1;padding:10px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-weight:600;cursor:pointer;">確定</button>
+      </div>`;
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    document.getElementById('cc-cancel').onclick = () => { overlay.remove(); window._isConfirming = false; };
+    document.getElementById('cc-ok').onclick = () => { overlay.remove(); window._isConfirming = false; callback(); };
 }
 
 function setSyncDot(state){
-  // state: 'ok' | 'syncing' | 'offline' | 'setup'
   const el = document.getElementById('syncDot');
   if(!el) return;
-  const map = {ok:'🟢 雙人同步',syncing:'🔄 同步中…',offline:'🔴 僅本機',setup:'⚙️ 點此設定共編'};
+  const map = {ok:'🟢 即時同步中',syncing:'🔄 連線中...',offline:'🔴 離線模式'};
   el.textContent = map[state]||'';
-  el.style.cursor = (state==='setup'||state==='offline') ? 'pointer' : 'default';
-  el.onclick = (state==='setup'||state==='offline') ? openSyncSetup : null;
 }
 
-// ---- JSONBin API helpers ----
-async function jbinCreate(data){
-  const r = await fetch('https://api.jsonbin.io/v3/b', {
-    method:'POST',
-    headers:{'Content-Type':'application/json','X-Master-Key':JBIN_KEY,'X-Bin-Name':'nanjing-trip'},
-    body: JSON.stringify(data)
-  });
-  if(!r.ok) throw new Error('create failed '+r.status);
-  const j = await r.json();
-  return j.metadata.id;
-}
-async function jbinRead(){
-  const r = await fetch(`https://api.jsonbin.io/v3/b/${JBIN_BIN}/latest`,{
-    headers:{'X-Master-Key':JBIN_KEY}
-  });
-  if(!r.ok) throw new Error('read failed '+r.status);
-  const j = await r.json();
-  return j.record;
-}
-async function jbinWrite(data){
-  const r = await fetch(`https://api.jsonbin.io/v3/b/${JBIN_BIN}`,{
-    method:'PUT',
-    headers:{'Content-Type':'application/json','X-Master-Key':JBIN_KEY},
-    body: JSON.stringify(data)
-  });
-  if(!r.ok) throw new Error('write failed '+r.status);
-}
-
-// ---- Pack / unpack app state ----
-function packState(){
-  // 只同步使用者產生的資料，行程預設資料(trips)不納入同步
-  return { pays,pid,clDone,disDone,fdDone,meals,updatedAt:Date.now() };
-}
+function packState(){ return { pays,pid,clDone,disDone,fdDone,meals,updatedAt:Date.now() }; }
 function applyState(data){
   if(!data) return;
   if(data.pays!==undefined) pays=data.pays;
@@ -631,7 +610,6 @@ function applyState(data){
   if(data.clDone!==undefined) clDone=data.clDone;
   if(data.disDone!==undefined) disDone=data.disDone;
   if(data.fdDone!==undefined) fdDone=data.fdDone;
-  // trips 永遠從程式碼讀，不從 JSONBin 覆蓋
   if(data.meals!==undefined) meals=data.meals;
 }
 function refreshCurrentPage(){
@@ -643,336 +621,11 @@ function refreshCurrentPage(){
   else if(p==='disney') renderDis();
   else if(p==='food') renderFd();
   else if(p==='pay') renderPay();
+  else if(p==='ledger') renderLedger();
 }
 
-// ---- Save ----
-async function sv(){
-  const data = packState();
-  try { localStorage.setItem(LS, JSON.stringify(data)); } catch(e){}
-  if(!JBIN_KEY||!JBIN_BIN){ setSyncDot('offline'); return; }
-  setSyncDot('syncing');
-  try {
-    await jbinWrite(data);
-    setSyncDot('ok');
-  } catch(e){
-    setSyncDot('offline');
-    console.warn('sync save failed',e);
-  }
-  scheduleGsSync();
-}
-
-// ---- Load ----
-async function ld(){
-  jbinCfgLoad();
-  // 先讀本機讓畫面快速出現
-  try {
-    const loc = localStorage.getItem(LS);
-    if(loc) applyState(JSON.parse(loc));
-  } catch(e){}
-
-  if(!JBIN_KEY||!JBIN_BIN){
-    setSyncDot('setup');
-    return;
-  }
-  setSyncDot('syncing');
-  try {
-    // JSONBin 永遠是唯一真相來源，直接套用
-    const remote = await jbinRead();
-    applyState(remote);
-    try { localStorage.setItem(LS, JSON.stringify(remote)); } catch(e){}
-    setSyncDot('ok');
-  } catch(e){
-    setSyncDot('offline');
-    console.warn('sync load failed',e);
-  }
-}
-
-// ---- Auto-poll every 20s ----
-setInterval(async ()=>{
-  if(isSyncing||!JBIN_KEY||!JBIN_BIN) return;
-  isSyncing = true;
-  try {
-    const remote = await jbinRead();
-    const loc = localStorage.getItem(LS);
-    const local = loc ? JSON.parse(loc) : null;
-    // 只要 remote 比本機新就套用
-    if(!local || !local.updatedAt || !remote.updatedAt || remote.updatedAt > local.updatedAt){
-      applyState(remote);
-      try { localStorage.setItem(LS, JSON.stringify(remote)); } catch(e){}
-      refreshCurrentPage();
-      setSyncDot('ok');
-    }
-  } catch(e){ setSyncDot('offline'); }
-  isSyncing = false;
-}, 20000);
-
-// ---- Setup Modal ----
-function openSyncSetup(){
-  jbinCfgLoad();
-  document.getElementById('syncModal').classList.add('open');
-  document.getElementById('smKey').value = JBIN_KEY;
-  document.getElementById('smBin').value = JBIN_BIN;
-  const gsEl = document.getElementById('smGsUrl');
-  if(gsEl) gsEl.value = GS_CLIENT_ID;
-  updateSetupUI();
-  updateGsStatus(GS_CLIENT_ID ? 'ok' : 'none');
-}
-function closeSyncSetup(){ document.getElementById('syncModal').classList.remove('open'); }
-function updateSetupUI(){
-  const hasKey = document.getElementById('smKey').value.trim().length > 10;
-  const hasBin = document.getElementById('smBin').value.trim().length > 5;
-  document.getElementById('smCreateBtn').style.display = (hasKey && !hasBin) ? '' : 'none';
-  document.getElementById('smSaveBtn').disabled = !hasKey;
-}
-async function smCreate(){
-  const key = document.getElementById('smKey').value.trim();
-  if(!key){ alert('請先填入 API Key'); return; }
-  JBIN_KEY = key;
-  const btn = document.getElementById('smCreateBtn');
-  btn.textContent = '建立中…'; btn.disabled = true;
-  try {
-    const binId = await jbinCreate(packState());
-    JBIN_BIN = binId;
-    document.getElementById('smBin').value = binId;
-    jbinCfgSave();
-    btn.textContent = '✓ 已建立！';
-    showT('✓ 共享資料庫已建立！');
-    updateSetupUI();
-  } catch(e){
-    alert('建立失敗，請確認 API Key 是否正確\n'+e.message);
-    btn.textContent = '建立新的共享資料庫';
-    btn.disabled = false;
-  }
-}
-async function smSave(){
-  JBIN_KEY = document.getElementById('smKey').value.trim();
-  JBIN_BIN = document.getElementById('smBin').value.trim();
-  GS_CLIENT_ID = document.getElementById('smGsUrl')?.value.trim()||'';
-  jbinCfgSave();
-  closeSyncSetup();
-  setSyncDot('syncing');
-  try {
-    const remote = await jbinRead();
-    applyState(remote);
-    refreshCurrentPage();
-    setSyncDot('ok');
-    showT('✓ 已連線！資料同步成功');
-  } catch(e){
-    setSyncDot('offline');
-    showT('⚠️ 連線失敗，請確認 Key 與 Bin ID');
-  }
-}
-
-
-// ===== GOOGLE SHEET SYNC =====
-// ===== GOOGLE SHEETS API 直連 =====
-
-function updateGsStatus(state){
-  document.querySelectorAll('#gsStatus').forEach(function(el){
-    if(state==='ok')        el.textContent='🟢 Sheet 已同步';
-    else if(state==='syncing') el.textContent='🔄 同步中…';
-    else if(state==='error')   el.textContent='🔴 Sheet 同步失敗';
-    else                    el.textContent='⚪ 未授權 Google';
-  });
-}
-
-function loadGIS(){
-  return new Promise(function(resolve){
-    if(window.google && window.google.accounts && window.google.accounts.oauth2){ resolve(); return; }
-    var s=document.createElement('script');
-    s.src='https://accounts.google.com/gsi/client';
-    s.onload=resolve; s.onerror=resolve;
-    document.head.appendChild(s);
-  });
-}
-
-function getAccessToken(){
-  if(gsAccessToken && Date.now() < gsTokenExpiry-60000) return Promise.resolve(gsAccessToken);
-  if(!GS_CLIENT_ID){ showT('请先设定 Google OAuth Client ID'); return Promise.resolve(null); }
-  return loadGIS().then(function(){
-    return new Promise(function(resolve,reject){
-      var client = google.accounts.oauth2.initTokenClient({
-        client_id: GS_CLIENT_ID,
-        scope: SHEETS_SCOPE,
-        callback: function(resp){
-          if(resp.error){ reject(resp); return; }
-          gsAccessToken = resp.access_token;
-          gsTokenExpiry = Date.now() + (resp.expires_in||3600)*1000;
-          resolve(gsAccessToken);
-        }
-      });
-      client.requestAccessToken({prompt: gsAccessToken ? '' : 'consent'});
-    });
-  });
-}
-
-function sheetsRequest(method, path, body){
-  return getAccessToken().then(function(token){
-    if(!token) return null;
-    var opts = {
-      method: method,
-      headers: {'Authorization':'Bearer '+token,'Content-Type':'application/json'}
-    };
-    if(body) opts.body = JSON.stringify(body);
-    return fetch('https://sheets.googleapis.com/v4/spreadsheets/'+SPREADSHEET_ID+path, opts)
-      .then(function(res){
-        if(!res.ok) return res.text().then(function(e){ throw new Error(e); });
-        return res.json();
-      });
-  });
-}
-
-function ensureSheet(title){
-  return sheetsRequest('GET','?fields=sheets.properties').then(function(meta){
-    var exists = meta.sheets.some(function(s){ return s.properties.title===title; });
-    if(!exists){
-      return sheetsRequest('POST',':batchUpdate',{
-        requests:[{addSheet:{properties:{title:title}}}]
-      });
-    }
-  });
-}
-
-function writeSheet(title, rows){
-  return ensureSheet(title).then(function(){
-    return sheetsRequest('POST','/values/'+encodeURIComponent(title)+'!A1:Z1000:clear',{});
-  }).then(function(){
-    return sheetsRequest('PUT',
-      '/values/'+encodeURIComponent(title)+'!A1?valueInputOption=USER_ENTERED',
-      {values: rows}
-    );
-  });
-}
-
-var SHEET_NAMES = {
-  pay:'💰 分帳記錄', trips:'🗓 行程費用',
-  meals:'🍽 三餐記錄', summary:'📊 費用總結'
-};
-
-function syncToSheet(type, silent){
-  if(type===undefined) type='all';
-  if(silent===undefined) silent=false;
-  if(!GS_CLIENT_ID){ if(!silent) showT('⚠️ 請先設定 Google OAuth Client ID'); return; }
-  updateGsStatus('syncing');
-  var chain = Promise.resolve();
-  if(type==='all'||type==='pay')     chain=chain.then(function(){ return writePaySheet(); });
-  if(type==='all'||type==='trips')   chain=chain.then(function(){ return writeTripsSheet(); });
-  if(type==='all'||type==='meals')   chain=chain.then(function(){ return writeMealsSheet(); });
-  if(type==='all'||type==='summary') chain=chain.then(function(){ return writeSummarySheet(); });
-  chain.then(function(){
-    if(!silent) showT('✅ 已同步到 Google Sheet！');
-    updateGsStatus('ok');
-  }).catch(function(e){
-    console.error(e);
-    if(!silent) showT('⚠️ 同步失敗：'+e.message);
-    updateGsStatus('error');
-  });
-}
-
-function writePaySheet(){
-  var splitLabel={half:'各付一半',ruopei:'若佩負擔',pinjun:'品郡負擔',ar:'若佩代全付',ap:'品郡代全付'};
-  var methodLabel={wechat:'微信',alipay:'支付寶',card:'信用卡',cash:'現金'};
-  var rows=[['#','項目名稱','金額(¥)','付款方式','付款人','分攤方式','若佩負擔','品郡負擔','備註']];
-  var totalR=0,totalP=0;
-  pays.forEach(function(x,i){
-    var r=0,p=0;
-    if(x.split==='half'){r=x.amt/2;p=x.amt/2;}
-    else if(x.split==='ruopei'){r=x.amt;}
-    else if(x.split==='pinjun'){p=x.amt;}
-    else if(x.split==='ar'){r=x.amt;}
-    else if(x.split==='ap'){p=x.amt;}
-    totalR+=r; totalP+=p;
-    rows.push([i+1,x.name,x.amt,methodLabel[x.method]||x.method,x.payer||'—',
-      splitLabel[x.split]||x.split,r>0?Math.round(r):'—',p>0?Math.round(p):'—',x.note||'']);
-  });
-  rows.push(['','合計',Math.round(pays.reduce(function(s,x){return s+x.amt;},0)),'','','',
-    Math.round(totalR),Math.round(totalP),'']);
-  return writeSheet(SHEET_NAMES.pay, rows);
-}
-
-function writeTripsSheet(){
-  var dayNames=['Day1 4/16','Day2 4/17','Day3 4/18','Day4 4/19','Day5 4/20','Day6 4/21'];
-  var typeLabel={sight:'景點',food:'餐廳',hotel:'住宿',transit:'交通'};
-  var rows=[['日期','類型','名稱','預估費用(¥/人)','備註']];
-  var withCost=trips.filter(function(x){return x.cost>0;});
-  withCost.forEach(function(x){
-    rows.push([dayNames[x.day]||'Day'+(x.day+1),typeLabel[x.type]||x.type,
-      x.name.replace(/[^\u0000-\uD7FF\uE000-\uFFFF]/g,'').trim(),
-      x.cost,(x.note||'').substring(0,60)]);
-  });
-  rows.push(['','','預估總計(/人)',withCost.reduce(function(s,x){return s+x.cost;},0),'']);
-  return writeSheet(SHEET_NAMES.trips, rows);
-}
-
-function writeMealsSheet(){
-  var config=[[false,false,true],[true,true,true],[true,true,true],[true,true,true],[true,true,true],[false,false,false]];
-  var labels=['Day1 4/16（三）','Day2 4/17（四）','Day3 4/18（五）','Day4 4/19（六）','Day5 4/20（日）','Day6 4/21（一）'];
-  var rows=[['日期','早餐','午餐','晚餐']];
-  config.forEach(function(row,i){
-    var hasB=row[0],hasL=row[1],hasD=row[2];
-    var m=meals[i]||{};
-    rows.push([labels[i],hasB?(m.b||'（未填）'):'—',hasL?(m.l||'（未填）'):'—',hasD?(m.d||'（未填）'):'—']);
-  });
-  return writeSheet(SHEET_NAMES.meals, rows);
-}
-
-function writeSummarySheet(){
-  var ruopei=0,pinjun=0;
-  pays.forEach(function(x){
-    if(x.split==='half'){ruopei+=x.amt/2;pinjun+=x.amt/2;}
-    else if(x.split==='ruopei'){ruopei+=x.amt;}
-    else if(x.split==='pinjun'){pinjun+=x.amt;}
-    else if(x.split==='ar'){ruopei+=x.amt;}
-    else if(x.split==='ap'){pinjun+=x.amt;}
-  });
-  var payTotal=pays.reduce(function(s,x){return s+x.amt;},0);
-  var tripCost=trips.filter(function(x){return x.cost>0;});
-  var tripTotal=tripCost.reduce(function(s,x){return s+x.cost;},0);
-  var diff=Math.abs(ruopei-pinjun);
-  var whoOwes=ruopei>pinjun?'品郡':'若佩';
-  var rows=[
-    ['📊 費用總結',''],
-    ['更新時間',new Date().toLocaleString('zh-TW')],
-    ['',''],
-    ['項目','金額(¥)'],
-    ['已記帳總支出',Math.round(payTotal)],
-    ['行程預估費用(/人)',tripTotal],
-    ['',''],
-    ['若佩 負擔合計',Math.round(ruopei)],
-    ['品郡 負擔合計',Math.round(pinjun)],
-    ['差額',Math.round(diff)],
-    ['結算',diff>0?whoOwes+' 需補 ¥'+Math.round(diff)+' 給對方':'兩人均攤 🎉'],
-    ['',''],
-    ['記帳筆數',pays.length],
-    ['含費用行程數',tripCost.length],
-  ];
-  return writeSheet(SHEET_NAMES.summary, rows);
-}
-
-var gsSyncTimer = null;
-function scheduleGsSync(){
-  if(!GS_CLIENT_ID) return;
-  clearTimeout(gsSyncTimer);
-  gsSyncTimer = setTimeout(function(){ syncToSheet('all',true); }, 5000);
-}
-
-
-// ===== RENDER ITINERARY =====
-// 每天顯示哪幾餐（根據實際行程決定）
-// b=早餐, l=午餐, d=晚餐
-const DAY_MEALS={
-  0:['d'],           // Day1 4/16：傍晚才到上海，只有晚餐
-  1:['b','l','d'],   // Day2 4/17：迪士尼全天，三餐
-  2:['b','l','d'],   // Day3 4/18：高鐵+南京，三餐
-  3:['b','l','d'],   // Day4 4/19：南京全天，三餐
-  4:['b','l','d'],   // Day5 4/20：回上海，三餐
-  5:[],              // Day6 4/21：一早搭機回台，無需規劃
-};
-const MEAL_DEF={
-  b:{slot:'b',order:1,icon:'🌅',label:'早餐'},
-  l:{slot:'l',order:4,icon:'☀️',label:'午餐'},
-  d:{slot:'d',order:7,icon:'🌙',label:'晚餐'},
-};
+const DAY_MEALS={ 0:['d'], 1:['b','l','d'], 2:['b','l','d'], 3:['b','l','d'], 4:['b','l','d'], 5:[] };
+const MEAL_DEF={ b:{slot:'b',order:1,icon:'🌅',label:'早餐'}, l:{slot:'l',order:4,icon:'☀️',label:'午餐'}, d:{slot:'d',order:7,icon:'🌙',label:'晚餐'} };
 
 function buildTimeline(dayIdx){
   const its=trips.filter(x=>x.day===dayIdx);
@@ -987,22 +640,31 @@ function buildTimeline(dayIdx){
   return nodes;
 }
 
+function getDayCostHtml(day) {
+    const dayIts = trips.filter(x=>x.day===day);
+    const dayRmb = dayIts.filter(x=>x.curr!=='twd').reduce((s,x)=>s+(x.cost||0),0) + ['b','l','d'].reduce((s,k)=>s+((meals[day]&&meals[day][k+'c'])||0),0);
+    const dayTwd = dayIts.filter(x=>x.curr==='twd').reduce((s,x)=>s+(x.cost||0),0);
+    
+    if (dayRmb === 0 && dayTwd === 0) return '';
+    const twdEq = dayTwd + twd(dayRmb);
+    const rmbEq = dayRmb + (dayTwd / cnyToTwd);
+    
+    if(dayRmb > 0 && dayTwd > 0) return `¥${dayRmb.toFixed(0)} + NT$${dayTwd.toFixed(0)} <span class="day-cost-twd">≈ NT$${Math.round(twdEq)}</span>`;
+    if(dayRmb > 0) return `¥${dayRmb.toFixed(0)} <span class="day-cost-twd">≈ NT$${Math.round(twdEq)}</span>`;
+    return `NT$${dayTwd.toFixed(0)} <span class="day-cost-twd">≈ ¥${rmbEq.toFixed(1)}</span>`;
+}
+
 function renderIt(){
   document.getElementById('dayTabs').innerHTML=DAYS.map((d,i)=>{
-    const dayCost=trips.filter(x=>x.day===i).reduce((s,x)=>s+(x.cost||0),0)
-      +['b','l','d'].reduce((s,k)=>s+((meals[i]&&meals[i][k+'c'])||0),0);
-    return`<button class="dtab${i===curDay?' active':''}" onclick="sd(${i})">${d.l}<br><span style="font-size:9px;opacity:.7">${d.s}</span>${dayCost>0?`<br><span style="font-size:9px;color:${i===curDay?'rgba(255,255,255,.8)':'var(--accent)'}">¥${dayCost}</span>`:''}
-    </button>`;
+    return`<button class="dtab${i===curDay?' active':''}" onclick="sd(${i})">${d.l}<br><span style="font-size:9px;opacity:.7">${d.s}</span></button>`;
   }).join('');
   document.getElementById('dayContent').innerHTML=DAYS.map((d,i)=>{
-    const its=trips.filter(x=>x.day===i);
-    const mealCost=['b','l','d'].reduce((s,k)=>s+((meals[i]&&meals[i][k+'c'])||0),0);
-    const dayCost=its.reduce((s,x)=>s+(x.cost||0),0)+mealCost;
     const nodes=buildTimeline(i);
     const tlHtml=nodes.map(n=>n.type==='meal'?mealNodeH(i,n):tripNodeH(n.data)).join('');
+    const costHtml = getDayCostHtml(i);
     return`<div class="day-section${i===curDay?' active':''}" id="ds${i}">
       <div class="day-title">${d.l} <span class="date-badge">${d.f}</span></div>
-      ${dayCost>0?`<div class="day-cost-bar"><span>📊 當日預估總費用（/ 人）</span><strong>¥${dayCost} <span class="day-cost-twd">≈ NT$${twd(dayCost)}</span></strong></div>`:''}
+      ${costHtml ? `<div class="day-cost-bar"><span>📊 當日預估總費用（/ 人）</span><strong>${costHtml}</strong></div>`: `<div class="day-cost-bar" style="display:none;"><span>📊 當日預估總費用（/ 人）</span><strong></strong></div>`}
       <div class="timeline">${tlHtml||'<div class="empty-day">✨<br>這天還沒有行程</div>'}</div>
     </div>`;
   }).join('');
@@ -1035,7 +697,8 @@ function mealNodeH(dayIdx,n){
             oninput="saveMealCost(${dayIdx},'${n.slot}',this.value)"
             onclick="event.stopPropagation()" style="max-width:120px">
           <span style="font-size:11px;color:var(--muted)">/ 人</span>
-          ${cost>0?`<span style="font-size:10px;color:var(--accent2)">≈ NT$${twd(cost)}</span>`:''}
+          ${cost>0?`<span style="font-size:10px;color:var(--accent2);margin-right:auto;">≈ NT$${twd(cost)}</span>`:''}
+          <button class="icon-btn" style="width:26px;height:26px;margin-left:auto;flex-shrink:0;" onclick="quickAddFromItinerary('${eq(n.val)||n.label}', ${cost||0}, 'rmb')" title="一鍵轉入記帳">💰</button>
         </div>
       </div>
     </div>
@@ -1050,11 +713,24 @@ function toggleMeal(dayIdx,slot,el){
   }
 }
 
+function toggleTripCurr(id) {
+    const t = trips.find(x=>x.id===id);
+    if(!t) return;
+    t.curr = t.curr === 'twd' ? 'rmb' : 'twd';
+    if(window.sv) window.sv();
+    renderIt(); 
+}
+
 function tripNodeH(x){
   const m=TM[x.type]||TM.sight;
   const q=encodeURIComponent(x.mapKey||x.name);
   const app=`androidamap://keyword?sourceApplication=travel&keywords=${q}&dev=0`;
   const web=`https://uri.amap.com/search?keyword=${q}&src=travel`;
+  
+  const isTwd = x.curr === 'twd';
+  const sym = isTwd ? 'NT$' : '¥';
+  const hint = x.cost > 0 ? (isTwd ? `≈ ¥${(x.cost/cnyToTwd).toFixed(1)}` : `≈ NT$${twd(x.cost)}`) : '';
+  
   let rows='';
   if(x.address)rows+=`<div class="info-row"><span>📍</span><span class="info-val" onclick="cp('${eq(x.address)}','地址')">${eh(x.address)}</span></div>`;
   if(x.phone)rows+=`<div class="info-row"><span>📞</span><span class="info-val" onclick="cp('${eq(x.phone)}','電話')">${eh(x.phone)}</span><span style="font-size:10px;color:var(--muted);cursor:pointer;margin-left:3px" onclick="cp('${eq(x.phone)}','電話')">複製</span></div>`;
@@ -1066,16 +742,17 @@ function tripNodeH(x){
         <span class="card-name" onclick="cp('${eq(x.name)}','名稱')">${eh(x.name)}</span>
         <div class="card-actions">
           <button class="icon-btn" onclick="cp('${eq(x.name)}','名稱')">📋</button>
+          <button class="icon-btn" onclick="quickAddFromItinerary('${eq(x.name)}', ${x.cost||0}, '${x.curr||'rmb'}')" title="一鍵轉入記帳">💰</button>
           <button class="icon-btn" onclick="oe(${x.id})">✏️</button>
         </div>
       </div>
       <div>${rows}</div>
       <div class="cost-row">
         <span class="cost-label">💰 預估</span>
-        <span style="font-size:12px;color:var(--muted);margin-left:4px">¥</span>
-        <input class="cost-input" type="number" min="0" placeholder="0" value="${x.cost||''}" oninput="saveCost(${x.id},this.value)">
+        <button class="curr-toggle" onclick="toggleTripCurr(${x.id})" title="點擊切換幣別">${sym} ⇄</button>
+        <input class="cost-input" type="number" min="0" placeholder="0" value="${x.cost||''}" oninput="saveCost(${x.id},this.value)" style="margin-left:4px;">
         <span class="cost-unit">/ 人</span>
-        ${x.cost>0?`<span class="cost-twd">≈ NT$${twd(x.cost)}</span>`:''}
+        ${hint ? `<span class="cost-twd" id="c-twd-${x.id}">${hint}</span>` : `<span class="cost-twd" id="c-twd-${x.id}" style="display:none"></span>`}
       </div>
       <div class="btn-row">
         <a class="map-btn" href="${app}" onclick="ta(event,'${web}')">📍 高德地圖</a>
@@ -1089,50 +766,50 @@ function tripNodeH(x){
 function saveMeal(day,slot,val){
   if(!meals[day]) meals[day]={};
   meals[day][slot]=val;
-  sv();
+  if(window.sv) window.sv();
+}
+
+function updateDayCostBar(day) {
+    const bar = document.querySelector(`#ds${day} .day-cost-bar`);
+    if(!bar) return;
+    const html = getDayCostHtml(day);
+    if(html) {
+        bar.style.display = 'flex';
+        bar.querySelector('strong').innerHTML = html;
+    } else {
+        bar.style.display = 'none';
+    }
 }
 
 function saveMealCost(day,slot,val){
   if(!meals[day]) meals[day]={};
   const costKey=slot+'c';
   meals[day][costKey]=parseFloat(val)||0;
-  // update day cost bar
-  const dayCost=trips.filter(x=>x.day===day).reduce((s,x)=>s+(x.cost||0),0)
-    +['b','l','d'].reduce((s,k)=>s+((meals[day]&&meals[day][k+'c'])||0),0);
-  const bar=document.querySelector(`#ds${day} .day-cost-bar`);
-  if(bar) bar.querySelector('strong').innerHTML=`¥${dayCost} <span class="day-cost-twd">≈ NT$${twd(dayCost)}</span>`;
-  sv();
+  updateDayCostBar(day);
+  if(window.sv) window.sv();
 }
 
 function saveCost(id,val){
   const t=trips.find(x=>x.id===id);
   if(!t) return;
   t.cost=parseFloat(val)||0;
-  sv();
-  const costTwd=document.querySelector(`#c${id} .cost-twd`);
-  if(t.cost>0){
-    if(costTwd) costTwd.textContent=`≈ NT$${twd(t.cost)}`;
-    else{const unit=document.querySelector(`#c${id} .cost-unit`);if(unit){const sp=document.createElement('span');sp.className='cost-twd';sp.textContent=`≈ NT$${twd(t.cost)}`;unit.after(sp);}}
-  } else if(costTwd) costTwd.remove();
-  const day=t.day;
-  const dayCost=trips.filter(x=>x.day===day).reduce((s,x)=>s+(x.cost||0),0);
-  const bar=document.querySelector(`#ds${day} .day-cost-bar`);
-  if(bar) bar.querySelector('strong').innerHTML=`¥${dayCost} <span class="day-cost-twd">≈ NT$${twd(dayCost)}</span>`;
-  const tabs=document.querySelectorAll('.dtab');
-  if(tabs[day]){
-    let badge=tabs[day].querySelector('.tab-cost');
-    if(dayCost>0){
-      if(!badge){badge=document.createElement('span');badge.className='tab-cost';badge.style.cssText='display:block;font-size:9px;';tabs[day].appendChild(badge);}
-      badge.style.color=day===curDay?'rgba(255,255,255,.8)':'var(--accent)';
-      badge.textContent=`¥${dayCost}`;
-    } else if(badge) badge.remove();
+  if(window.sv) window.sv();
+  
+  const isTwd = t.curr === 'twd';
+  const costTwd = document.getElementById(`c-twd-${id}`);
+  if(costTwd) {
+     if(t.cost > 0) {
+        costTwd.textContent = isTwd ? `≈ ¥${(t.cost/cnyToTwd).toFixed(1)}` : `≈ NT$${twd(t.cost)}`;
+        costTwd.style.display = 'inline';
+     } else {
+        costTwd.style.display = 'none';
+     }
   }
+  updateDayCostBar(t.day);
 }
 
 function sd(i){curDay=i;renderIt();}
 
-
-// ===== RENDER CHECKLIST =====
 function renderCL(){
   const cats=[...new Set(CL.map(x=>x.cat))];
   document.getElementById('clContent').innerHTML=cats.map(cat=>{
@@ -1148,9 +825,8 @@ function renderCL(){
     </div>`;
   }).join('');
 }
-function tcl(id){clDone[id]=!clDone[id];sv();renderCL();}
+function tcl(id){clDone[id]=!clDone[id];if(window.sv) window.sv();renderCL();}
 
-// ===== RENDER DISNEY =====
 function renderDis(){
   document.getElementById('disneyContent').innerHTML=DIS.map(cat=>{
     const done=cat.items.filter(x=>disDone[x.id]).length;
@@ -1163,9 +839,8 @@ function renderDis(){
     </div>`;
   }).join('');
 }
-function tdis(id){disDone[id]=!disDone[id];sv();renderDis();}
+function tdis(id){disDone[id]=!disDone[id];if(window.sv) window.sv();renderDis();}
 
-// ===== RENDER FOOD =====
 function renderFd(){
   document.getElementById('foodContent').innerHTML=FD.map(cat=>{
     const done=cat.items.filter(x=>fdDone[x.id]).length;
@@ -1178,235 +853,450 @@ function renderFd(){
     </div>`;
   }).join('');
 }
-function tfd(id){fdDone[id]=!fdDone[id];sv();renderFd();}
-
-// ===== AI IMAGE SCAN =====
-let uploadedImgB64 = null;
-let uploadedImgType = null;
-let aiParsed = null;
-let payInputMode = 'manual'; // 'manual' | 'scan'
+function tfd(id){fdDone[id]=!fdDone[id];if(window.sv) window.sv();renderFd();}
 
 function renderPay(){
-  const{r,p}=calcTotals();
-  const diff=Math.abs(r-p).toFixed(0);
-  const tot=(r+p).toFixed(0);
-  const bal=r===p?'兩人目前均攤 🎉':`${r>p?'若佩':'品郡'} 多負擔 ¥${diff}`;
+  const totals = calcTotals();
+  
+  const grandTotalRmb = (totals.rBearRmb + totals.pBearRmb).toFixed(0);
+  const grandTotalTwd = (totals.rBearTwd + totals.pBearTwd).toFixed(0);
 
-  const recs=[...pays].reverse().map(x=>`<div class="pr">
-    <div class="pr-ico">${PI[x.method]||'💴'}</div>
-    <div class="pr-body">
-      <div class="pr-name">${eh(x.name)}</div>
-      <div class="pr-meta"><span class="pm-tag ${PC[x.method]||''}">${PM[x.method]||x.method}</span>${{half:'各半',ruopei:'若佩負擔',pinjun:'品郡負擔',ar:'若佩代全付',ap:'品郡代全付'}[x.split]||x.split}${x.payer?` · ${eh(x.payer)}付款`:''}${x.note?` · ${eh(x.note)}`:''}
+  const rBalRmb = totals.rPaidRmb - totals.rBearRmb; 
+  const pBalRmb = totals.pPaidRmb - totals.pBearRmb;
+  const rBalTwd = totals.rPaidTwd - totals.rBearTwd;
+  const pBalTwd = totals.pPaidTwd - totals.pBearTwd;
+
+  const rFinalTwd = rBalTwd + twd(rBalRmb);
+  const pFinalTwd = pBalTwd + twd(pBalRmb);
+
+  let balText = '兩人目前無欠款 🎉';
+  if (rFinalTwd > 0) {
+      balText = `品郡應給若佩 <strong style="font-size:22px;">NT$${Math.round(rFinalTwd)}</strong> <div style="font-size:12px;color:var(--muted);margin-top:6px;">(含台幣差額 NT$${Math.round(rBalTwd)} + 人民幣差額 ¥${rBalRmb.toFixed(1)} 換算)</div>`;
+  } else if (pFinalTwd > 0) {
+      balText = `若佩應給品郡 <strong style="font-size:22px;">NT$${Math.round(pFinalTwd)}</strong> <div style="font-size:12px;color:var(--muted);margin-top:6px;">(含台幣差額 NT$${Math.round(pBalTwd)} + 人民幣差額 ¥${pBalRmb.toFixed(1)} 換算)</div>`;
+  } else if (totals.rPaidRmb === 0 && totals.pPaidRmb === 0 && totals.rPaidTwd === 0 && totals.pPaidTwd === 0 && (totals.rBearRmb > 0 || totals.pBearRmb > 0 || totals.rBearTwd > 0 || totals.pBearTwd > 0)) {
+      balText = '<span style="font-size:12px;color:var(--accent);">⚠️ 請指定「付款人」才能結算代墊差額喔</span>';
+  }
+
+  const recs=[...pays].reverse().map(x=>{
+    const isTwd = x.currency === 'twd';
+    const isSelfPaid = x.payer === '各付各的';
+    const sym = isTwd ? 'NT$' : '¥';
+    const numDisplay = isSelfPaid ? `${x.amt.toFixed(0)} <span style="font-size:11px;font-weight:normal">/人</span>` : x.amt.toFixed(0);
+    const amtColor = isTwd ? 'color:var(--accent3);' : '';
+    const twdHint = isTwd ? '' : `<div style="font-size:10px;color:var(--accent2);margin-top:2px;">≈ NT$${twd(x.amt)}${isSelfPaid?'/人':''}</div>`;
+    const payerDisplay = x.payer ? (isSelfPaid ? ' · 各自結清' : ` · ${eh(x.payer)}墊付`) : '';
+    const splitText = isSelfPaid ? '兩人皆消費' : ({half:'兩人共同',ruopei:'若佩個人',pinjun:'品郡個人',ar:'若佩代全付',ap:'品郡代全付'}[x.split]||x.split);
+    const timeHtml = x.time ? `<div style="font-size:10px; color:#aaa; margin-top:4px;">🕒 ${ftm(x.time)}</div>` : '';
+
+    return `<div class="pr">
+      <div class="pr-ico">${PI[x.method]||'💴'}</div>
+      <div class="pr-body">
+        <div class="pr-name">${eh(x.name)}</div>
+        <div class="pr-meta"><span class="pm-tag ${PC[x.method]||''}">${PM[x.method]||x.method}</span>${splitText}${payerDisplay}
+        ${x.note?` <br><span style="opacity:0.7">💬 ${eh(x.note)}</span>`:''}
+        ${timeHtml}
+        </div>
       </div>
-    </div>
-    <div style="display:flex;align-items:center;gap:5px">
-      <div class="pr-amt">¥${x.amt.toFixed(0)}</div>
-      <button class="pr-del" onclick="delPay(${x.id})">×</button>
-    </div>
-  </div>`).join('');
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="text-align:right;">
+          <div class="pr-amt" style="${amtColor}">${sym}${numDisplay}</div>
+          ${twdHint}
+        </div>
+        <button class="pr-edit" onclick="editPay(${x.id})">✏️</button>
+        <button class="pr-del" onclick="delPay(${x.id})">×</button>
+      </div>
+    </div>`;
+  }).join('');
 
-  document.getElementById('payContent').innerHTML=`
+  document.getElementById('paySummary').innerHTML=`
     <div class="pay-cards">
-      <div class="pay-card"><div class="pc-name">若佩</div><div class="pc-amt">¥${r.toFixed(0)}</div><div class="pc-sub">負擔金額</div></div>
-      <div class="pay-card"><div class="pc-name">品郡</div><div class="pc-amt">¥${p.toFixed(0)}</div><div class="pc-sub">負擔金額</div></div>
-    </div>
-    <div class="pay-bal">總支出 <strong>¥${tot}</strong> &nbsp;·&nbsp; ${bal}</div>
-    <div class="pay-form">
-      <div class="pf-title">＋ 新增支出</div>
-      <div class="tab-switch">
-        <button id="tabManual" class="${payInputMode==='manual'?'active':''}" onclick="setPayMode('manual')">✏️ 手動輸入</button>
-        <button id="tabScan" class="${payInputMode==='scan'?'active':''}" onclick="setPayMode('scan')">📸 掃描截圖</button>
+      <div class="pay-card">
+        <div class="pc-name">若佩</div>
+        <div class="pc-amt">¥${totals.rBearRmb.toFixed(0)}</div>
+        <div class="pc-amt" style="font-size:20px;color:var(--accent3);margin-top:2px;">NT$${totals.rBearTwd.toFixed(0)}</div>
+        <div style="font-size:11px;color:var(--accent2);margin-bottom:4px;margin-top:6px;">≈ 總計 NT$${Math.round(totals.rBearTwd + twd(totals.rBearRmb))}</div>
+        <div class="pc-sub">應負擔總額</div>
       </div>
+      <div class="pay-card">
+        <div class="pc-name">品郡</div>
+        <div class="pc-amt">¥${totals.pBearRmb.toFixed(0)}</div>
+        <div class="pc-amt" style="font-size:20px;color:var(--accent3);margin-top:2px;">NT$${totals.pBearTwd.toFixed(0)}</div>
+        <div style="font-size:11px;color:var(--accent2);margin-bottom:4px;margin-top:6px;">≈ 總計 NT$${Math.round(totals.pBearTwd + twd(totals.pBearRmb))}</div>
+        <div class="pc-sub">應負擔總額</div>
+      </div>
+    </div>
+    <div class="pay-bal" style="line-height:1.6;">
+        兩人總支出 <strong>¥${grandTotalRmb}</strong> ＋ <strong style="color:var(--accent3)">NT$${grandTotalTwd}</strong>
+        <div style="font-size:12px;color:var(--muted);font-weight:normal;margin-top:4px;">≈ 總計 NT$${Math.round(parseInt(grandTotalTwd) + twd(parseFloat(grandTotalRmb)))}</div>
+        <div style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); font-size:15px;">
+            ${balText}
+        </div>
+    </div>
+  `;
+
+  document.getElementById('payBottom').innerHTML=`
+    <div class="pay-form">
+      <div class="pf-title">${editingPayId ? '✏️ 編輯支出' : '＋ 新增支出'}</div>
       <div id="payFormBody"></div>
     </div>
     <div class="pay-records">${pays.length?recs:'<div style="text-align:center;padding:28px;color:var(--muted);font-size:13px">還沒有支出記錄</div>'}</div>
   `;
+
+  const rEl = document.getElementById('globalRateRmb');
+  const tEl = document.getElementById('globalRateTwd');
+  if(rEl && document.activeElement !== rEl) rEl.value = cnyToTwd;
+  if(tEl && document.activeElement !== tEl) tEl.value = (1/cnyToTwd).toFixed(3);
+
   renderPayForm();
 }
 
-function setPayMode(mode){
-  payInputMode = mode;
-  if(mode==='manual'){ uploadedImgB64=null; uploadedImgType=null; aiParsed=null; }
-  renderPay();
-}
+function setPayCurrency(v){payCurrency=v;renderPayForm();}
 function ssm(v){splitMode=v;renderPayForm();}
 function setPayMethod(v){payMethod=v;renderPayForm();}
-function setPayPayer(v){payPayer=v;renderPayForm();}
+function setPayPayer(v){
+  payPayer=v;
+  if(v === '各付各的') splitMode = 'half';
+  renderPayForm();
+}
 
 function renderPayForm(){
   const el = document.getElementById('payFormBody');
   if(!el) return;
-  if(payInputMode==='scan'){
-    el.innerHTML = renderScanForm();
-    bindUploadZone();
-  } else {
-    el.innerHTML = renderManualForm();
-  }
-}
 
-function renderManualForm(prefill){
-  const f = prefill || {};
+  const currName = document.getElementById('pn') ? document.getElementById('pn').value : '';
+  const currAmt = document.getElementById('pa') ? document.getElementById('pa').value : '';
+  const currNote = document.getElementById('pnt') ? document.getElementById('pnt').value : '';
+
   const mLabels={wechat:'💚 微信',alipay:'💙 支付寶',card:'💳 信用卡',cash:'💵 現金'};
-  const curMethod=f.method||payMethod;
-  const curPayer=f.payer!==undefined?f.payer:payPayer;
-  return `
-    <div class="pf-row"><input class="pi" id="pn" placeholder="項目名稱（如：海底撈）" value="${eh(f.name||'')}"></div>
-    <div class="pf-row"><input class="pi" id="pa" type="number" placeholder="金額（人民幣）" min="0" value="${f.amt||''}"></div>
+  const isTwd = payCurrency === 'twd';
+  const currLabel = isTwd ? '台幣 NT$' : '人民幣 ¥';
+  const isSelfPaid = (payPayer === '各付各的');
+  
+  el.innerHTML = `
+    <div style="font-size:11px;color:var(--muted);margin-bottom:5px">記帳幣別：</div>
+    <div class="btn-pick-row" style="margin-bottom:10px">
+      <button class="bp${!isTwd?' bpa':''}" onclick="setPayCurrency('rmb')">人民幣 ¥</button>
+      <button class="bp${isTwd?' bpa':''}" onclick="setPayCurrency('twd')">台幣 NT$</button>
+    </div>
+
+    <div class="pf-row"><input class="pi" id="pn" placeholder="項目名稱（如：海底撈）" value="${eh(currName)}"></div>
+    <div class="pf-row"><input class="pi" id="pa" type="number" placeholder="金額（${currLabel}）" min="0" value="${currAmt}"></div>
+    
+    <div style="font-size:11px;color:var(--muted);margin-top:5px;margin-bottom:5px">由誰代墊 / 付款？（結算必填）</div>
+    <div class="btn-pick-row" style="margin-bottom:10px">
+      <button class="bp${payPayer==='若佩'?' bpa':''}" onclick="setPayPayer('若佩')">若佩墊付</button>
+      <button class="bp${payPayer==='品郡'?' bpa':''}" onclick="setPayPayer('品郡')">品郡墊付</button>
+      <button class="bp${payPayer==='各付各的'?' bpa':''}" onclick="setPayPayer('各付各的')">各付各的 (當下結清)</button>
+      <button class="bp${payPayer===''?' bpa':''}" style="${payPayer===''?'border-color:var(--accent);color:var(--accent);':''}" onclick="setPayPayer('')">未指定</button>
+    </div>
+
+    <div id="splitSection" style="${isSelfPaid ? 'display:none;' : ''}">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:5px">這筆花費算誰的？（誰該負擔）</div>
+        <div class="btn-pick-row" style="margin-bottom:10px">
+          <button class="bp${splitMode==='half'?' bpa':''}" onclick="ssm('half')">兩人共同</button>
+          <button class="bp${splitMode==='ruopei'?' bpa':''}" onclick="ssm('ruopei')">若佩個人</button>
+          <button class="bp${splitMode==='pinjun'?' bpa':''}" onclick="ssm('pinjun')">品郡個人</button>
+        </div>
+    </div>
+
     <div style="font-size:11px;color:var(--muted);margin-bottom:5px">付款方式：</div>
     <div class="btn-pick-row" style="margin-bottom:10px">
-      ${['wechat','alipay','card','cash'].map(m=>`<button class="bp${curMethod===m?' bpa':''}" onclick="setPayMethod('${m}')">${mLabels[m]}</button>`).join('')}
+      ${['wechat','alipay','card','cash'].map(m=>`<button class="bp${payMethod===m?' bpa':''}" onclick="setPayMethod('${m}')">${mLabels[m]}</button>`).join('')}
     </div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:5px">付款人：</div>
-    <div class="btn-pick-row" style="margin-bottom:10px">
-      <button class="bp${curPayer===''?' bpa':''}" onclick="setPayPayer('')">未指定</button>
-      <button class="bp${curPayer==='若佩'?' bpa':''}" onclick="setPayPayer('若佩')">若佩付款</button>
-      <button class="bp${curPayer==='品郡'?' bpa':''}" onclick="setPayPayer('品郡')">品郡付款</button>
-    </div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:5px">分攤方式：</div>
-    <div class="btn-pick-row" style="margin-bottom:10px">
-      <button class="bp${splitMode==='half'?' bpa':''}" onclick="ssm('half')">各付一半</button>
-      <button class="bp${splitMode==='ruopei'?' bpa':''}" onclick="ssm('ruopei')">若佩負擔</button>
-      <button class="bp${splitMode==='pinjun'?' bpa':''}" onclick="ssm('pinjun')">品郡負擔</button>
-      <button class="bp${splitMode==='ar'?' bpa':''}" onclick="ssm('ar')">若佩代全付</button>
-      <button class="bp${splitMode==='ap'?' bpa':''}" onclick="ssm('ap')">品郡代全付</button>
-    </div>
-    <div class="pf-row"><input class="pi" id="pnt" placeholder="備註（選填）" value="${eh(f.note||'')}"></div>
-    <button class="pay-btn" onclick="addPay()">記帳</button>`;
-}
 
-function renderScanForm(){
-  if(uploadedImgB64 && aiParsed){
-    // Show AI result + confirm form
-    return `
-      <div class="upload-preview">
-        <img src="data:${uploadedImgType};base64,${uploadedImgB64}" alt="截圖預覽">
-        <button class="rm-img" onclick="clearScanImg()" title="重新上傳">×</button>
-      </div>
-      <div class="ai-result-box">
-        <div class="ar-title">📸 截圖已載入 — 請填寫後記帳</div>
-        <div class="ar-row"><span class="ar-label">商家名稱</span><span class="ar-val">${eh(aiParsed.name||'—')}</span></div>
-        <div class="ar-row"><span class="ar-label">金額</span><span class="ar-val" style="color:var(--accent);font-size:15px">¥${aiParsed.amt||'—'}</span></div>
-        <div class="ar-row"><span class="ar-label">付款方式</span><span class="ar-val">${aiParsed.methodLabel||'—'}</span></div>
-        <div class="ar-row"><span class="ar-label">付款人</span><span class="ar-val">${aiParsed.payer||'未指定'}</span></div>
-        ${aiParsed.time?`<div class="ar-row"><span class="ar-label">時間</span><span class="ar-val">${eh(aiParsed.time)}</span></div>`:''}
-        ${aiParsed.note?`<div class="ar-row"><span class="ar-label">備註</span><span class="ar-val">${eh(aiParsed.note)}</span></div>`:''}
-      </div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:4px">如有誤差可在下方修改：</div>
-      ${renderManualForm(aiParsed)}`;
-  }
-  // (scanning state removed - show form directly)
-  // Upload zone
-  return `
-    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('imgInput').click()">
-      <input type="file" id="imgInput" accept="image/*">
-      <div class="uz-icon">📸</div>
-      <div class="uz-text">點擊上傳微信 / 支付寶付款截圖</div>
-      <div class="uz-sub">支援 JPG、PNG、截圖直接上傳</div>
-    </div>
-    <div id="scanError"></div>`;
-}
-
-function bindUploadZone(){
-  const inp = document.getElementById('imgInput');
-  const zone = document.getElementById('uploadZone');
-  if(!inp) return;
-  inp.onchange = e => { if(e.target.files[0]) handleImgFile(e.target.files[0]); };
-  if(zone){
-    zone.ondragover = e => { e.preventDefault(); zone.classList.add('drag'); };
-    zone.ondragleave = () => zone.classList.remove('drag');
-    zone.ondrop = e => { e.preventDefault(); zone.classList.remove('drag'); if(e.dataTransfer.files[0]) handleImgFile(e.dataTransfer.files[0]); };
-  }
-}
-
-function handleImgFile(file){
-  if(!file.type.startsWith('image/')){ showScanError('請上傳圖片檔案'); return; }
-  const reader = new FileReader();
-  reader.onload = e => {
-    const b64full = e.target.result;
-    const [meta, data] = b64full.split(',');
-    uploadedImgB64 = data;
-    uploadedImgType = file.type;
-    // 直接設一個空的 aiParsed 讓畫面進入確認模式（旅途中手動填較可靠）
-    aiParsed = {name:'', amt:'', method:'wechat', methodLabel:'微信', payer:'', note:''};
-    renderPayForm();
-  };
-  reader.readAsDataURL(file);
-}
-
-function scanWithAI(){ /* removed - direct form instead */ }
-
-function showScanError(msg){
-  const el = document.getElementById('scanError');
-  if(el) el.innerHTML = `<div class="scan-error">${msg}</div>`;
-}
-
-function clearScanImg(){
-  uploadedImgB64=null; uploadedImgType=null; aiParsed=null;
-  renderPayForm();
+    <div class="pf-row"><input class="pi" id="pnt" placeholder="備註（選填）" value="${eh(currNote)}"></div>
+    <button class="pay-btn" onclick="addPay()">${editingPayId ? '儲存修改' : '記帳'}</button>
+    ${editingPayId ? `<button class="btn-cancel" style="width:100%;margin-top:8px;padding:10px;" onclick="cancelEditPay()">取消編輯</button>` : ''}`;
 }
 
 function addPay(){
   const n=document.getElementById('pn')?.value.trim();
   const a=parseFloat(document.getElementById('pa')?.value);
-  if(!n||isNaN(a)||a<=0){showT('請填入名稱和金額');return;}
-  pays.push({id:pid++,name:n,amt:a,method:payMethod,
-    payer:payPayer,note:(document.getElementById('pnt')?.value||'').trim(),split:splitMode});
-  uploadedImgB64=null; uploadedImgType=null; aiParsed=null;
-  sv();showT(`✓ 已記錄：${n} ¥${a.toFixed(0)}`);renderPay();
-}
-function delPay(id){if(!confirm('確定刪除？'))return;pays=pays.filter(x=>x.id!==id);sv();renderPay();}
+  if(!n||isNaN(a)||a<=0){showT('請填寫完整名稱與金額');return;}
+  
+  if(editingPayId) {
+      const idx = pays.findIndex(x => x.id === editingPayId);
+      if (idx !== -1) {
+          pays[idx] = { ...pays[idx], name:n, amt:a, currency:payCurrency, method:payMethod, payer:payPayer, note:(document.getElementById('pnt')?.value||'').trim(), split:splitMode };
+      }
+      editingPayId = null;
+      showT(`✓ 已更新：${n}`);
+  } else {
+      pays.push({
+        id:pid++,
+        name:n,
+        amt:a,
+        currency:payCurrency,
+        method:payMethod,
+        payer:payPayer,
+        note:(document.getElementById('pnt')?.value||'').trim(),
+        split:splitMode,
+        time: Date.now()
+      });
+      showT(`✓ 已記錄：${n} ${payCurrency==='twd'?'NT$':'¥'}${a.toFixed(0)}`);
+  }
+  
+  if(document.getElementById('pn')) document.getElementById('pn').value = '';
+  if(document.getElementById('pa')) document.getElementById('pa').value = '';
+  if(document.getElementById('pnt')) document.getElementById('pnt').value = '';
 
-// ===== RENDER LEDGER =====
+  if(window.sv) window.sv();
+  renderPay();
+}
+
+function delPay(id){
+    customConfirm('確定要刪除這筆支出嗎？', () => {
+        pays=pays.filter(x=>x.id!==id);
+        if(window.sv) window.sv();
+        renderPay();
+        showT('已刪除');
+    });
+}
+
+function editPay(id) {
+    const p = pays.find(x => x.id === id);
+    if(!p) return;
+    editingPayId = id;
+    payCurrency = p.currency || 'rmb';
+    payMethod = p.method;
+    payPayer = p.payer;
+    splitMode = p.split;
+
+    renderPay(); 
+
+    setTimeout(() => {
+        const pn = document.getElementById('pn');
+        const pa = document.getElementById('pa');
+        const pnt = document.getElementById('pnt');
+        if(pn) pn.value = p.name;
+        if(pa) pa.value = p.amt;
+        if(pnt) pnt.value = p.note || '';
+        document.querySelector('.pay-form').scrollIntoView({behavior: 'smooth', block: 'center'});
+    }, 50);
+}
+
+function cancelEditPay() {
+    editingPayId = null;
+    if(document.getElementById('pn')) document.getElementById('pn').value = '';
+    if(document.getElementById('pa')) document.getElementById('pa').value = '';
+    if(document.getElementById('pnt')) document.getElementById('pnt').value = '';
+    renderPay();
+}
+
+let calcCurrency = 'rmb';
+function setCalcCurr(curr) {
+    calcCurrency = curr;
+    document.getElementById('btnCurrRmb').classList.toggle('bpa', curr === 'rmb');
+    document.getElementById('btnCurrTwd').classList.toggle('bpa', curr === 'twd');
+    runCalc();
+}
+
+function syncRate(src) {
+    const rmbEl = document.getElementById('calcRateRmb');
+    const twdEl = document.getElementById('calcRateTwd');
+    if (src === 'rmb') {
+        const val = parseFloat(rmbEl.value);
+        if (val > 0) twdEl.value = (1 / val).toFixed(3);
+    } else {
+        const val = parseFloat(twdEl.value);
+        if (val > 0) rmbEl.value = (1 / val).toFixed(3);
+    }
+    runCalc();
+}
+
+function adjPpl(d){
+  const el=document.getElementById('calcPpl');
+  let v=parseInt(el.value)||1;
+  v+=d; if(v<1)v=1;
+  el.value=v; runCalc();
+}
+
+function runCalc(){
+  const t=parseFloat(document.getElementById('calcTotal').value)||0;
+  const p=parseInt(document.getElementById('calcPpl').value)||1;
+  const rateRmbToTwd=parseFloat(document.getElementById('calcRateRmb').value)||4.5;
+
+  const perPerson = t/p;
+  let rmbAmt = 0;
+  let twdAmt = 0;
+
+  if(calcCurrency === 'rmb') {
+      rmbAmt = perPerson;
+      twdAmt = perPerson * rateRmbToTwd;
+      document.getElementById('calcResult').innerHTML=`¥ ${rmbAmt.toFixed(1)}`;
+      const twdEl = document.getElementById('calcResultTwd');
+      if(twdEl) twdEl.textContent=`≈ NT$ ${Math.round(twdAmt)}`;
+  } else {
+      twdAmt = perPerson;
+      rmbAmt = perPerson / rateRmbToTwd;
+      document.getElementById('calcResult').innerHTML=`NT$ ${Math.round(twdAmt)}`;
+      const twdEl = document.getElementById('calcResultTwd');
+      if(twdEl) twdEl.textContent=`≈ ¥ ${rmbAmt.toFixed(1)}`;
+  }
+
+  document.getElementById('calcResult').dataset.rmb = rmbAmt;
+  document.getElementById('calcResult').dataset.twd = twdAmt;
+}
+
+function quickAddCalc(shares){
+  const t=parseFloat(document.getElementById('calcTotal').value)||0;
+  if(t<=0) return showT('請先輸入總金額');
+  
+  let amt = 0;
+  if(calcCurrency === 'twd'){
+      payCurrency = 'twd';
+      const twdAmt = parseFloat(document.getElementById('calcResult').dataset.twd) || 0;
+      amt = Math.ceil(twdAmt * shares);
+  } else {
+      payCurrency = 'rmb';
+      const rmbAmt = parseFloat(document.getElementById('calcResult').dataset.rmb) || 0;
+      amt = Math.ceil(rmbAmt * shares);
+  }
+  
+  const tabs=document.querySelectorAll('.ptab');
+  const payTab = Array.from(tabs).find(t => t.textContent.includes('分帳'));
+  switchPage('pay', payTab);
+  
+  setTimeout(()=>{
+    const pn=document.getElementById('pn');
+    const pa=document.getElementById('pa');
+    const currPrefix = calcCurrency === 'twd' ? '台幣分攤' : '分攤';
+    if(pn) pn.value=`${currPrefix} (${shares}人份)`;
+    if(pa) pa.value=amt;
+    renderPayForm(); 
+    showT(`已帶入金額(${calcCurrency==='twd'?'台幣':'人民幣'})，請確認後記帳`);
+  }, 50);
+}
+
+window.quickAddFromItinerary = function(name, amtPerPerson, curr) {
+  const cost = amtPerPerson || 0;
+  
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(26,18,8,0.55);z-index:9999;display:flex;align-items:center;justify-content:center;animation:slideUp .2s ease;';
+  const box = document.createElement('div');
+  box.style.cssText = 'background:var(--paper);padding:22px;border-radius:14px;text-align:center;max-width:300px;width:80%;box-shadow:0 4px 15px var(--shadow);';
+  
+  const sym = curr === 'twd' ? 'NT$' : '¥';
+  
+  box.innerHTML = `
+    <div style="margin-bottom:10px;font-size:16px;font-weight:700;color:var(--accent)">💰 轉入分帳</div>
+    <div style="margin-bottom:18px;font-size:13px;color:var(--muted);line-height:1.5;">
+      將「<strong style="color:var(--ink)">${eh(name)}</strong>」帶入記帳本<br>
+      (目前預估：${sym}${cost} / 人)
+    </div>
+    <div style="display:flex;gap:10px">
+        <button id="qa-1" style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--ink);font-weight:600;cursor:pointer;">轉 1 人份</button>
+        <button id="qa-2" style="flex:1;padding:10px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-weight:600;cursor:pointer;">轉 2 人份</button>
+    </div>
+    <button id="qa-cancel" style="margin-top:10px;width:100%;padding:10px;border-radius:8px;border:none;background:none;color:var(--muted);cursor:pointer;">取消</button>
+  `;
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  document.getElementById('qa-cancel').onclick = () => overlay.remove();
+  document.getElementById('qa-1').onclick = () => { overlay.remove(); window.execTransfer(name, cost, curr, 1); };
+  document.getElementById('qa-2').onclick = () => { overlay.remove(); window.execTransfer(name, cost, curr, 2); };
+}
+
+window.execTransfer = function(name, amtPerPerson, curr, shares) {
+  editingPayId = null; 
+  payCurrency = curr || 'rmb';
+  splitMode = 'half'; 
+  payPayer = '';      
+  const amt = amtPerPerson * shares;
+  
+  const tabs=document.querySelectorAll('.ptab');
+  const payTab = Array.from(tabs).find(t => t.textContent.includes('分帳'));
+  switchPage('pay', payTab);
+  
+  setTimeout(()=>{
+    const pn=document.getElementById('pn');
+    const pa=document.getElementById('pa');
+    if(pn) pn.value = `${name} (${shares}人份)`;
+    if(pa) pa.value = amt > 0 ? amt : '';
+    renderPayForm(); 
+    showT(`已帶入${shares}人份，請確認金額與付款人後記帳`);
+    document.querySelector('.pay-form').scrollIntoView({behavior: 'smooth', block: 'center'});
+  }, 50);
+}
+
 function renderLedger(){
   const DNAMES=['4/16','4/17','4/18','4/19','4/20','4/21'];
-  // Collect trip cost items (cost > 0)
   const tripItems = trips.filter(x=>x.cost>0).map(x=>({
-    src:'trip', day:x.day, name:x.name.replace(/^[\u{1F300}-\u{1FAFF}\s]*/u,'').trim(), amt:x.cost, note:'行程預估 / 人', icon: ({sight:'🏛',food:'🍜',hotel:'🏨',transit:'🚄'})[x.type]||'📌'
+    src:'trip', day:x.day, name:x.name.replace(/^[\u{1F300}-\u{1FAFF}\s]*/u,'').trim(), amt:x.cost, currency: x.curr || 'rmb', note:'行程預估 / 人', icon: ({sight:'🏛',food:'🍜',hotel:'🏨',transit:'🚄'})[x.type]||'📌'
   }));
-  // Collect pay records
   const payItems = pays.map(x=>({
-    src:'pay', day:-1, name:x.name, amt:x.amt, note:({half:'各半',ruopei:'若佩負擔',pinjun:'品郡負擔',ar:'若佩代全付',ap:'品郡代全付'})[x.split]||x.split, icon:({wechat:'💚',alipay:'💙',card:'💳',cash:'💵'})[x.method]||'💴', payer:x.payer
+    src:'pay', day:-1, name:x.name, amt:x.amt, currency:x.currency||'rmb', note:({half:'兩人共同',ruopei:'若佩個人',pinjun:'品郡個人',ar:'若佩代全付',ap:'品郡代全付'})[x.split]||x.split, icon:({wechat:'💚',alipay:'💙',card:'💳',cash:'💵'})[x.method]||'💴', payer:x.payer, time:x.time
   }));
 
-  const tripTotal = tripItems.reduce((s,x)=>s+x.amt,0);
-  const payTotal = payItems.reduce((s,x)=>s+x.amt,0);
-  const grandTotal = tripTotal + payTotal;
+  let tripTotalRmb = 0, tripTotalTwd = 0;
+  tripItems.forEach(x => {
+      if(x.currency === 'twd') tripTotalTwd += x.amt;
+      else tripTotalRmb += x.amt;
+  });
+  
+  let payTotalRmb = 0, payTotalTwd = 0;
+  payItems.forEach(x => { 
+      let actualAmt = (x.payer === '各付各的') ? x.amt * 2 : x.amt;
+      if(x.currency === 'twd') payTotalTwd+=actualAmt; 
+      else payTotalRmb+=actualAmt; 
+  });
 
-  // Group trip items by day
+  const grandTotalRmb = tripTotalRmb + payTotalRmb;
+  const grandTotalTwd = tripTotalTwd + payTotalTwd;
+
   let html = `<div class="ledger-summary">
-    <div class="ls-card"><div class="ls-label">行程預估合計</div><div class="ls-amt">¥${tripTotal}</div><div class="ls-twd">≈ NT$${twd(tripTotal)}</div></div>
-    <div class="ls-card"><div class="ls-label">已記帳合計</div><div class="ls-amt">¥${payTotal.toFixed(0)}</div><div class="ls-twd">≈ NT$${twd(payTotal)}</div></div>
-    <div class="ls-card"><div class="ls-label">總計</div><div class="ls-amt" style="font-size:16px">¥${(tripTotal+payTotal).toFixed(0)}</div><div class="ls-twd">≈ NT$${twd(grandTotal)}</div></div>
+    <div class="ls-card"><div class="ls-label">行程預估合計</div><div class="ls-amt" style="font-size:16px">¥${tripTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${tripTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(tripTotalRmb) + tripTotalTwd)}</div></div>
+    <div class="ls-card"><div class="ls-label">已記帳合計</div><div class="ls-amt" style="font-size:16px">¥${payTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${payTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(payTotalRmb)+payTotalTwd)}</div></div>
+    <div class="ls-card"><div class="ls-label">總計估值(估+帳)</div><div class="ls-amt" style="font-size:16px">¥${grandTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${grandTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(grandTotalRmb)+grandTotalTwd)}</div></div>
   </div>`;
 
-  // Trip costs grouped by day
   if(tripItems.length){
     const byDay = {};
     tripItems.forEach(x=>{ if(!byDay[x.day]) byDay[x.day]=[]; byDay[x.day].push(x); });
     Object.keys(byDay).sort((a,b)=>a-b).forEach(d=>{
       const items = byDay[d];
-      const dayTotal = items.reduce((s,x)=>s+x.amt,0);
+      
+      const dayTotalRmb = items.filter(x=>x.currency!=='twd').reduce((s,x)=>s+x.amt,0);
+      const dayTotalTwd = items.filter(x=>x.currency==='twd').reduce((s,x)=>s+x.amt,0);
+      const dayTwdEq = Math.round(twd(dayTotalRmb) + dayTotalTwd);
+      let dayTotalText = [];
+      if(dayTotalRmb>0) dayTotalText.push(`¥${dayTotalRmb}`);
+      if(dayTotalTwd>0) dayTotalText.push(`NT$${dayTotalTwd}`);
+      const dayTotalStr = dayTotalText.join(' + ') + ` ≈ NT$${dayTwdEq}`;
+
       html += `<div class="ledger-group">
-        <div class="lg-head">🗓 Day ${parseInt(d)+1}・${DNAMES[d]}<span class="lg-total">¥${dayTotal} ≈ NT$${twd(dayTotal)}</span></div>
-        ${items.map(x=>`<div class="ledger-row lr-src-trip">
-          <span class="lr-icon">${x.icon}</span>
-          <div class="lr-body"><div class="lr-name">${eh(x.name)}</div><div class="lr-meta">${x.note}</div></div>
-          <div><div class="lr-amt">¥${x.amt}</div><span class="lr-twd">≈ NT$${twd(x.amt)}</span></div>
-        </div>`).join('')}
+        <div class="lg-head">🗓 Day ${parseInt(d)+1}・${DNAMES[d]}<span class="lg-total">${dayTotalStr}</span></div>
+        ${items.map(x=>{
+            const isTwd = x.currency === 'twd';
+            return `<div class="ledger-row lr-src-trip">
+              <span class="lr-icon">${x.icon}</span>
+              <div class="lr-body"><div class="lr-name">${eh(x.name)}</div><div class="lr-meta">${x.note}</div></div>
+              <div><div class="lr-amt" ${isTwd?'style="color:var(--accent3)"':''}>${isTwd?'NT$':'¥'}${x.amt}</div><span class="lr-twd">${isTwd?`≈ ¥${(x.amt/cnyToTwd).toFixed(1)}`:`≈ NT$${twd(x.amt)}`}</span></div>
+            </div>`
+        }).join('')}
       </div>`;
     });
   }
 
-  // Pay records
   if(payItems.length){
-    const payTotal2 = payItems.reduce((s,x)=>s+x.amt,0);
     html += `<div class="ledger-group">
-      <div class="lg-head">💰 已記帳支出<span class="lg-total">¥${payTotal2.toFixed(0)} ≈ NT$${twd(payTotal2)}</span></div>
-      ${[...payItems].reverse().map(x=>`<div class="ledger-row lr-src-pay">
-        <span class="lr-icon">${x.icon}</span>
-        <div class="lr-body"><div class="lr-name">${eh(x.name)}</div><div class="lr-meta">${x.note}${x.payer?' · '+x.payer+'付':''}</div></div>
-        <div><div class="lr-amt">¥${x.amt.toFixed(0)}</div><span class="lr-twd">≈ NT$${twd(x.amt)}</span></div>
-      </div>`).join('')}
+      <div class="lg-head">💰 已記帳支出<span class="lg-total">¥${payTotalRmb.toFixed(0)} + NT$${payTotalTwd.toFixed(0)}</span></div>
+      ${[...payItems].reverse().map(x=>{
+        const isTwd = x.currency === 'twd';
+        const isSelfPaid = x.payer === '各付各的';
+        const payerDisplay = x.payer ? (isSelfPaid ? ' · 各付各的' : ' · '+x.payer+'墊付') : '';
+        const displayAmt = isSelfPaid ? `${x.amt.toFixed(0)}/人` : x.amt.toFixed(0);
+        const twdHint = isSelfPaid ? `≈ NT$${twd(x.amt)}/人` : `≈ NT$${twd(x.amt)}`;
+        const timeHtml = x.time ? ` · 🕒 ${ftm(x.time)}` : '';
+
+        return `<div class="ledger-row lr-src-pay">
+          <span class="lr-icon">${x.icon}</span>
+          <div class="lr-body"><div class="lr-name">${eh(x.name)}</div><div class="lr-meta">${isSelfPaid ? '兩人皆消費' : x.note}${payerDisplay}${timeHtml}</div></div>
+          <div><div class="lr-amt" ${isTwd?'style="color:var(--accent3)"':''}>${isTwd?'NT$':'¥'}${displayAmt}</div>${isTwd?'':`<span class="lr-twd">${twdHint}</span>`}</div>
+        </div>`
+      }).join('')}
     </div>`;
   }
 
@@ -1417,7 +1307,6 @@ function renderLedger(){
   document.getElementById('ledgerContent').innerHTML = html;
 }
 
-// ===== PAGE SWITCH =====
 function switchPage(p,btn){
   document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
   if(btn)btn.classList.add('active');
@@ -1432,12 +1321,12 @@ function switchPage(p,btn){
   else if(p==='pay')renderPay();
 }
 
-// ===== MODAL =====
 function openAddModal(){
   editId=null;document.getElementById('mTitle').textContent='新增地點';
   document.getElementById('fDay').value=curDay;document.getElementById('fType').value='sight';
   ['fName','fAddr','fPhone','fMap','fNote'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fCost').value='';
+  document.getElementById('fCurr').value='rmb';
   document.getElementById('delBtn').style.display='none';
   document.getElementById('mo').classList.add('open');
 }
@@ -1448,46 +1337,142 @@ function oe(id){
   document.getElementById('fName').value=x.name;document.getElementById('fAddr').value=x.address||'';
   document.getElementById('fPhone').value=x.phone||'';document.getElementById('fMap').value=x.mapKey||'';
   document.getElementById('fCost').value=x.cost||'';
+  document.getElementById('fCurr').value=x.curr||'rmb';
   document.getElementById('fNote').value=x.note||'';
   document.getElementById('delBtn').style.display='';
   document.getElementById('mo').classList.add('open');
 }
 function closeModal(){document.getElementById('mo').classList.remove('open');}
 function saveItem(){
-  const n=document.getElementById('fName').value.trim();if(!n){alert('請輸入名稱');return;}
+  const n=document.getElementById('fName').value.trim();
+  if(!n){showT('請輸入名稱');return;}
   const x={id:editId||nid++,day:parseInt(document.getElementById('fDay').value),
     type:document.getElementById('fType').value,name:n,
     address:document.getElementById('fAddr').value.trim(),
     phone:document.getElementById('fPhone').value.trim(),
     mapKey:document.getElementById('fMap').value.trim(),
     cost:parseFloat(document.getElementById('fCost').value)||0,
+    curr:document.getElementById('fCurr').value,
     note:document.getElementById('fNote').value.trim()};
   if(editId){const i=trips.findIndex(t=>t.id===editId);trips[i]=x;}else trips.push(x);
-  curDay=x.day;closeModal();renderIt();showT(editId?'✓ 已更新':'✓ 已新增');
+  curDay=x.day;closeModal();renderIt();
+  showT(editId?'✓ 已更新':'✓ 已新增');
 }
-function deleteItem(){if(!confirm('確定刪除？'))return;trips=trips.filter(x=>x.id!==editId);closeModal();renderIt();showT('已刪除');}
+function deleteItem(){
+    customConfirm('確定要刪除這個行程嗎？', () => {
+        trips=trips.filter(x=>x.id!==editId);
+        closeModal();
+        renderIt();
+        showT('已刪除');
+    });
+}
 document.getElementById('mo').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.getElementById('syncModal').addEventListener('click',function(e){if(e.target===this)closeSyncSetup();});
 
-// ===== UTILS =====
 function ta(e,fb){setTimeout(()=>{window.location.href=fb;},1500);}
 function cp(t,l){navigator.clipboard.writeText(t).then(()=>showT(`✓ 已複製${l}`)).catch(()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);showT(`✓ 已複製${l}`);});}
 function showT(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
 function eh(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function eq(s){return String(s||'').replace(/'/g,"\\'").replace(/\n/g,' ');}
 
-// 若網址帶有 ?reset=1，清除本機快取並重新載入（不帶 reset 參數）
-(function(){
-  const params = new URLSearchParams(window.location.search);
-  if(params.get('reset')==='1'){
-    localStorage.clear();
-    params.delete('reset');
-    const newUrl = window.location.pathname + (params.toString() ? '?'+params.toString() : '');
-    window.location.replace(newUrl);
-  }
-})();
+window.packState = packState;
+window.applyState = applyState;
+window.refreshCurrentPage = refreshCurrentPage;
+window.setSyncDot = setSyncDot;
+window.toggleTripCurr = toggleTripCurr;
 
-ld().then(()=>renderIt());
+window.sv = async function() {
+    try { localStorage.setItem('nanjing2025_state', JSON.stringify(packState())); } catch(e){}
+};
+
+async function loadStateAndRender() {
+    try {
+        const loc = localStorage.getItem('nanjing2025_state');
+        if(loc) {
+            applyState(JSON.parse(loc));
+            refreshCurrentPage();
+        }
+    } catch(e){}
+    renderIt();
+}
+loadStateAndRender();
+
+</script>
+
+<!-- 🔥 FIREBASE REAL-TIME SYNC MODULE 🔥 -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    let fStoreDocRef = null;
+    let fAuthUser = null;
+    let isFirebaseReady = false;
+
+    async function setupFirebase() {
+        try {
+            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+            const appId = typeof __app_id !== 'undefined' ? __app_id : 'nanjing-trip-app';
+
+            if (!firebaseConfig) {
+                console.warn("⚠️ 系統環境缺少 Firebase 設定，已降級為本機模式。");
+                window.setSyncDot('offline');
+                return;
+            }
+
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
+            }
+
+            fAuthUser = auth.currentUser;
+            
+            fStoreDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'nanjing_trip_2025', 'shared_state');
+            isFirebaseReady = true;
+
+            onSnapshot(fStoreDocRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    window.applyState(data);
+                    window.refreshCurrentPage();
+                } else {
+                    if(window.sv) window.sv();
+                }
+                window.setSyncDot('ok');
+            }, (error) => {
+                console.error("即時連線發生中斷:", error);
+                window.setSyncDot('offline');
+            });
+
+        } catch (e) {
+            console.error("雲端連線失敗:", e);
+            window.setSyncDot('offline');
+        }
+    }
+
+    window.sv = async function() {
+        const data = window.packState();
+        try { localStorage.setItem('nanjing2025_state', JSON.stringify(data)); } catch(e){}
+
+        if (isFirebaseReady && fStoreDocRef && fAuthUser) {
+            window.setSyncDot('syncing');
+            try {
+                await setDoc(fStoreDocRef, data);
+                window.setSyncDot('ok');
+            } catch(e) {
+                console.error("同步至雲端失敗:", e);
+                window.setSyncDot('offline');
+            }
+        } else {
+            window.setSyncDot('offline');
+        }
+    }
+
+    setupFirebase();
 </script>
 </body>
 </html>
