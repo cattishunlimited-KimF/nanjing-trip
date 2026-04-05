@@ -153,7 +153,7 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .pr-edit{background:none;border:none;color:#aaa;cursor:pointer;font-size:14px;padding:2px;margin-right:2px;}
 .pr-edit:hover{color:var(--accent);}
 
-/* MODAL & SETTINGS */
+/* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,18,8,.55);z-index:200;align-items:flex-end;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--paper);border-radius:18px 18px 0 0;width:100%;max-width:700px;padding:20px 16px 28px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;}
@@ -197,19 +197,13 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .lr-src-pay{border-left:3px solid var(--ft);}
 
 /* SYNC MODAL (JSONBIN) */
-.sync-modal{background:var(--paper);border-radius:18px 18px 0 0;width:100%;max-width:700px;padding:22px 18px 32px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;}
-.sm-title{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;color:var(--accent3);margin-bottom:4px;}
-.sm-sub{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6;}
-.sm-step{background:var(--warm);border-radius:10px;padding:11px 13px;margin-bottom:10px;font-size:12px;line-height:1.7;border-left:3px solid var(--accent3);}
-.sm-step b{color:var(--accent3);}
-.sm-step a{color:var(--accent);text-decoration:underline;}
-.sm-label{font-size:11px;color:var(--muted);margin-bottom:4px;margin-top:10px;}
-.sm-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font-size:13px;font-family:'Noto Sans TC',sans-serif;background:var(--card);color:var(--ink);outline:none;}
-.sm-input:focus{border-color:var(--accent3);}
-.sm-btns{display:flex;gap:8px;margin-top:14px;}
-.sm-save{flex:1;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px;font-size:14px;font-family:'Noto Serif TC',serif;cursor:pointer;}
-.sm-cancel{background:var(--warm);color:var(--muted);border:1px solid var(--border);border-radius:9px;padding:10px 16px;font-size:13px;cursor:pointer;}
-.sm-create{width:100%;background:var(--accent3);color:#fff;border:none;border-radius:9px;padding:9px;font-size:13px;font-family:'Noto Serif TC',serif;cursor:pointer;margin-top:8px;}
+.sync-modal{background:var(--paper);border-radius:18px 18px 0 0;width:100%;max-width:700px;padding:26px 20px 36px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;text-align:center;}
+.sm-title{font-family:'Noto Serif TC',serif;font-size:18px;font-weight:700;color:var(--accent3);margin-bottom:8px;}
+.sm-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.sm-btn{width:100%;background:var(--accent3);color:#fff;border:none;border-radius:9px;padding:12px;font-size:14px;font-family:'Noto Serif TC',serif;cursor:pointer;margin-bottom:12px;transition:all .2s;}
+.sm-btn:active{transform:scale(0.98);}
+.sm-link-area{display:none;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;text-align:left;}
+.sm-cancel{background:var(--warm);color:var(--muted);border:1px solid var(--border);border-radius:9px;padding:10px 16px;font-size:13px;cursor:pointer;width:100%;}
 </style>
 </head>
 <body>
@@ -219,8 +213,8 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
     <div>
       <h1>🏯 <span>南京</span> 旅行手帳</h1>
       <div class="nav-sub">
-          4/16–4/21 · 若佩 × 品郡 &nbsp;·&nbsp; <span id="syncDot" title="連線狀態">🔴 離線模式</span>
-          &nbsp;<span style="cursor:pointer;font-size:13px;" onclick="openSyncSetup()" title="設定雲端同步">⚙️</span>
+          4/16–4/21 · 若佩 × 品郡 &nbsp;·&nbsp; <span id="syncDot" title="連線狀態">⚪ 單機模式</span>
+          &nbsp;<span style="cursor:pointer;font-size:13px;" onclick="openSyncSetup()" title="設定共編連結">⚙️</span>
       </div>
     </div>
     <button class="add-btn" id="addBtn" onclick="openAddModal()">＋ 新增</button>
@@ -381,33 +375,21 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
   </div>
 </div>
 
-<!-- SYNC SETUP MODAL (For GitHub Pages via JSONBin) -->
+<!-- ONE-CLICK SHARE MODAL -->
 <div class="modal-overlay" id="syncModal">
   <div class="sync-modal">
-    <div class="sm-title">⚙️ 設定雙人即時同步</div>
-    <div class="sm-sub" style="margin-bottom:8px">由於您將手帳部署在外網 (GitHub Pages)，需要設定免費的雲端資料庫來連接你與品郡的手機。</div>
+    <div class="sm-title">🔗 邀請品郡一起記帳</div>
+    <div class="sm-sub">將專屬連結傳給對方，你們就能在彼此的手機上即時看見新增的花費與行程，免註冊、免設定！</div>
     
-    <div class="sm-step" style="margin-bottom:14px">
-      <b>步驟一</b>：前往 <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> 免費註冊。<br>
-      <b>步驟二</b>：登入後點擊右上角頭像 → <b>API Keys</b> → 建立並複製 <b>Secret Key</b> ($2a$10$...開頭)。<br>
-      <b>步驟三</b>：將 Key 貼到下方，點擊「建立連線空間」。<br>
-      <b>步驟四</b>：系統會產生一個 <b>Bin ID</b>。只要把這份手帳的網址、Key 和 Bin ID 傳給品郡並輸入，你們就能即時共編了！
+    <button class="sm-btn" id="btnGenLink" onclick="generateShareLink()">✨ 產生專屬共編連結</button>
+    
+    <div id="shareLinkArea" class="sm-link-area">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">請複製以下連結，貼給品郡：</div>
+        <input id="shareUrlInput" readonly style="width:100%;padding:10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--accent3);margin-bottom:10px;background:var(--paper);">
+        <button class="sm-btn" style="background:var(--accent2);margin-bottom:0;" onclick="copyShareLink()">📋 複製連結</button>
     </div>
 
-    <div class="sm-label">1. 貼上你的 JSONBin Secret Key</div>
-    <input class="sm-input" id="smKey" type="password" placeholder="$2a$10$..." oninput="updateSyncUI()">
-    
-    <button class="sm-create" id="smCreateBtn" style="display:none;" onclick="createBin()">✨ 建立連線空間 (產生 Bin ID)</button>
-
-    <div id="binIdSection">
-        <div class="sm-label">2. 輸入 Bin ID (雙方需填寫一樣的 ID)</div>
-        <input class="sm-input" id="smBin" placeholder="例如：65f3c9e..." oninput="updateSyncUI()">
-    </div>
-    
-    <div class="sm-btns">
-      <button class="sm-cancel" onclick="closeSyncSetup()">取消</button>
-      <button class="sm-save" id="smSaveBtn" onclick="saveSyncSetup()">✅ 連線並儲存</button>
-    </div>
+    <button class="sm-cancel" onclick="closeSyncSetup()">關閉視窗</button>
   </div>
 </div>
 
@@ -651,7 +633,7 @@ function customConfirm(msg, callback) {
 function setSyncDot(state){
   const el = document.getElementById('syncDot');
   if(!el) return;
-  const map = {ok:'🟢 雙人同步',syncing:'🔄 連線中...',offline:'🔴 離線模式'};
+  const map = {ok:'🟢 雙人同步',syncing:'🔄 處理中...',offline:'⚪ 單機模式'};
   el.innerHTML = map[state]||'';
 }
 
@@ -689,6 +671,7 @@ function buildTimeline(dayIdx){
   (DAY_MEALS[dayIdx]||[]).forEach(k=>{
     const def=MEAL_DEF[k];
     let mTime = MEAL_TIME[k];
+    if(dayIdx === 5 && k === 'l') mTime = '11:30';
     nodes.push({type:'meal', time: mTime, slot:def.slot, icon:def.icon, label:def.label, val:m[k]||'', cost:m[k+'c']||0});
   });
   
@@ -1571,92 +1554,93 @@ window.refreshCurrentPage = refreshCurrentPage;
 window.setSyncDot = setSyncDot;
 window.toggleTripCurr = toggleTripCurr;
 
-// JSONBin Sync Logic
-let jbinKey = localStorage.getItem('nanjing_jbin_key') || '';
-let jbinId = localStorage.getItem('nanjing_jbin_id') || '';
+// JSONBlob Magic Sync Logic
 let syncInterval = null;
+window.sharedId = new URLSearchParams(window.location.search).get('id');
+
+// --- 自動記憶與恢復房間 ID 的防呆機制 ---
+if (!window.sharedId) {
+    const savedId = localStorage.getItem('nanjing_shared_id');
+    if (savedId) {
+        window.sharedId = savedId;
+        // 自動幫網址補上 ID，方便下次直接複製
+        const newUrl = window.location.origin + window.location.pathname + '?id=' + savedId;
+        window.history.replaceState({}, '', newUrl);
+    }
+} else {
+    // 將網址裡的 ID 存入手機瀏覽器記憶中
+    localStorage.setItem('nanjing_shared_id', window.sharedId);
+}
+// ----------------------------------------
 
 window.openSyncSetup = function() {
-    document.getElementById('smKey').value = jbinKey;
-    document.getElementById('smBin').value = jbinId;
     document.getElementById('syncModal').classList.add('open');
-    updateSyncUI();
+    if(window.sharedId) {
+        document.getElementById('shareUrlInput').value = window.location.href;
+        document.getElementById('shareLinkArea').style.display = 'block';
+        const btn = document.getElementById('btnGenLink');
+        btn.textContent = '✨ 產生全新的共編連結';
+    }
 }
 
 window.closeSyncSetup = function() {
     document.getElementById('syncModal').classList.remove('open');
 }
 
-window.updateSyncUI = function() {
-    const k = document.getElementById('smKey').value.trim();
-    const b = document.getElementById('smBin').value.trim();
-    const saveBtn = document.getElementById('smSaveBtn');
-    const createBtn = document.getElementById('smCreateBtn');
-    const binSection = document.getElementById('binIdSection');
-    
-    if(k && !b) {
-        createBtn.style.display = 'block';
-    } else {
-        createBtn.style.display = 'none';
-    }
-}
-
-window.createBin = async function() {
-    const k = document.getElementById('smKey').value.trim();
-    if(!k) return showT('請先輸入 API Key');
-    
-    document.getElementById('smCreateBtn').textContent = '⏳ 建立中...';
-    document.getElementById('smCreateBtn').disabled = true;
-    
+window.generateShareLink = async function() {
+    const btn = document.getElementById('btnGenLink');
+    btn.textContent = '⏳ 連結產生中...';
+    btn.disabled = true;
     try {
-        const res = await fetch('https://api.jsonbin.io/v3/b', {
+        const dataToSave = window.packState();
+        dataToSave.updatedAt = Date.now();
+        const res = await fetch('https://jsonblob.com/api/jsonBlob', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Access-Key': k,
-                'X-Bin-Name': 'Nanjing_Trip_2025'
-            },
-            body: JSON.stringify(window.packState())
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(dataToSave)
         });
-        const data = await res.json();
-        if(data.metadata && data.metadata.id) {
-            document.getElementById('smBin').value = data.metadata.id;
-            showT('🎉 成功建立！請點擊儲存連線');
-            updateSyncUI();
+        
+        const loc = res.headers.get('Location');
+        const blobId = loc ? loc.split('/').pop() : null;
+
+        if (blobId) {
+            window.sharedId = blobId;
+            localStorage.setItem('nanjing_shared_id', blobId); // 建立時也自動記憶
+
+            const url = window.location.origin + window.location.pathname + '?id=' + blobId;
+            window.history.pushState({}, '', url);
+
+            document.getElementById('shareUrlInput').value = url;
+            document.getElementById('shareLinkArea').style.display = 'block';
+            btn.textContent = '✨ 產生全新的共編連結';
+            btn.disabled = false;
+
+            window.setSyncDot('ok');
+            startBlobSync();
         } else {
-            showT('❌ 建立失敗，請檢查 Key 是否正確');
+            throw new Error('API 無法取得專屬網址');
         }
-    } catch(e) {
-        showT('❌ 網路錯誤');
-    }
-    document.getElementById('smCreateBtn').textContent = '✨ 建立連線空間 (產生 Bin ID)';
-    document.getElementById('smCreateBtn').disabled = false;
-}
-
-window.saveSyncSetup = function() {
-    jbinKey = document.getElementById('smKey').value.trim();
-    jbinId = document.getElementById('smBin').value.trim();
-    localStorage.setItem('nanjing_jbin_key', jbinKey);
-    localStorage.setItem('nanjing_jbin_id', jbinId);
-    
-    closeSyncSetup();
-    if(jbinKey && jbinId) {
-        showT('✅ 已儲存連線設定');
-        startJsonBinSync();
-        window.sv(); // Push immediately
-    } else {
-        window.setSyncDot('offline');
-        clearInterval(syncInterval);
+    } catch (e) {
+        showT('❌ 產生失敗，請稍後再試');
+        btn.textContent = '✨ 產生專屬共編連結';
+        btn.disabled = false;
     }
 }
 
-async function pushToJsonBin() {
-    if(!jbinKey || !jbinId) return;
+window.copyShareLink = function() {
+    const input = document.getElementById('shareUrlInput');
+    input.select();
+    document.execCommand('copy');
+    showT('✅ 連結已複製！快去貼給品郡');
+}
+
+async function pushToBlob() {
+    if(!window.sharedId) return;
     window.setSyncDot('syncing');
     try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${jbinId}`, {
+        const res = await fetch(`https://jsonblob.com/api/jsonBlob/${window.sharedId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json', 'X-Access-Key': jbinKey },
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify(window.packState())
         });
         if(res.ok) window.setSyncDot('ok');
@@ -1666,61 +1650,69 @@ async function pushToJsonBin() {
     }
 }
 
-async function pullFromJsonBin() {
-    if(!jbinKey || !jbinId) return;
+async function pullFromBlob() {
+    if(!window.sharedId) return;
     try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${jbinId}/latest`, {
-            headers: { 'X-Access-Key': jbinKey }
+        const res = await fetch(`https://jsonblob.com/api/jsonBlob/${window.sharedId}`, {
+            headers: { 'Accept': 'application/json' }
         });
         if(res.ok) {
-            const json = await res.json();
-            if(json.record && json.record.updatedAt) {
-                const localData = window.packState();
-                if (!localData.updatedAt || json.record.updatedAt > localData.updatedAt) {
-                    window.applyState(json.record);
-                    window.refreshCurrentPage();
-                }
+            const data = await res.json();
+            const localData = window.packState();
+            
+            if(data.updatedAt && (!localData.updatedAt || data.updatedAt > localData.updatedAt)) {
+                window.applyState(data);
+                window.refreshCurrentPage();
             }
             window.setSyncDot('ok');
+        } else {
+            window.setSyncDot('offline');
         }
     } catch(e) {
         window.setSyncDot('offline');
     }
 }
 
-function startJsonBinSync() {
+function startBlobSync() {
     if(syncInterval) clearInterval(syncInterval);
-    if(jbinKey && jbinId) {
-        pullFromJsonBin();
-        syncInterval = setInterval(pullFromJsonBin, 15000); // 15秒拉取一次
+    if(window.sharedId) {
+        pullFromBlob();
+        syncInterval = setInterval(pullFromBlob, 8000); // 8秒拉取一次最新資料
     }
 }
 
 window.sv = async function() {
     const data = window.packState();
+    data.updatedAt = Date.now();
     try { localStorage.setItem('nanjing2025_state', JSON.stringify(data)); } catch(e){}
 
-    // 優先使用 JSONBin 同步 (適用於 GitHub Pages)
-    if(jbinKey && jbinId) {
-        pushToJsonBin();
+    if(window.sharedId) {
+        pushToBlob();
     } else {
         window.setSyncDot('offline');
     }
 };
 
 async function loadStateAndRender() {
+    // 1. 優先載入本地資料，確保網頁一開就有畫面
     try {
         const loc = localStorage.getItem('nanjing2025_state');
-        if(loc) {
-            applyState(JSON.parse(loc));
-            refreshCurrentPage();
-        }
+        if(loc) applyState(JSON.parse(loc));
     } catch(e){}
+    
     renderIt();
-    startJsonBinSync(); // 啟動自動同步
-}
-loadStateAndRender();
 
+    // 2. 如果網址帶有 ?id=xxxxx，代表這是一個共編連結，啟動連線！
+    if(window.sharedId) {
+        window.setSyncDot('syncing');
+        await pullFromBlob();
+        startBlobSync();
+    } else {
+        window.setSyncDot('offline');
+    }
+}
+
+loadStateAndRender();
 </script>
 </body>
 </html>
