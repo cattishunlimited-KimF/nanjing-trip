@@ -382,7 +382,6 @@ const TM={sight:{l:'景點',c:'tag-sight',i:'🏛'},food:{l:'餐廳',c:'tag-food
 
 let trips=[
   {id:1,day:0,type:'transit',name:'✈️ MU5006 桃園T2 → 上海浦東T1',address:'桃園國際機場第2航廈',phone:'',mapKey:'桃園國際機場第二航廈',note:'🕕 18:50 起飛 → 20:40 抵達浦東T1｜空客333寬體｜含茶點｜有Wi-Fi',cost:0},
-  {id:2,day:0,type:'food',name:'🎂 海底撈火鍋（華夏東路生日主題店）',address:'上海市浦東新區華夏東路',phone:'',mapKey:'海底捞火锅华夏东路生日主题店上海',note:'抵達後晚餐！生日主題店，可提前告知店員需要生日驚喜服務',cost:200},
   {id:17,day:0,type:'transit',name:'🚗 浦東機場 → 漢庭酒店 機場接送',address:'上海浦東國際機場T1',phone:'',mapKey:'上海浦东国际机场T1',note:'⚠️ 已預訂機場接送！抵達T1後依約定方式找司機接車，確認接送聯絡方式與車牌',cost:150},
   {id:3,day:0,type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',mapKey:'汉庭酒店上海川沙新源路步行街店',note:'4/16–4/18 兩晚｜近迪士尼，步行街旁｜4/18 一早高鐵去南京',cost:280},
 
@@ -397,6 +396,7 @@ let trips=[
   {id:10,day:3,type:'sight',name:'南京博物院（上午）',address:'南京市玄武區中山東路321號',phone:'025-84807923',mapKey:'南京博物院',note:'免費，需提前網路預約，館藏豐富留半天',cost:0},
   {id:19,day:3,type:'sight',name:'📍 前往應援（4/19 時間地點待定）',address:'',phone:'',mapKey:'南京青奥体育公园体育馆',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0},
   {id:11,day:3,type:'sight',name:'🎤 劉宇寧演唱會 Day 2',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',mapKey:'南京青奥体育公园体育馆',note:'🕖 19:00 開演｜票價：內場1580 / 看台1280·980·680·480',cost:1280},
+  {id:20,day:3,type:'food',name:'🍲 海底撈火鍋（南京凱瑟琳廣場店）',address:'南京市建鄴區',phone:'',mapKey:'海底捞火锅南京凯瑟琳广场店',note:'演唱會後晚餐！可提前預訂座位',cost:200},
 
   {id:12,day:4,type:'sight',name:'夫子廟秦淮河（上午逛逛）',address:'南京市秦淮區貢院街1號',phone:'025-52209788',mapKey:'夫子廟景區',note:'退房前逛逛，吃鴨血粉絲湯，買手信伴手禮',cost:80},
   {id:13,day:4,type:'transit',name:'🚄 南京南 → 上海虹橋（高鐵）',address:'南京南站',phone:'',mapKey:'南京南站',note:'下午搭車回上海，車程約1.5小時，提前購票',cost:150},
@@ -418,7 +418,7 @@ function fmtCost(cny){ return cny>0 ? `¥${cny} <span style="font-size:10px;colo
 // ===== MEALS DATA =====
 // meals[day] = {b:'早餐內容',l:'午餐內容',d:'晚餐內容'}
 let meals = {
-  0:{d:'海底撈火鍋 🎂',dc:0},
+  0:{d:'',dc:0},
   1:{b:'酒店早餐或便利商店',bc:0,l:'迪士尼園內（11前或14後）',lc:0,d:'迪士尼園內或步行街',dc:0},
   2:{b:'便利商店 / 虹橋站',bc:0,l:'南京到站後附近覓食',lc:0,d:'演唱會前 or 後隨興',dc:0},
   3:{b:'酒店附近早餐',bc:0,l:'鴨血粉絲湯 or 夫子廟小吃',lc:0,d:'演唱會前 or 後隨興',dc:0},
@@ -455,7 +455,6 @@ const CL=[
   {id:'c12',cat:'📋 訂票 / 預約',t:'上海迪士尼購票（建議提前線上購，可避免當天排隊）',urg:false,sub:''},
   {id:'c13',cat:'📋 訂票 / 預約',t:'演唱會門票確認取票方式（電子票/紙本）',urg:false,sub:''},
   {id:'c14',cat:'📋 訂票 / 預約',t:'南京博物院網路預約（免費但需預約）',urg:false,sub:''},
-  {id:'c15',cat:'📋 訂票 / 預約',t:'海底撈預訂座位（告知生日主題需求）',urg:false,sub:''},
 
   {id:'c16',cat:'🧳 行李確認',t:'護照（有效期需6個月以上）＋台胞證',urg:true,sub:''},
   {id:'c17',cat:'🧳 行李確認',t:'人民幣現金（備用，部分小攤不接受支付）',urg:false,sub:''},
@@ -622,7 +621,8 @@ async function jbinWrite(data){
 
 // ---- Pack / unpack app state ----
 function packState(){
-  return { pays,pid,clDone,disDone,fdDone,trips,nid,meals,updatedAt:Date.now() };
+  // 只同步使用者產生的資料，行程預設資料(trips)不納入同步
+  return { pays,pid,clDone,disDone,fdDone,meals,updatedAt:Date.now() };
 }
 function applyState(data){
   if(!data) return;
@@ -631,8 +631,7 @@ function applyState(data){
   if(data.clDone!==undefined) clDone=data.clDone;
   if(data.disDone!==undefined) disDone=data.disDone;
   if(data.fdDone!==undefined) fdDone=data.fdDone;
-  if(data.trips!==undefined) trips=data.trips;
-  if(data.nid!==undefined) nid=data.nid;
+  // trips 永遠從程式碼讀，不從 JSONBin 覆蓋
   if(data.meals!==undefined) meals=data.meals;
 }
 function refreshCurrentPage(){
@@ -1476,6 +1475,17 @@ function cp(t,l){navigator.clipboard.writeText(t).then(()=>showT(`✓ 已複製$
 function showT(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
 function eh(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function eq(s){return String(s||'').replace(/'/g,"\\'").replace(/\n/g,' ');}
+
+// 若網址帶有 ?reset=1，清除本機快取並重新載入（不帶 reset 參數）
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('reset')==='1'){
+    localStorage.clear();
+    params.delete('reset');
+    const newUrl = window.location.pathname + (params.toString() ? '?'+params.toString() : '');
+    window.location.replace(newUrl);
+  }
+})();
 
 ld().then(()=>renderIt());
 </script>
