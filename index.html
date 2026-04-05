@@ -18,7 +18,7 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .nav-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:11px;}
 .nav h1{font-family:'Noto Serif TC',serif;font-size:19px;font-weight:700;letter-spacing:2px;}
 .nav h1 span{color:#e8c97a;}
-.nav-sub{font-size:11px;color:#b0a898;margin-top:2px;}
+.nav-sub{font-size:11px;color:#b0a898;margin-top:2px;display:flex;align-items:center;gap:6px;}
 .add-btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;white-space:nowrap;font-family:'Noto Sans TC',sans-serif;}
 .page-tabs{display:flex;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid rgba(255,255,255,.08);}
 .page-tabs:last-of-type{border-bottom:none;}
@@ -153,7 +153,7 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .pr-edit{background:none;border:none;color:#aaa;cursor:pointer;font-size:14px;padding:2px;margin-right:2px;}
 .pr-edit:hover{color:var(--accent);}
 
-/* MODAL */
+/* MODAL & SETTINGS */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,18,8,.55);z-index:200;align-items:flex-end;justify-content:center;}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--paper);border-radius:18px 18px 0 0;width:100%;max-width:700px;padding:20px 16px 28px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;}
@@ -195,6 +195,19 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .lr-twd{font-size:10px;color:var(--accent2);display:block;text-align:right;}
 .lr-src-trip{border-left:3px solid var(--tt);}
 .lr-src-pay{border-left:3px solid var(--ft);}
+
+/* SYNC MODAL */
+.sync-modal{background:var(--paper);border-radius:18px 18px 0 0;width:100%;max-width:700px;padding:22px 18px 32px;max-height:92vh;overflow-y:auto;animation:slideUp .3s ease;}
+.sm-title{font-family:'Noto Serif TC',serif;font-size:16px;font-weight:700;color:var(--accent3);margin-bottom:4px;}
+.sm-sub{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6;}
+.sm-step{background:var(--warm);border-radius:10px;padding:11px 13px;margin-bottom:10px;font-size:12px;line-height:1.7;border-left:3px solid var(--accent3);}
+.sm-step b{color:var(--accent3);}
+.sm-label{font-size:11px;color:var(--muted);margin-bottom:4px;margin-top:10px;}
+.sm-input{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font-size:13px;font-family:'Noto Sans TC',sans-serif;background:var(--card);color:var(--ink);outline:none;}
+.sm-input:focus{border-color:var(--accent3);}
+.sm-btns{display:flex;gap:8px;margin-top:14px;}
+.sm-save{flex:1;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:10px;font-size:14px;font-family:'Noto Serif TC',serif;cursor:pointer;}
+.sm-cancel{background:var(--warm);color:var(--muted);border:1px solid var(--border);border-radius:9px;padding:10px 16px;font-size:13px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -203,7 +216,10 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
   <div class="nav-top">
     <div>
       <h1>🏯 <span>南京</span> 旅行手帳</h1>
-      <div class="nav-sub">4/16–4/21 · 若佩 × 品郡 &nbsp;·&nbsp; <span id="syncDot" title="共同編輯中">🟢 雙人同步</span></div>
+      <div class="nav-sub">
+          4/16–4/21 · 若佩 × 品郡 &nbsp;·&nbsp; <span id="syncDot" title="連線狀態">🔄 連線中...</span>
+          &nbsp;<span style="cursor:pointer;font-size:13px;" onclick="openSyncSetup()" title="設定 Google Sheet 備份">⚙️</span>
+      </div>
     </div>
     <button class="add-btn" id="addBtn" onclick="openAddModal()">＋ 新增</button>
   </div>
@@ -311,6 +327,7 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 
 <div class="toast" id="toast"></div>
 
+<!-- Add/Edit Modal -->
 <div class="modal-overlay" id="mo">
   <div class="modal">
     <h2 id="mTitle">新增地點</h2>
@@ -349,6 +366,29 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
       <button class="btn-cancel" onclick="closeModal()">取消</button>
       <button class="btn-del" id="delBtn" style="display:none" onclick="deleteItem()">刪除</button>
       <button class="btn-save" onclick="saveItem()">儲存</button>
+    </div>
+  </div>
+</div>
+
+<!-- SYNC SETUP MODAL (For Google Sheet Backup) -->
+<div class="modal-overlay" id="syncModal">
+  <div class="sync-modal">
+    <div class="sm-title">📊 Google Sheet 匯出設定</div>
+    <div class="sm-sub" style="margin-bottom:8px">將您的行程費用與分帳記錄自動備份到 Google 試算表，方便後續分析與留存。</div>
+    
+    <div class="sm-step" style="margin-bottom:14px">
+      <b>步驟一</b>：建立空白的 Google Sheet，點選上方選單「擴充功能」→「Apps Script」<br>
+      <b>步驟二</b>：貼上系統提供的專屬 <b>.gs</b> 備份程式碼<br>
+      <b>步驟三</b>：點擊右上角「部署」→「新增部署」→ 類型選「網路應用程式」→ 存取權選擇「所有人」<br>
+      <b>步驟四</b>：複製產生出來的 <b>Web App URL</b> 網址貼到下方
+    </div>
+
+    <div class="sm-label">Google Apps Script Web App URL</div>
+    <input class="sm-input" id="smGsUrl" placeholder="https://script.google.com/macros/s/..." oninput="updateSetupUI()">
+    
+    <div class="sm-btns">
+      <button class="sm-cancel" onclick="closeSyncSetup()">取消</button>
+      <button class="sm-save" id="smSaveBtn" onclick="smSave()">✅ 儲存設定</button>
     </div>
   </div>
 </div>
@@ -598,8 +638,8 @@ function customConfirm(msg, callback) {
 function setSyncDot(state){
   const el = document.getElementById('syncDot');
   if(!el) return;
-  const map = {ok:'🟢 即時同步中',syncing:'🔄 連線中...',offline:'🔴 離線模式'};
-  el.textContent = map[state]||'';
+  const map = {ok:'🟢 雙人同步',syncing:'🔄 連線中...',offline:'🔴 離線模式'};
+  el.innerHTML = map[state]||'';
 }
 
 function packState(){ return { pays,pid,clDone,disDone,fdDone,meals,updatedAt:Date.now() }; }
@@ -910,6 +950,10 @@ function renderPay(){
   }).join('');
 
   document.getElementById('paySummary').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-size:16px;font-weight:700;color:var(--ink);">💰 雙人分帳與結算</div>
+        <button onclick="syncToSheet('pay')" style="background:var(--accent2);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px" title="將記帳資料傳送至 Google Sheet">📤 匯出至 Google Sheet</button>
+    </div>
     <div class="pay-cards">
       <div class="pay-card">
         <div class="pc-name">若佩</div>
@@ -1221,6 +1265,41 @@ window.execTransfer = function(name, amtPerPerson, curr, shares) {
   }, 50);
 }
 
+window.syncToSheet = async function(type) {
+    const url = localStorage.getItem('nanjing_gs_url');
+    if(!url) {
+        window.openSyncSetup();
+        showT('請先設定 Google Sheet 網址');
+        return;
+    }
+    showT('⏳ 正在同步資料至 Google Sheet...');
+    try {
+        await fetch(url, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: type, pays: pays, trips: trips })
+        });
+        showT('✅ 成功送出資料備份請求！');
+    } catch(e) {
+        showT('❌ 同步失敗，請檢查網址或網路');
+    }
+};
+
+window.openSyncSetup = function() {
+    document.getElementById('smGsUrl').value = localStorage.getItem('nanjing_gs_url') || '';
+    document.getElementById('syncModal').classList.add('open');
+};
+window.closeSyncSetup = function() {
+    document.getElementById('syncModal').classList.remove('open');
+};
+window.smSave = function() {
+    const url = document.getElementById('smGsUrl').value.trim();
+    localStorage.setItem('nanjing_gs_url', url);
+    window.closeSyncSetup();
+    showT('✅ 設定已儲存');
+};
+
 function renderLedger(){
   const DNAMES=['4/16','4/17','4/18','4/19','4/20','4/21'];
   const tripItems = trips.filter(x=>x.cost>0).map(x=>({
@@ -1246,7 +1325,11 @@ function renderLedger(){
   const grandTotalRmb = tripTotalRmb + payTotalRmb;
   const grandTotalTwd = tripTotalTwd + payTotalTwd;
 
-  let html = `<div class="ledger-summary">
+  let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="font-size:16px;font-weight:700;color:var(--ink);">📊 全覽與備份</div>
+      <button onclick="syncToSheet('all')" style="background:var(--accent2);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px" title="將所有資料傳送至 Google Sheet">📤 匯出至試算表</button>
+  </div>
+  <div class="ledger-summary">
     <div class="ls-card"><div class="ls-label">行程預估合計</div><div class="ls-amt" style="font-size:16px">¥${tripTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${tripTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(tripTotalRmb) + tripTotalTwd)}</div></div>
     <div class="ls-card"><div class="ls-label">已記帳合計</div><div class="ls-amt" style="font-size:16px">¥${payTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${payTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(payTotalRmb)+payTotalTwd)}</div></div>
     <div class="ls-card"><div class="ls-label">總計估值(估+帳)</div><div class="ls-amt" style="font-size:16px">¥${grandTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${grandTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(grandTotalRmb)+grandTotalTwd)}</div></div>
@@ -1409,12 +1492,17 @@ loadStateAndRender();
     let isFirebaseReady = false;
 
     async function setupFirebase() {
+        let connTimeout = setTimeout(() => {
+            window.setSyncDot('offline');
+        }, 8000);
+
         try {
             const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
             const appId = typeof __app_id !== 'undefined' ? __app_id : 'nanjing-trip-app';
 
             if (!firebaseConfig) {
                 console.warn("⚠️ 系統環境缺少 Firebase 設定，已降級為本機模式。");
+                clearTimeout(connTimeout);
                 window.setSyncDot('offline');
                 return;
             }
@@ -1434,7 +1522,15 @@ loadStateAndRender();
             fStoreDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'nanjing_trip_2025', 'shared_state');
             isFirebaseReady = true;
 
-            onSnapshot(fStoreDocRef, (docSnap) => {
+            onSnapshot(fStoreDocRef, { includeMetadataChanges: true }, (docSnap) => {
+                clearTimeout(connTimeout);
+                
+                if (docSnap.metadata && docSnap.metadata.fromCache) {
+                    window.setSyncDot('offline');
+                } else {
+                    window.setSyncDot('ok');
+                }
+
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     window.applyState(data);
@@ -1442,18 +1538,20 @@ loadStateAndRender();
                 } else {
                     if(window.sv) window.sv();
                 }
-                window.setSyncDot('ok');
             }, (error) => {
+                clearTimeout(connTimeout);
                 console.error("即時連線發生中斷:", error);
                 window.setSyncDot('offline');
             });
 
         } catch (e) {
+            clearTimeout(connTimeout);
             console.error("雲端連線失敗:", e);
             window.setSyncDot('offline');
         }
     }
 
+    // 將帶有 Firebase 連線邏輯的 sv() 綁定回全域
     window.sv = async function() {
         const data = window.packState();
         try { localStorage.setItem('nanjing2025_state', JSON.stringify(data)); } catch(e){}
