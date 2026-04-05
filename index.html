@@ -391,6 +391,7 @@ let trips=[
   {id:18,day:2,time:'15:00',type:'sight',name:'📍 前往應援（4/18 時間地點待定）',address:'',phone:'',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0, curr:'rmb'},
   {id:9,day:2,time:'19:00',type:'sight',name:'🎤 劉宇寧演唱會 Day 1',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',note:'🕖 19:00 開演｜提前到場取票入座',cost:1280, curr:'rmb'},
 
+  {id:10,day:3,time:'09:30',type:'sight',name:'南京博物院（上午）',address:'南京市玄武區中山東路321號',phone:'025-84807923',note:'免費，需提前網路預約，館藏豐富留半天',cost:0, curr:'rmb'},
   {id:19,day:3,time:'15:00',type:'sight',name:'📍 前往應援（4/19 時間地點待定）',address:'',phone:'',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0, curr:'rmb'},
   {id:11,day:3,time:'19:00',type:'sight',name:'🎤 劉宇寧演唱會 Day 2 (品郡)',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',note:'🕖 19:00 開演｜票價：內場1580 / 看台1280·980·680·480',cost:1280, curr:'rmb'},
   {id:21,day:3,time:'19:00',type:'sight',name:'🛍️ 砂之船 (砂之屋) 逛街 (若佩)',address:'南京市',phone:'',note:'品郡看演唱會，若佩去奧特萊斯逛街！',cost:0, curr:'rmb'},
@@ -403,7 +404,7 @@ let trips=[
   {id:14,day:4,time:'18:00',type:'hotel',name:'上海福樂精選飯店（虹橋機場淞虹路地鐵站店）',address:'上海市閔行區淞虹路',phone:'',note:'4/20–4/21 一晚｜精選標準間｜淞虹路地鐵站旁，虹橋機場 T1 近',cost:300, curr:'rmb'},
 
   {id:15,day:5,time:'06:00',type:'transit',name:'⏰ 早起！前往上海虹橋機場T1',address:'上海虹橋國際機場T1',phone:'',note:'🕕 建議 06:00 前到機場｜08:15 起飛，確認飯店→機場交通方式',cost:0, curr:'rmb'},
-  {id:16,day:5,time:'08:15',type:'transit',name:'✈️ [08:15 - 10:15] FM851 上海虹橋 → 台北松山',address:'上海虹橋國際機場T1',phone:'',note:'波音738(窄)｜含早餐｜上海航空承運',cost:0, curr:'rmb'},
+  {id:16,day:5,time:'08:15',type:'transit',name:'✈️ FM851 上海虹橋 → 台北松山',address:'上海虹橋國際機場T1',phone:'',note:'08:15 起飛 → 10:15 抵達松山｜波音738(窄)｜含早餐｜上海航空承運',cost:0, curr:'rmb'},
   {id:25,day:5,time:'11:30',type:'food',name:'M ONE CAFE',address:'台北市',phone:'',note:'抵達台灣後的早午餐！',cost:0, curr:'twd'},
 ];
 let nid=30,curDay=0,editId=null;
@@ -444,8 +445,8 @@ let meals = {
   1:{b:'酒店早餐或便利商店',bc:0,l:'迪士尼園內（11前或14後）',lc:0,d:'迪士尼園內或步行街',dc:0},
   2:{b:'便利商店 / 虹橋站',bc:0,l:'南京到站後附近覓食',lc:0,d:'演唱會前 or 後隨興',dc:0},
   3:{b:'當地早餐 (無飯店早餐)',bc:0,l:'鴨血粉絲湯 / 芳婆糕團點心',lc:0,d:'演唱會前 or 後隨興',dc:0},
-  4:{b:'當地早餐 (無飯店早餐)',bc:0,l:'',lc:0,d:'上海虹橋附近',dc:0},
-  5:{},
+  4:{b:'當地早餐 (無飯店早餐)',bc:0,l:'夫子廟秦淮小吃 / 牛肉鍋貼',lc:0,d:'上海虹橋附近',dc:0},
+  5:{l:'M ONE CAFE',lc:0},
 };
 
 // ===== CHECKLIST =====
@@ -631,7 +632,7 @@ function refreshCurrentPage(){
   else if(p==='ledger') renderLedger();
 }
 
-const DAY_MEALS={ 0:['d'], 1:['b','l','d'], 2:['b','l','d'], 3:['b','l','d'], 4:['b','d'], 5:[] };
+const DAY_MEALS={ 0:['d'], 1:['b','l','d'], 2:['b','l','d'], 3:['b','l','d'], 4:['b','l','d'], 5:['l'] };
 const MEAL_DEF={ b:{slot:'b',icon:'🌅',label:'早餐'}, l:{slot:'l',icon:'☀️',label:'午餐'}, d:{slot:'d',icon:'🌙',label:'晚餐'} };
 const MEAL_TIME={ b:'08:00', l:'12:30', d:'18:30' };
 
@@ -643,9 +644,11 @@ function buildTimeline(dayIdx){
   (DAY_MEALS[dayIdx]||[]).forEach(k=>{
     const def=MEAL_DEF[k];
     let mTime = MEAL_TIME[k];
+    if(dayIdx === 5 && k === 'l') mTime = '11:30';
     nodes.push({type:'meal', time: mTime, slot:def.slot, icon:def.icon, label:def.label, val:m[k]||'', cost:m[k+'c']||0});
   });
   
+  // Sort all items (trips and meals) chronologically by time
   nodes.sort((a,b)=>a.time.localeCompare(b.time));
   return nodes;
 }
@@ -734,6 +737,7 @@ function toggleTripCurr(id) {
 function tripNodeH(x){
   const m=TM[x.type]||TM.sight;
   
+  // Clean name for Amap Search: remove emojis and any text inside brackets
   let cleanName = x.address || x.name;
   cleanName = cleanName.replace(/\[.*?\]/g, '').replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
   const q=encodeURIComponent(cleanName || x.name);
