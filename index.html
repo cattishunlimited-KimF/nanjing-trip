@@ -64,6 +64,8 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .btn-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
 .map-btn{display:inline-flex;align-items:center;gap:4px;background:var(--accent2);color:#fff;border:none;border-radius:7px;padding:5px 10px;font-size:11px;cursor:pointer;text-decoration:none;transition:background .2s;}
 .map-btn:hover{background:#1d4d38;}.map-btn.cb{background:var(--accent3);}
+.map-btn.google{background:#4285F4;}
+.map-btn.google:hover{background:#3367d6;}
 .note-box{margin-top:7px;background:var(--warm);border-radius:7px;padding:6px 10px;font-size:11px;color:var(--muted);border-left:3px solid var(--border);}
 .empty-day{text-align:center;padding:34px;color:var(--muted);font-size:13px;}
 
@@ -120,6 +122,11 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .sec-note{font-size:12px;color:var(--muted);margin-bottom:11px;padding:8px 11px;background:var(--warm);border-radius:8px;border-left:3px solid var(--border);line-height:1.5;}
 
 /* PAY */
+.summary-toggle{background:var(--warm);border:1px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;margin-bottom:12px;display:flex;align-items:center;transition:all 0.2s;}
+.summary-toggle:hover{filter:brightness(0.96);}
+.summary-content{display:none;animation:fadeIn 0.3s ease;}
+.summary-content.open{display:block;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 .pay-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
 .pay-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center;}
 .pc-name{font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700;margin-bottom:4px;}
@@ -354,7 +361,16 @@ window.setSyncDot = function(state) {
         </div>
     </div>
     <div class="fg"><label>名稱 *</label><input id="fName" type="text" placeholder="例如：南京博物院"></div>
-    <div class="fg"><label>地址</label><input id="fAddr" type="text"></div>
+    <div class="fg">
+      <label>地址與地圖</label>
+      <div style="display:flex;gap:5px;">
+        <select id="fMapType" style="width:90px;border:1px solid var(--border);border-radius:8px;padding:8px 5px;font-size:13px;background:var(--card);color:var(--ink);outline:none;">
+            <option value="amap">📍 高德</option>
+            <option value="google">📍 Google</option>
+        </select>
+        <input id="fAddr" type="text" placeholder="地址（選填）" style="flex:1;">
+      </div>
+    </div>
     <div class="fg"><label>電話</label><input id="fPhone" type="tel"></div>
     <div class="fg">
         <label>預估費用（/ 人）</label>
@@ -378,6 +394,7 @@ window.setSyncDot = function(state) {
 <script>
 // 全域狀態儲存與更新時間戳記
 window.localUpdatedAt = 0; 
+let paySummaryExpanded = false; // 追蹤分帳總計是否展開
 
 // ===== TRIP DATA =====
 const DAYS=[
@@ -391,33 +408,33 @@ const DAYS=[
 const TM={sight:{l:'景點',c:'tag-sight',i:'🏛'},food:{l:'餐廳',c:'tag-food',i:'🍜'},hotel:{l:'住宿',c:'tag-hotel',i:'🏨'},transit:{l:'交通',c:'tag-transit',i:'🚄'}};
 
 let trips=[
-  {id:1,day:0,time:'18:50',type:'transit',name:'✈️ MU5006 桃園T2 → 上海浦東T1',address:'桃園國際機場第2航廈',phone:'',note:'18:50 起飛 → 20:40 抵達浦東T1｜空客333寬體｜含茶點｜有Wi-Fi',cost:0, curr:'rmb'},
-  {id:17,day:0,time:'20:40',type:'transit',name:'🚗 浦東機場 → 漢庭酒店 機場接送',address:'上海浦東國際機場T1',phone:'',note:'⚠️ 已預訂機場接送！抵達T1後依約定方式找司機接車，確認接送聯絡方式與車牌',cost:150, curr:'rmb'},
-  {id:3,day:0,time:'21:30',type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',note:'4/16–4/18 兩晚｜近迪士尼，步行街旁｜4/18 一早高鐵去南京',cost:280, curr:'rmb'},
+  {id:1,day:0,time:'18:50',type:'transit',name:'✈️ MU5006 桃園T2 → 上海浦東T1',address:'桃園國際機場第2航廈',phone:'',note:'18:50 起飛 → 20:40 抵達浦東T1｜空客333寬體｜含茶點｜有Wi-Fi',cost:0, curr:'rmb', mapType:'google'},
+  {id:17,day:0,time:'20:40',type:'transit',name:'🚗 浦東機場 → 漢庭酒店 機場接送',address:'上海浦東國際機場T1',phone:'',note:'⚠️ 已預訂機場接送！抵達T1後依約定方式找司機接車，確認接送聯絡方式與車牌',cost:150, curr:'rmb', mapType:'amap'},
+  {id:3,day:0,time:'21:30',type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',note:'4/16–4/18 兩晚｜近迪士尼，步行街旁｜4/18 一早高鐵去南京',cost:280, curr:'rmb', mapType:'amap'},
 
-  {id:4,day:1,time:'09:00',type:'sight',name:'🎠 上海迪士尼樂園',address:'上海市浦東新區川沙新鎮黃趙路310號',phone:'400-180-0000',note:'全天遊玩！詳細必玩清單請看「迪士尼」頁。建議開園前到場，熱門項目先衝',cost:719, curr:'rmb'},
-  {id:5,day:1,time:'21:00',type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',note:'連住第二晚，明天4/18一早高鐵去南京',cost:0, curr:'rmb'},
+  {id:4,day:1,time:'09:00',type:'sight',name:'🎠 上海迪士尼樂園',address:'上海市浦東新區川沙新鎮黃趙路310號',phone:'400-180-0000',note:'全天遊玩！詳細必玩清單請看「迪士尼」頁。建議開園前到場，熱門項目先衝',cost:719, curr:'rmb', mapType:'amap'},
+  {id:5,day:1,time:'21:00',type:'hotel',name:'漢庭酒店（上海川沙新源路步行街店）',address:'上海市浦東新區川沙新鎮新源路',phone:'',note:'連住第二晚，明天4/18一早高鐵去南京',cost:0, curr:'rmb', mapType:'amap'},
 
-  {id:6,day:2,time:'10:00',type:'transit',name:'🚄 G12 上海虹橋 → 南京南',address:'上海虹橋火車站',phone:'',note:'10:00-10:59｜驗票閘門 1A1B｜二等座：第 05 車廂 15D(若佩)、15F(品郡)',cost:150, curr:'rmb'},
-  {id:7,day:2,time:'11:30',type:'hotel',name:'美城飯店（夫子廟水平方店）',address:'南京市秦淮區',phone:'',note:'4/18–4/20 兩晚｜高級雙床房｜夫子廟商圈，步行可達秦淮河',cost:350, curr:'rmb'},
-  {id:18,day:2,time:'15:00',type:'sight',name:'📍 前往應援（4/18 時間地點待定）',address:'',phone:'',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0, curr:'rmb'},
-  {id:9,day:2,time:'19:00',type:'sight',name:'🎤 劉宇寧演唱會 Day 1',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',note:'🕖 19:00 開演｜提前到場取票入座',cost:1280, curr:'rmb'},
+  {id:6,day:2,time:'10:00',type:'transit',name:'🚄 G12 上海虹橋 → 南京南',address:'上海虹橋火車站',phone:'',note:'10:00-10:59｜驗票閘門 1A1B｜二等座：第 05 車廂 15D(若佩)、15F(品郡)',cost:150, curr:'rmb', mapType:'amap'},
+  {id:7,day:2,time:'11:30',type:'hotel',name:'美城飯店（夫子廟水平方店）',address:'南京市秦淮區',phone:'',note:'4/18–4/20 兩晚｜高級雙床房｜夫子廟商圈，步行可達秦淮河',cost:350, curr:'rmb', mapType:'amap'},
+  {id:18,day:2,time:'15:00',type:'sight',name:'📍 前往應援（4/18 時間地點待定）',address:'',phone:'',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0, curr:'rmb', mapType:'amap'},
+  {id:9,day:2,time:'19:00',type:'sight',name:'🎤 劉宇寧演唱會 Day 1',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',note:'🕖 19:00 開演｜提前到場取票入座',cost:1280, curr:'rmb', mapType:'amap'},
 
-  {id:10,day:3,time:'09:30',type:'sight',name:'南京博物院（上午）',address:'南京市玄武區中山東路321號',phone:'025-84807923',note:'免費，需提前網路預約，館藏豐富留半天',cost:0, curr:'rmb'},
-  {id:19,day:3,time:'15:00',type:'sight',name:'📍 前往應援（4/19 時間地點待定）',address:'',phone:'',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0, curr:'rmb'},
-  {id:11,day:3,time:'19:00',type:'sight',name:'🎤 劉宇寧演唱會 Day 2 (品郡)',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',note:'🕖 19:00 開演｜票價：內場1580 / 看台1280·980·680·480',cost:1280, curr:'rmb'},
-  {id:21,day:3,time:'19:00',type:'sight',name:'🛍️ 砂之船 (砂之屋) 逛街 (若佩)',address:'南京市',phone:'',note:'品郡看演唱會，若佩去奧特萊斯逛街！',cost:0, curr:'rmb'},
-  {id:20,day:3,time:'22:30',type:'food',name:'🍲 海底撈火鍋（南京凱瑟琳廣場店）',address:'南京市建鄴區',phone:'',note:'演唱會後晚餐！可提前預訂座位',cost:200, curr:'rmb'},
+  {id:10,day:3,time:'09:30',type:'sight',name:'南京博物院（上午）',address:'南京市玄武區中山東路321號',phone:'025-84807923',note:'免費，需提前網路預約，館藏豐富留半天',cost:0, curr:'rmb', mapType:'amap'},
+  {id:19,day:3,time:'15:00',type:'sight',name:'📍 前往應援（4/19 時間地點待定）',address:'',phone:'',note:'⚠️ 時間與地點未定，請確認後補充！通常為演唱會當天下午於場館附近聚集',cost:0, curr:'rmb', mapType:'amap'},
+  {id:11,day:3,time:'19:00',type:'sight',name:'🎤 劉宇寧演唱會 Day 2 (品郡)',address:'南京市建鄴區夢都大街100號夢之藍青奧體育公園體育館',phone:'',note:'🕖 19:00 開演｜票價：內場1580 / 看台1280·980·680·480',cost:1280, curr:'rmb', mapType:'amap'},
+  {id:21,day:3,time:'19:00',type:'sight',name:'🛍️ 砂之船 (砂之屋) 逛街 (若佩)',address:'南京市',phone:'',note:'品郡看演唱會，若佩去奧特萊斯逛街！',cost:0, curr:'rmb', mapType:'amap'},
+  {id:20,day:3,time:'22:30',type:'food',name:'🍲 海底撈火鍋（南京凱瑟琳廣場店）',address:'南京市建鄴區',phone:'',note:'演唱會後晚餐！可提前預訂座位',cost:200, curr:'rmb', mapType:'amap'},
 
-  {id:12,day:4,time:'09:00',type:'sight',name:'雞鳴寺',address:'南京市玄武區雞鳴寺路1號',phone:'',note:'早上先去雞鳴寺祈福賞景',cost:10, curr:'rmb'},
-  {id:23,day:4,time:'11:00',type:'sight',name:'新街口',address:'南京市秦淮區新街口',phone:'',note:'中華第一商圈，逛街與午餐',cost:0, curr:'rmb'},
-  {id:24,day:4,time:'13:30',type:'sight',name:'夫子廟秦淮風光帶',address:'南京市秦淮區貢院街1號',phone:'',note:'離開南京前最後逛逛買伴手禮',cost:0, curr:'rmb'},
-  {id:13,day:4,time:'16:00',type:'transit',name:'🚄 南京南 → 上海虹橋（高鐵）',address:'南京南站',phone:'',note:'預計搭乘下午或晚上的班次，時間尚未確定，記得提前購票',cost:150, curr:'rmb'},
-  {id:14,day:4,time:'18:00',type:'hotel',name:'上海福樂精選飯店（虹橋機場淞虹路地鐵站店）',address:'上海市閔行區淞虹路',phone:'',note:'4/20–4/21 一晚｜精選標準間｜淞虹路地鐵站旁，虹橋機場 T1 近',cost:300, curr:'rmb'},
+  {id:12,day:4,time:'09:00',type:'sight',name:'雞鳴寺',address:'南京市玄武區雞鳴寺路1號',phone:'',note:'早上先去雞鳴寺祈福賞景',cost:10, curr:'rmb', mapType:'amap'},
+  {id:23,day:4,time:'11:00',type:'sight',name:'新街口',address:'南京市秦淮區新街口',phone:'',note:'中華第一商圈，逛街與午餐',cost:0, curr:'rmb', mapType:'amap'},
+  {id:24,day:4,time:'13:30',type:'sight',name:'夫子廟秦淮風光帶',address:'南京市秦淮區貢院街1號',phone:'',note:'離開南京前最後逛逛買伴手禮',cost:0, curr:'rmb', mapType:'amap'},
+  {id:13,day:4,time:'16:00',type:'transit',name:'🚄 南京南 → 上海虹橋（高鐵）',address:'南京南站',phone:'',note:'預計搭乘下午或晚上的班次，時間尚未確定，記得提前購票',cost:150, curr:'rmb', mapType:'amap'},
+  {id:14,day:4,time:'18:00',type:'hotel',name:'上海福樂精選飯店（虹橋機場淞虹路地鐵站店）',address:'上海市閔行區淞虹路',phone:'',note:'4/20–4/21 一晚｜精選標準間｜淞虹路地鐵站旁，虹橋機場 T1 近',cost:300, curr:'rmb', mapType:'amap'},
 
-  {id:15,day:5,time:'06:00',type:'transit',name:'⏰ 早起！前往上海虹橋機場T1',address:'上海虹橋國際機場T1',phone:'',note:'🕕 建議 06:00 前到機場｜08:15 起飛，確認飯店→機場交通方式',cost:0, curr:'rmb'},
-  {id:16,day:5,time:'08:15',type:'transit',name:'✈️ FM851 上海虹橋 → 台北松山',address:'上海虹橋國際機場T1',phone:'',note:'08:15 起飛 → 10:15 抵達松山｜波音738(窄)｜含早餐｜上海航空承運',cost:0, curr:'rmb'},
-  {id:25,day:5,time:'11:30',type:'food',name:'M ONE CAFE',address:'台北市',phone:'',note:'抵達台灣後的早午餐！',cost:0, curr:'twd'},
+  {id:15,day:5,time:'06:00',type:'transit',name:'⏰ 早起！前往上海虹橋機場T1',address:'上海虹橋國際機場T1',phone:'',note:'🕕 建議 06:00 前到機場｜08:15 起飛，確認飯店→機場交通方式',cost:0, curr:'rmb', mapType:'amap'},
+  {id:16,day:5,time:'08:15',type:'transit',name:'✈️ FM851 上海虹橋 → 台北松山',address:'上海虹橋國際機場T1',phone:'',note:'08:15 起飛 → 10:15 抵達松山｜波音738(窄)｜含早餐｜上海航空承運',cost:0, curr:'rmb', mapType:'google'},
+  {id:25,day:5,time:'11:30',type:'food',name:'M ONE CAFE',address:'台北市',phone:'',note:'抵達台灣後的早午餐！',cost:0, curr:'twd', mapType:'google'},
 ];
 let nid=30,curDay=0,editId=null;
 let cnyToTwd = 4.5; 
@@ -434,7 +451,7 @@ window.applyState = function(data){
   if(data.disDone!==undefined) disDone=data.disDone;
   if(data.fdDone!==undefined) fdDone=data.fdDone;
   if(data.meals!==undefined) meals=data.meals;
-  if(data.trips!==undefined) trips=data.trips;
+  if(data.trips!==undefined) trips=data.trips; 
 };
 
 window.refreshCurrentPage = function(){
@@ -752,8 +769,16 @@ function tripNodeH(x){
   cleanName = cleanName.replace(/\[.*?\]/g, '').replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
   const q=encodeURIComponent(cleanName || x.name);
   
-  const app=`androidamap://keyword?sourceApplication=travel&keywords=${q}&dev=0`;
-  const web=`https://uri.amap.com/search?keyword=${q}&src=travel`;
+  const mapType = x.mapType || 'amap';
+  let mapLinkHtml = '';
+  if (mapType === 'google') {
+      const googleWeb = `https://www.google.com/maps/search/?api=1&query=${q}`;
+      mapLinkHtml = `<a class="map-btn google" href="${googleWeb}" target="_blank">📍 Google Map</a>`;
+  } else {
+      const app = `androidamap://keyword?sourceApplication=travel&keywords=${q}&dev=0`;
+      const web = `https://uri.amap.com/search?keyword=${q}&src=travel`;
+      mapLinkHtml = `<a class="map-btn" href="${app}" onclick="ta(event,'${web}')">📍 高德地圖</a>`;
+  }
   
   const isTwd = x.curr === 'twd';
   const sym = isTwd ? 'NT$' : '¥';
@@ -786,7 +811,7 @@ function tripNodeH(x){
         ${hint ? `<span class="cost-twd" id="c-twd-${x.id}">${hint}</span>` : `<span class="cost-twd" id="c-twd-${x.id}" style="display:none"></span>`}
       </div>
       <div class="btn-row">
-        <a class="map-btn" href="${app}" onclick="ta(event,'${web}')">📍 高德地圖</a>
+        ${mapLinkHtml}
         ${x.phone?`<a class="map-btn cb" href="tel:${eq(x.phone)}">📞 撥打</a>`:''}
       </div>
       ${x.note?`<div class="note-box">💬 ${eh(x.note)}</div>`:''}
@@ -886,6 +911,11 @@ function renderFd(){
 }
 function tfd(id){fdDone[id]=!fdDone[id];if(window.sv) window.sv();renderFd();}
 
+window.togglePaySummary = function() {
+    paySummaryExpanded = !paySummaryExpanded;
+    renderPay();
+};
+
 function renderPay(){
   const totals = calcTotals();
   
@@ -940,35 +970,62 @@ function renderPay(){
     </div>`;
   }).join('');
 
-  document.getElementById('paySummary').innerHTML=`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <div style="font-size:16px;font-weight:700;color:var(--ink);">💰 雙人分帳與結算</div>
-        <button onclick="exportToExcel()" style="background:var(--accent2);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px" title="下載所有資料為完整的 Excel 檔案">📤 匯出 Excel</button>
-    </div>
-    <div class="pay-cards">
-      <div class="pay-card">
-        <div class="pc-name">若佩</div>
-        <div class="pc-amt">¥${totals.rBearRmb.toFixed(0)}</div>
-        <div class="pc-amt" style="font-size:20px;color:var(--accent3);margin-top:2px;">NT$${totals.rBearTwd.toFixed(0)}</div>
-        <div style="font-size:11px;color:var(--accent2);margin-bottom:4px;margin-top:6px;">≈ 總計 NT$${Math.round(totals.rBearTwd + twd(totals.rBearRmb))}</div>
-        <div class="pc-sub">應負擔總額</div>
-      </div>
-      <div class="pay-card">
-        <div class="pc-name">品郡</div>
-        <div class="pc-amt">¥${totals.pBearRmb.toFixed(0)}</div>
-        <div class="pc-amt" style="font-size:20px;color:var(--accent3);margin-top:2px;">NT$${totals.pBearTwd.toFixed(0)}</div>
-        <div style="font-size:11px;color:var(--accent2);margin-bottom:4px;margin-top:6px;">≈ 總計 NT$${Math.round(totals.pBearTwd + twd(totals.pBearRmb))}</div>
-        <div class="pc-sub">應負擔總額</div>
-      </div>
-    </div>
-    <div class="pay-bal" style="line-height:1.6;">
-        兩人總支出 <strong>¥${grandTotalRmb}</strong> ＋ <strong style="color:var(--accent3)">NT$${grandTotalTwd}</strong>
-        <div style="font-size:12px;color:var(--muted);font-weight:normal;margin-top:4px;">≈ 總計 NT$${Math.round(parseInt(grandTotalTwd) + twd(parseFloat(grandTotalRmb)))}</div>
-        <div style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); font-size:15px;">
-            ${balText}
+  // 渲染可折疊的總計區塊
+  const toggleBtnHtml = `
+    <div class="summary-toggle" onclick="togglePaySummary()">
+        <div style="flex:1; text-align:left;">${paySummaryExpanded ? '🔽 收起分帳總計' : '▶️ 展開分帳總計與結算'}</div>
+        <div style="font-size:13px; font-weight:normal; color:var(--muted);">
+          總支出: ¥${grandTotalRmb} / NT$${grandTotalTwd}
         </div>
     </div>
   `;
+
+  const summaryContentHtml = `
+    <div class="summary-content ${paySummaryExpanded ? 'open' : ''}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div style="font-size:16px;font-weight:700;color:var(--ink);">💰 雙人分帳與結算</div>
+            <button onclick="exportToExcel()" style="background:var(--accent2);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px" title="下載所有資料為完整的 Excel 檔案">📤 匯出 Excel</button>
+        </div>
+        <div class="pay-cards">
+          <div class="pay-card">
+            <div class="pc-name">若佩</div>
+            <div class="pc-amt">¥${totals.rBearRmb.toFixed(0)}</div>
+            <div class="pc-amt" style="font-size:20px;color:var(--accent3);margin-top:2px;">NT$${totals.rBearTwd.toFixed(0)}</div>
+            <div style="font-size:11px;color:var(--accent2);margin-bottom:4px;margin-top:6px;">≈ 總計 NT$${Math.round(totals.rBearTwd + twd(totals.rBearRmb))}</div>
+            <div class="pc-sub">應負擔總額</div>
+          </div>
+          <div class="pay-card">
+            <div class="pc-name">品郡</div>
+            <div class="pc-amt">¥${totals.pBearRmb.toFixed(0)}</div>
+            <div class="pc-amt" style="font-size:20px;color:var(--accent3);margin-top:2px;">NT$${totals.pBearTwd.toFixed(0)}</div>
+            <div style="font-size:11px;color:var(--accent2);margin-bottom:4px;margin-top:6px;">≈ 總計 NT$${Math.round(totals.pBearTwd + twd(totals.pBearRmb))}</div>
+            <div class="pc-sub">應負擔總額</div>
+          </div>
+        </div>
+        <div class="pay-bal" style="line-height:1.6;">
+            <div style="font-size:14px;">兩人總支出 <strong>¥${grandTotalRmb}</strong> ＋ <strong style="color:var(--accent3)">NT$${grandTotalTwd}</strong></div>
+            <div style="font-size:12px;color:var(--muted);font-weight:normal;margin-top:2px;">≈ 總計 NT$${Math.round(parseInt(grandTotalTwd) + twd(parseFloat(grandTotalRmb)))}</div>
+            
+            <div style="margin-top:12px; padding:10px; background:rgba(255,255,255,0.6); border-radius:8px; display:flex; justify-content:space-between; font-size:13px; text-align:center;">
+                <div style="flex:1;">
+                    <div style="color:var(--muted);font-size:11px;margin-bottom:2px;">若佩共墊付</div>
+                    <div style="font-weight:600;color:var(--ink);">¥${totals.rPaidRmb.toFixed(1)} <span style="color:var(--accent3);font-size:11px;">+ NT$${totals.rPaidTwd.toFixed(0)}</span></div>
+                </div>
+                <div style="width:1px; background:var(--border); margin:0 10px;"></div>
+                <div style="flex:1;">
+                    <div style="color:var(--muted);font-size:11px;margin-bottom:2px;">品郡共墊付</div>
+                    <div style="font-weight:600;color:var(--ink);">¥${totals.pPaidRmb.toFixed(1)} <span style="color:var(--accent3);font-size:11px;">+ NT$${totals.pPaidTwd.toFixed(0)}</span></div>
+                </div>
+            </div>
+
+            <div style="margin-top:12px; padding-top:12px; border-top:1px dashed var(--border); font-size:15px;">
+                ${balText}
+            </div>
+        </div>
+    </div>
+  `;
+
+  document.getElementById('paySummary').innerHTML = toggleBtnHtml + summaryContentHtml;
 
   document.getElementById('payBottom').innerHTML=`
     <div class="pay-form">
@@ -1465,6 +1522,7 @@ function openAddModal(){
   document.getElementById('fDay').value=curDay;
   document.getElementById('fType').value='sight';
   document.getElementById('fTime').value='12:00';
+  document.getElementById('fMapType').value='amap'; // 預設高德
   ['fName','fAddr','fPhone','fNote'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fCost').value='';
   document.getElementById('fCurr').value='rmb';
@@ -1479,6 +1537,7 @@ function oe(id){
   document.getElementById('fType').value=x.type;
   document.getElementById('fTime').value=x.time || '12:00';
   document.getElementById('fName').value=x.name;
+  document.getElementById('fMapType').value=x.mapType || 'amap'; // 讀取地圖引擎設定
   document.getElementById('fAddr').value=x.address||'';
   document.getElementById('fPhone').value=x.phone||'';
   document.getElementById('fCost').value=x.cost||'';
@@ -1501,6 +1560,7 @@ function saveItem(){
     time:timeVal,
     type:document.getElementById('fType').value,
     name:n,
+    mapType:document.getElementById('fMapType').value,
     address:document.getElementById('fAddr').value.trim(),
     phone:document.getElementById('fPhone').value.trim(),
     cost:parseFloat(document.getElementById('fCost').value)||0,
