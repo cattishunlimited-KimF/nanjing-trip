@@ -603,10 +603,14 @@ const PI={wechat:'💚',alipay:'💙',card:'💳',cash:'💵'};
 function calcTotals(){
   let rBearRmb=0, pBearRmb=0, rPaidRmb=0, pPaidRmb=0;
   let rBearTwd=0, pBearTwd=0, rPaidTwd=0, pPaidTwd=0;
+  let totalRmb=0, totalTwd=0;
 
   pays.forEach(x=>{
     let amt = x.amt;
     let isTwd = (x.currency === 'twd');
+    let actualAmt = (x.payer === '各付各的') ? amt * 2 : amt;
+    
+    if(isTwd) totalTwd += actualAmt; else totalRmb += actualAmt;
     
     let rB=0, pB=0;
     let rP=0, pP=0;
@@ -614,6 +618,10 @@ function calcTotals(){
     if(x.payer === '各付各的') {
         rB = amt; pB = amt;
         rP = amt; pP = amt;
+    } else if(x.payer === '別人請客') {
+        // 別人請客不列入任何人的負擔或已墊付
+        rB = 0; pB = 0;
+        rP = 0; pP = 0;
     } else {
         if(x.split==='half'){ rB=amt/2; pB=amt/2; }
         else if(x.split==='ruopei'){ rB=amt; }
@@ -636,7 +644,7 @@ function calcTotals(){
     }
   });
 
-  return { rBearRmb, pBearRmb, rPaidRmb, pPaidRmb, rBearTwd, pBearTwd, rPaidTwd, pPaidTwd };
+  return { rBearRmb, pBearRmb, rPaidRmb, pPaidRmb, rBearTwd, pBearTwd, rPaidTwd, pPaidTwd, totalRmb, totalTwd };
 }
 
 function customConfirm(msg, callback) {
@@ -919,8 +927,8 @@ window.togglePaySummary = function() {
 function renderPay(){
   const totals = calcTotals();
   
-  const grandTotalRmb = (totals.rBearRmb + totals.pBearRmb).toFixed(0);
-  const grandTotalTwd = (totals.rBearTwd + totals.pBearTwd).toFixed(0);
+  const grandTotalRmb = totals.totalRmb.toFixed(0);
+  const grandTotalTwd = totals.totalTwd.toFixed(0);
 
   const rBalRmb = totals.rPaidRmb - totals.rBearRmb; 
   const pBalRmb = totals.pPaidRmb - totals.pBearRmb;
@@ -942,12 +950,21 @@ function renderPay(){
   const recs=[...pays].reverse().map(x=>{
     const isTwd = x.currency === 'twd';
     const isSelfPaid = x.payer === '各付各的';
+    const isGift = x.payer === '別人請客';
     const sym = isTwd ? 'NT$' : '¥';
     const numDisplay = isSelfPaid ? `${x.amt.toFixed(0)} <span style="font-size:11px;font-weight:normal">/人</span>` : x.amt.toFixed(0);
     const amtColor = isTwd ? 'color:var(--accent3);' : '';
     const twdHint = isTwd ? '' : `<div style="font-size:10px;color:var(--accent2);margin-top:2px;">≈ NT$${twd(x.amt)}${isSelfPaid?'/人':''}</div>`;
-    const payerDisplay = x.payer ? (isSelfPaid ? ' · 各自結清' : ` · ${eh(x.payer)}墊付`) : '';
-    const splitText = isSelfPaid ? '兩人皆消費' : ({half:'兩人共同',ruopei:'若佩個人',pinjun:'品郡個人',ar:'若佩代全付',ap:'品郡代全付'}[x.split]||x.split);
+    
+    let payerDisplay = '';
+    if (isSelfPaid) payerDisplay = ' · 各自結清';
+    else if (isGift) payerDisplay = ' · 別人請客';
+    else if (x.payer) payerDisplay = ` · ${eh(x.payer)}墊付`;
+    
+    let splitText = ({half:'兩人共同',ruopei:'若佩個人',pinjun:'品郡個人',ar:'若佩代全付',ap:'品郡代全付'})[x.split]||x.split;
+    if (isSelfPaid) splitText = '兩人皆消費';
+    if (isGift) splitText = '無須分攤';
+    
     const timeHtml = x.time ? `<div style="font-size:10px; color:#aaa; margin-top:4px;">🕒 ${ftm(x.time)}</div>` : '';
 
     return `<div class="pr">
@@ -1064,6 +1081,8 @@ function renderPayForm(){
   const isTwd = payCurrency === 'twd';
   const currLabel = isTwd ? '台幣 NT$' : '人民幣 ¥';
   const isSelfPaid = (payPayer === '各付各的');
+  const isGift = (payPayer === '別人請客');
+  const hideSplit = isSelfPaid || isGift;
   
   el.innerHTML = `
     <div style="font-size:11px;color:var(--muted);margin-bottom:5px">記帳幣別：</div>
@@ -1080,10 +1099,10 @@ function renderPayForm(){
       <button class="bp${payPayer==='若佩'?' bpa':''}" onclick="setPayPayer('若佩')">若佩墊付</button>
       <button class="bp${payPayer==='品郡'?' bpa':''}" onclick="setPayPayer('品郡')">品郡墊付</button>
       <button class="bp${payPayer==='各付各的'?' bpa':''}" onclick="setPayPayer('各付各的')">各付各的 (當下結清)</button>
-      <button class="bp${payPayer===''?' bpa':''}" style="${payPayer===''?'border-color:var(--accent);color:var(--accent);':''}" onclick="setPayPayer('')">未指定</button>
+      <button class="bp${payPayer==='別人請客'?' bpa':''}" onclick="setPayPayer('別人請客')">別人請客</button>
     </div>
 
-    <div id="splitSection" style="${isSelfPaid ? 'display:none;' : ''}">
+    <div id="splitSection" style="${hideSplit ? 'display:none;' : ''}">
         <div style="font-size:11px;color:var(--muted);margin-bottom:5px">這筆花費算誰的？（誰該負擔）</div>
         <div class="btn-pick-row" style="margin-bottom:10px">
           <button class="bp${splitMode==='half'?' bpa':''}" onclick="ssm('half')">兩人共同</button>
@@ -1106,6 +1125,7 @@ function addPay(){
   const n=document.getElementById('pn')?.value.trim();
   const a=parseFloat(document.getElementById('pa')?.value);
   if(!n||isNaN(a)||a<=0){showT('請填寫完整名稱與金額');return;}
+  if(!payPayer){showT('請選擇由誰墊付/付款');return;}
   
   if(editingPayId) {
       const idx = pays.findIndex(x => x.id === editingPayId);
@@ -1351,9 +1371,10 @@ window.exportToExcel = function() {
         let payer = p.payer || '未指定';
         let splitText = ({half:'兩人共同',ruopei:'若佩個人',pinjun:'品郡個人',ar:'若佩代全付',ap:'品郡代全付'})[p.split] || p.split;
         if(payer === '各付各的') splitText = '兩人皆消費';
+        if(payer === '別人請客') splitText = '無須分攤';
         let methodText = ({wechat:'微信',alipay:'支付寶',card:'信用卡',cash:'現金'})[p.method] || p.method;
         
-        let actualAmt = p.payer === '各付各的' ? p.amt * 2 : p.amt;
+        let actualAmt = (p.payer === '各付各的') ? p.amt * 2 : p.amt;
 
         payData.push([timeStr, p.name, actualAmt, currName, payer, splitText, methodText, p.note || ""]);
         
@@ -1489,14 +1510,24 @@ function renderLedger(){
       ${[...payItems].reverse().map(x=>{
         const isTwd = x.currency === 'twd';
         const isSelfPaid = x.payer === '各付各的';
-        const payerDisplay = x.payer ? (isSelfPaid ? ' · 各付各的' : ' · '+x.payer+'墊付') : '';
+        const isGift = x.payer === '別人請客';
+        
+        let payerDisplay = '';
+        if(isSelfPaid) payerDisplay = ' · 各付各的';
+        else if(isGift) payerDisplay = ' · 別人請客';
+        else if(x.payer) payerDisplay = ' · ' + x.payer + '墊付';
+
+        let splitText = x.note;
+        if(isSelfPaid) splitText = '兩人皆消費';
+        if(isGift) splitText = '無須分攤';
+
         const displayAmt = isSelfPaid ? `${x.amt.toFixed(0)}/人` : x.amt.toFixed(0);
         const twdHint = isSelfPaid ? `≈ NT$${twd(x.amt)}/人` : `≈ NT$${twd(x.amt)}`;
         const timeHtml = x.time ? ` · 🕒 ${ftm(x.time)}` : '';
 
         return `<div class="ledger-row lr-src-pay">
           <span class="lr-icon">${x.icon}</span>
-          <div class="lr-body"><div class="lr-name">${eh(x.name)}</div><div class="lr-meta">${isSelfPaid ? '兩人皆消費' : x.note}${payerDisplay}${timeHtml}</div></div>
+          <div class="lr-body"><div class="lr-name">${eh(x.name)}</div><div class="lr-meta">${splitText}${payerDisplay}${timeHtml}</div></div>
           <div><div class="lr-amt" ${isTwd?'style="color:var(--accent3)"':''}>${isTwd?'NT$':'¥'}${displayAmt}</div>${isTwd?'':`<span class="lr-twd">${twdHint}</span>`}</div>
         </div>`
       }).join('')}
