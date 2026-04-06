@@ -1435,20 +1435,27 @@ function renderLedger(){
       else payTotalRmb+=actualAmt; 
   });
 
-  const grandTotalRmb = tripTotalRmb + payTotalRmb;
-  const grandTotalTwd = tripTotalTwd + payTotalTwd;
+  const estTotalRmb = tripTotalRmb * 2;
+  const estTotalTwd = tripTotalTwd * 2;
+  const diffRmb = payTotalRmb - estTotalRmb;
+  const diffTwd = payTotalTwd - estTotalTwd;
+  const diffTwdEq = Math.round(twd(diffRmb) + diffTwd);
+  const isOver = diffTwdEq > 0;
+  const diffColor = isOver ? '#c0392b' : 'var(--accent2)';
+  const diffText = isOver ? '超支' : '結餘';
 
   let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <div style="font-size:16px;font-weight:700;color:var(--ink);">📊 全覽與備份</div>
+      <div style="font-size:16px;font-weight:700;color:var(--ink);">📊 全覽與預算控管</div>
       <button onclick="exportToExcel()" style="background:var(--accent2);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px" title="下載所有資料為完整的 Excel 檔案">📤 匯出 Excel</button>
   </div>
   <div class="ledger-summary">
-    <div class="ls-card"><div class="ls-label">行程預估合計</div><div class="ls-amt" style="font-size:16px">¥${tripTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${tripTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(tripTotalRmb) + tripTotalTwd)}</div></div>
-    <div class="ls-card"><div class="ls-label">已記帳合計</div><div class="ls-amt" style="font-size:16px">¥${payTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${payTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(payTotalRmb)+payTotalTwd)}</div></div>
-    <div class="ls-card"><div class="ls-label">總計估值(估+帳)</div><div class="ls-amt" style="font-size:16px">¥${grandTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${grandTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(grandTotalRmb)+grandTotalTwd)}</div></div>
+    <div class="ls-card"><div class="ls-label">雙人預估總計</div><div class="ls-amt" style="font-size:16px">¥${estTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${estTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(estTotalRmb) + estTotalTwd)}</div></div>
+    <div class="ls-card"><div class="ls-label">實際已記帳</div><div class="ls-amt" style="font-size:16px">¥${payTotalRmb.toFixed(0)}<br><span style="color:var(--accent3)">NT$${payTotalTwd.toFixed(0)}</span></div><div class="ls-twd">≈ NT$${Math.round(twd(payTotalRmb)+payTotalTwd)}</div></div>
+    <div class="ls-card" style="border-color:${diffColor}; background:${isOver?'#fff5f5':'#f2fcf5'}"><div class="ls-label" style="color:${diffColor};font-weight:bold;">預算差異</div><div class="ls-amt" style="font-size:16px; color:${diffColor}">${diffRmb > 0 ? '+' : ''}${diffRmb.toFixed(0)}<br><span>${diffTwd > 0 ? '+' : ''}${diffTwd.toFixed(0)}</span></div><div class="ls-twd" style="color:${diffColor}; font-weight:bold;">${diffText} ≈ NT$${Math.abs(diffTwdEq)}</div></div>
   </div>`;
 
   if(tripItems.length){
+    html += `<div style="font-size:11px;color:var(--muted);margin-bottom:8px;padding:6px;background:var(--warm);border-radius:6px;text-align:center;">💡 下方「行程預估」金額顯示為單人，上方「雙人預估總計」已自動乘 2</div>`;
     const byDay = {};
     tripItems.forEach(x=>{ if(!byDay[x.day]) byDay[x.day]=[]; byDay[x.day].push(x); });
     Object.keys(byDay).sort((a,b)=>a-b).forEach(d=>{
