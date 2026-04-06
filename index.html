@@ -195,9 +195,10 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans TC',sans-se
 .lr-twd{font-size:10px;color:var(--accent2);display:block;text-align:right;}
 .lr-src-trip{border-left:3px solid var(--tt);}
 .lr-src-pay{border-left:3px solid var(--ft);}
+
 </style>
 <script>
-// 在所有程式碼執行前，將 setSyncDot 函數綁定在 window 上，避免 Reference Error
+// 在所有程式碼執行前，將 setSyncDot 函數綁定在 window 上，確保它安全存在
 window.setSyncDot = function(state) {
     const el = document.getElementById('syncDot');
     if(!el) return;
@@ -375,6 +376,9 @@ window.setSyncDot = function(state) {
 </div>
 
 <script>
+// 全域狀態儲存與更新時間戳記
+window.localUpdatedAt = 0; 
+
 // ===== TRIP DATA =====
 const DAYS=[
   {l:'Day 1',s:'4/16出發',f:'4/16（四）'},
@@ -417,6 +421,33 @@ let trips=[
 ];
 let nid=30,curDay=0,editId=null;
 let cnyToTwd = 4.5; 
+
+window.packState = function(){ 
+    return { pays, pid, clDone, disDone, fdDone, meals, trips }; 
+};
+
+window.applyState = function(data){
+  if(!data) return;
+  if(data.pays!==undefined) pays=data.pays;
+  if(data.pid!==undefined) pid=data.pid;
+  if(data.clDone!==undefined) clDone=data.clDone;
+  if(data.disDone!==undefined) disDone=data.disDone;
+  if(data.fdDone!==undefined) fdDone=data.fdDone;
+  if(data.meals!==undefined) meals=data.meals;
+  if(data.trips!==undefined) trips=data.trips;
+};
+
+window.refreshCurrentPage = function(){
+  const active = document.querySelector('.ptab.active');
+  if(!active) return;
+  const p = active.getAttribute('onclick').match(/'(\w+)'/)?.[1];
+  if(p==='itinerary') renderIt();
+  else if(p==='checklist') renderCL();
+  else if(p==='disney') renderDis();
+  else if(p==='food') renderFd();
+  else if(p==='pay') renderPay();
+  else if(p==='ledger') renderLedger();
+};
 
 function syncGlobalRate(src) {
   const rmbEl = document.getElementById('globalRateRmb');
@@ -609,28 +640,6 @@ function customConfirm(msg, callback) {
 
     document.getElementById('cc-cancel').onclick = () => { overlay.remove(); window._isConfirming = false; };
     document.getElementById('cc-ok').onclick = () => { overlay.remove(); window._isConfirming = false; callback(); };
-}
-
-function packState(){ return { pays,pid,clDone,disDone,fdDone,meals,updatedAt:Date.now() }; }
-function applyState(data){
-  if(!data) return;
-  if(data.pays!==undefined) pays=data.pays;
-  if(data.pid!==undefined) pid=data.pid;
-  if(data.clDone!==undefined) clDone=data.clDone;
-  if(data.disDone!==undefined) disDone=data.disDone;
-  if(data.fdDone!==undefined) fdDone=data.fdDone;
-  if(data.meals!==undefined) meals=data.meals;
-}
-function refreshCurrentPage(){
-  const active = document.querySelector('.ptab.active');
-  if(!active) return;
-  const p = active.getAttribute('onclick').match(/'(\w+)'/)?.[1];
-  if(p==='itinerary') renderIt();
-  else if(p==='checklist') renderCL();
-  else if(p==='disney') renderDis();
-  else if(p==='food') renderFd();
-  else if(p==='pay') renderPay();
-  else if(p==='ledger') renderLedger();
 }
 
 const DAY_MEALS={ 0:['d'], 1:['b','l','d'], 2:['b','l','d'], 3:['b','l','d'], 4:['b','l','d'], 5:[] };
@@ -1522,9 +1531,37 @@ function showT(m){const t=document.getElementById('toast');t.textContent=m;t.cla
 function eh(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function eq(s){return String(s||'').replace(/'/g,"\\'").replace(/\n/g,' ');}
 
-window.packState = packState;
-window.applyState = applyState;
-window.refreshCurrentPage = refreshCurrentPage;
+// =========================================================================
+// 全域變數，紀錄「本地端」最後一次抓取或儲存的時間戳記
+// =========================================================================
+window.localUpdatedAt = 0; 
+
+window.packState = function(){ 
+    return { pays, pid, clDone, disDone, fdDone, meals, trips }; 
+};
+
+window.applyState = function(data){
+  if(!data) return;
+  if(data.pays!==undefined) pays=data.pays;
+  if(data.pid!==undefined) pid=data.pid;
+  if(data.clDone!==undefined) clDone=data.clDone;
+  if(data.disDone!==undefined) disDone=data.disDone;
+  if(data.fdDone!==undefined) fdDone=data.fdDone;
+  if(data.meals!==undefined) meals=data.meals;
+  if(data.trips!==undefined) trips=data.trips; 
+};
+
+window.refreshCurrentPage = function(){
+  const active = document.querySelector('.ptab.active');
+  if(!active) return;
+  const p = active.getAttribute('onclick').match(/'(\w+)'/)?.[1];
+  if(p==='itinerary') renderIt();
+  else if(p==='checklist') renderCL();
+  else if(p==='disney') renderDis();
+  else if(p==='food') renderFd();
+  else if(p==='pay') renderPay();
+  else if(p==='ledger') renderLedger();
+};
 
 </script>
 
@@ -1534,7 +1571,7 @@ window.refreshCurrentPage = refreshCurrentPage;
     import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     // =========================================================================
-    // 👇 請將你的 Firebase 設定貼在這裡！(取代原本的 null)
+    // 👇 Firebase 設定
     // =========================================================================
     const MY_FIREBASE_CONFIG = {
       apiKey: "AIzaSyDlRh9NKB_Y76wdOWYnv3rG1ey2pZIobL4",
@@ -1545,7 +1582,7 @@ window.refreshCurrentPage = refreshCurrentPage;
       appId: "1:56421462598:web:2d0c3a69041b153e955047"
     };
     
-    const MY_ROOM_ID = "nanjing_2026_ruopei_pinjun"; // 你們專屬的隱藏房號
+    const MY_ROOM_ID = "nanjing_2026_ruopei_pinjun"; 
     // =========================================================================
 
     let fStoreDocRef = null;
@@ -1557,19 +1594,10 @@ window.refreshCurrentPage = refreshCurrentPage;
         }, 8000);
 
         try {
-            if (!MY_FIREBASE_CONFIG) {
-                console.warn("⚠️ 尚未設定 Firebase，目前運行於單機模式。");
-                clearTimeout(connTimeout);
-                window.setSyncDot('offline');
-                return;
-            }
-
             const app = initializeApp(MY_FIREBASE_CONFIG);
             const db = getFirestore(app);
 
-            // 因為使用者建立資料庫選擇了「測試模式 (Test Mode)」
-            // 測試模式允許任何人在沒有登入驗證的情況下讀寫資料，所以我們不需要呼叫複雜的 Auth 驗證！
-            // 為了避免層級錯誤，這裡改用最單純的 Collection -> Document 兩層路徑結構
+            // 設定資料庫路徑
             fStoreDocRef = doc(db, 'shared_trips', MY_ROOM_ID);
             isFirebaseReady = true;
 
@@ -1585,11 +1613,13 @@ window.refreshCurrentPage = refreshCurrentPage;
 
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    const localData = window.packState();
                     
-                    if (data.updatedAt && (!localData.updatedAt || data.updatedAt > localData.updatedAt)) {
+                    // 修正：比較雲端時間與『本地紀錄的時間』，只要雲端比較新就更新
+                    if (data.updatedAt && data.updatedAt > window.localUpdatedAt) {
+                        window.localUpdatedAt = data.updatedAt; // 同步最新時間
                         window.applyState(data);
                         window.refreshCurrentPage();
+                        try { localStorage.setItem('nanjing2025_state', JSON.stringify(data)); } catch(e){}
                     }
                 } else {
                     // 如果雲端還沒有這間房的資料，就把目前的資料推上去建立
@@ -1597,9 +1627,8 @@ window.refreshCurrentPage = refreshCurrentPage;
                 }
             }, (error) => {
                 clearTimeout(connTimeout);
-                console.error("即時連線發生中斷 (可能是資料庫未設為測試模式，或連線逾時):", error);
+                console.error("即時連線發生中斷:", error);
                 window.setSyncDot('offline');
-                showT("⚠️ 雲端權限不足，請確認 Firebase 為『測試模式』");
             });
 
         } catch (e) {
@@ -1612,7 +1641,9 @@ window.refreshCurrentPage = refreshCurrentPage;
     // 當你有新增/修改任何行程或花費時，會自動觸發這個函數推送到 Firebase
     window.sv = async function() {
         const data = window.packState();
-        data.updatedAt = Date.now();
+        window.localUpdatedAt = Date.now(); // 紀錄我這次更新的本地時間
+        data.updatedAt = window.localUpdatedAt; // 把這個時間蓋印章傳上雲端
+        
         try { localStorage.setItem('nanjing2025_state', JSON.stringify(data)); } catch(e){}
 
         if (isFirebaseReady && fStoreDocRef) {
@@ -1629,7 +1660,24 @@ window.refreshCurrentPage = refreshCurrentPage;
         }
     };
 
-    setupFirebase();
+    async function loadStateAndRender() {
+        // 先載入本地暫存畫面
+        try {
+            const loc = localStorage.getItem('nanjing2025_state');
+            if(loc) {
+                const data = JSON.parse(loc);
+                window.localUpdatedAt = data.updatedAt || 0; // 讀取上次本地更新的時間
+                window.applyState(data);
+            }
+        } catch(e){}
+        
+        renderIt();
+        // 啟動 Firebase 連線
+        setupFirebase();
+    }
+    
+    // 啟動程式
+    loadStateAndRender();
 </script>
 </body>
 </html>
