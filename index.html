@@ -1572,6 +1572,7 @@ function saveItem(){
   curDay=x.day;
   closeModal();
   renderIt();
+  if(window.sv) window.sv(); // 補上這行：觸發同步到雲端
   showT(editId?'✓ 已更新':'✓ 已新增');
 }
 
@@ -1580,6 +1581,7 @@ function deleteItem(){
         trips=trips.filter(x=>x.id!==editId);
         closeModal();
         renderIt();
+        if(window.sv) window.sv(); // 補上這行：觸發同步到雲端
         showT('已刪除');
     });
 }
